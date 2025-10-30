@@ -714,12 +714,26 @@
                         </tr>
                     </table>
 
-                    <h3>⭐ Ventajas VIP</h3>
+                    <h3>⭐ Ventajas VIP (Desactivable)</h3>
                     <div class="success-box">
                         Los jugadores VIP tienen el doble de probabilidad de ganar que los jugadores normales. Si eres VIP, tienes más chances de llevarte los mejores premios!
                     </div>
 
-                    <h3>⏰ Cooldown de Ganadores</h3>
+                    <h3>🎫 Tickets de Lotería</h3>
+                    <div class="info-box">
+                        <strong>Aumenta tus probabilidades comprando tickets:</strong>
+                        <p>Además de la ventaja VIP, puedes comprar tickets de lotería para incrementar aún más tus chances de ganar. Los tickets se suman con el multiplicador VIP para maximizar tu probabilidad.</p>
+                        <ul>
+                            <li><strong>4 tiers disponibles (CONFIGURABLES!):</strong> Bronze ($500), Silver ($2,000), Gold ($5,000), Platinum ($15,000)</li>
+                            <li><strong>Boost acumulativo:</strong> Hasta +50% adicional de probabilidad</li>
+                            <li><strong>Máximo 3 tickets</strong> por sorteo (o período configurado)</li>
+                            <li><strong>Comandos rápidos:</strong> @btk_b, @btk_s, @btk_g, @btk_p</li>
+                        </ul>
+                        <p><strong>💡 Tip:</strong> Un jugador VIP con tickets puede tener hasta 2.5x la probabilidad de un jugador normal!</p>
+                        <p>Ver más detalles en la pestaña "💬 Comandos" → "🎫 Tickets de Lotería"</p>
+                    </div>
+
+                    <h3>⏰ Cooldown de Ganadores (Configurable)</h3>
                     <div class="warning-box">
                         <strong>Sistema justo para todos:</strong><br>
                         Si ganas un sorteo, deberás esperar 3 sorteos (configurable) antes de poder ganar de nuevo. Esto asegura que todos los jugadores tengan oportunidad de ganar.
@@ -734,20 +748,162 @@
                 <div id="lottery-commands" class="sub-panel">
                     <h2>💬 Comandos del Sistema</h2>
 
-                    <h3>🎫 Tickets de Lotería (Sistema Futuro)</h3>
-                    <div class="warning-box">
-                        <strong>⚠️ No hay comandos activos actualmente</strong><br>
-                        El sistema de lotería funciona automático. Los sorteos se realizan sin que necesites hacer nada.
+                    <h3>🎫 Tickets de Lotería</h3>
+                    <div class="success-box">
+                        <strong>✅ Sistema Activo</strong>
+                        <p>Compra tickets para aumentar tus probabilidades de ganar en los sorteos. Los tickets se acumulan con el boost VIP para maximizar tus chances!</p>
                     </div>
 
+                    <h4>¿Cómo Funcionan los Tickets?</h4>
                     <div class="info-box">
-                        <strong>Sistema futuro planeado:</strong><br>
-                        En futuras versiones podrás comprar tickets adicionales para aumentar tus chances de ganar:
+                        <strong>Sistema de Boost de Probabilidad:</strong>
+                        <p>Los tickets aumentan tu probabilidad de ser seleccionado como ganador en cada sorteo. El boost es aditivo con tu multiplicador VIP.</p>
                         <ul>
-                            <li><code>@comprar_ticket</code> - Comprar un ticket de lotería</li>
-                            <li><code>@mis_tickets</code> - Ver cuántos tickets tienes</li>
+                            <li><strong>Base:</strong> Todos empiezan con probabilidad 1.0</li>
+                            <li><strong>VIP:</strong> Los VIPs tienen 2x probabilidad (boost de +1.0)</li>
+                            <li><strong>Tickets:</strong> Cada tier de ticket añade un boost adicional</li>
+                            <li><strong>Sistema aditivo:</strong> VIP + Tickets se suman (ej: 1.0 + 1.0 VIP + 0.20 Platinum = 2.20x)</li>
                         </ul>
-                        Por ahora, todos participan automáticamente con las mismas chances (excepto VIPs).
+                    </div>
+
+                    <h4>💎 Tiers de Tickets</h4>
+                    <table>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Costo</th>
+                            <th>Boost</th>
+                            <th>Comando</th>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #cd7f32;">🥉 Bronze</span></td>
+                            <td>$500</td>
+                            <td>+2%</td>
+                            <td><code>@buy_ticket_bronze</code> o <code>@btk_b</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #c0c0c0;">🥈 Silver</span></td>
+                            <td>$2,000</td>
+                            <td>+5%</td>
+                            <td><code>@buy_ticket_silver</code> o <code>@btk_s</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #ffd700;">🥇 Gold</span></td>
+                            <td>$5,000</td>
+                            <td>+10%</td>
+                            <td><code>@buy_ticket_gold</code> o <code>@btk_g</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #e5e4e2;">💎 Platinum</span></td>
+                            <td>$15,000</td>
+                            <td>+20%</td>
+                            <td><code>@buy_ticket_platinum</code> o <code>@btk_p</code></td>
+                        </tr>
+                    </table>
+
+                    <h4>📋 Comandos de Tickets</h4>
+                    <div class="command-box">@tickets</div>
+                    <div class="example-box">
+                        <strong>Ver tus tickets actuales:</strong><br>
+                        Muestra todos tus tickets activos, el boost total que tienes, y cuándo se resetean.
+                    </div>
+
+                    <div class="command-box">@buy_ticket_bronze</div>
+                    <div class="command-box">@btk_b</div>
+                    <div class="example-box">
+                        <strong>Comprar ticket Bronze ($500, +2%):</strong><br>
+                        Puedes usar el comando completo <code>@buy_ticket_bronze</code> o el atajo <code>@btk_b</code>
+                    </div>
+
+                    <div class="command-box">@buy_ticket_silver</div>
+                    <div class="command-box">@btk_s</div>
+                    <div class="example-box">
+                        <strong>Comprar ticket Silver ($2,000, +5%):</strong><br>
+                        Comando completo o atajo <code>@btk_s</code>
+                    </div>
+
+                    <div class="command-box">@buy_ticket_gold</div>
+                    <div class="command-box">@btk_g</div>
+                    <div class="example-box">
+                        <strong>Comprar ticket Gold ($5,000, +10%):</strong><br>
+                        Comando completo o atajo <code>@btk_g</code>
+                    </div>
+
+                    <div class="command-box">@buy_ticket_platinum</div>
+                    <div class="command-box">@btk_p</div>
+                    <div class="example-box">
+                        <strong>Comprar ticket Platinum ($15,000, +20%):</strong><br>
+                        Comando completo o atajo <code>@btk_p</code>
+                    </div>
+
+                    <div class="command-box">@my_tickets</div>
+                    <div class="example-box">
+                        <strong>Ver resumen de tickets:</strong><br>
+                        Alias de <code>@tickets</code> - muestra la misma información
+                    </div>
+
+                    <h4>⏰ Ventana de Compra</h4>
+                    <div class="warning-box">
+                        <strong>Cuándo puedes comprar tickets:</strong>
+                        <ul>
+                            <li><strong>Se abre:</strong> Inmediatamente después de cada sorteo</li>
+                            <li><strong>Se cierra:</strong> 5 minutos antes del próximo sorteo</li>
+                            <li><strong>Intervalo del sorteo:</strong> 30 minutos (configurable por admin)</li>
+                        </ul>
+                        <p><strong>Ejemplo:</strong> Si el sorteo es a las 14:00, puedes comprar tickets hasta las 13:55. Después de las 13:55, debes esperar al sorteo de las 14:00 para comprar más tickets.</p>
+                    </div>
+
+                    <h4>📊 Límites y Restricciones</h4>
+                    <div class="info-box">
+                        <strong>Sistema equilibrado para todos:</strong>
+                        <ul>
+                            <li><strong>Máximo 3 tickets</strong> por jugador por sorteo</li>
+                            <li><strong>Boost máximo:</strong> 50% (0.50) adicional por tickets</li>
+                            <li><strong>Cooldown:</strong> 10 segundos entre compras</li>
+                            <li><strong>Reset:</strong> Configurable (por sorteo, diario, semanal, mensual, o al ganar)</li>
+                        </ul>
+                    </div>
+
+                    <h4>🔄 Modos de Reset</h4>
+                    <div class="info-box">
+                        <strong>El admin configura cuándo se resetean tus tickets:</strong>
+                        <ul>
+                            <li><strong>on_draw:</strong> Se resetean después de cada sorteo (compra nuevo cada 30 min)</li>
+                            <li><strong>daily:</strong> Se resetean a medianoche (puedes acumular durante el día)</li>
+                            <li><strong>weekly:</strong> Se resetean cada lunes</li>
+                            <li><strong>monthly:</strong> Se resetean el día 1 de cada mes</li>
+                            <li><strong>on_win:</strong> Se resetean solo cuando ganas (los mantienes hasta ganar)</li>
+                        </ul>
+                    </div>
+
+                    <h4>💡 Ejemplos de Probabilidad</h4>
+                    <div class="example-box">
+                        <strong>Jugador Normal (sin VIP, sin tickets):</strong><br>
+                        Probabilidad: 1.0 (base)
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Jugador Normal + 1 Ticket Platinum:</strong><br>
+                        Probabilidad: 1.0 (base) + 0.20 (Platinum) = 1.20x
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Jugador VIP (sin tickets):</strong><br>
+                        Probabilidad: 1.0 (base) + 1.0 (VIP) = 2.0x
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Jugador VIP + 1 Ticket Platinum:</strong><br>
+                        Probabilidad: 1.0 (base) + 1.0 (VIP) + 0.20 (Platinum) = 2.20x
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Jugador VIP + 3 Tickets (1 Gold + 2 Silver):</strong><br>
+                        Probabilidad: 1.0 (base) + 1.0 (VIP) + 0.10 (Gold) + 0.05 (Silver) + 0.05 (Silver) = 2.20x
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Estrategia óptima:</strong><br>
+                        Si eres VIP y compras 1 Platinum + 2 Gold, tendrías: 1.0 + 1.0 + 0.20 + 0.10 + 0.10 = 2.40x probabilidad!
                     </div>
 
                     <h3>📊 Ver Ganadores</h3>
@@ -796,6 +952,7 @@
                         <strong>Factores que afectan tus chances:</strong>
                         <ul>
                             <li>Los jugadores VIP tienen 2x probabilidad (esto es intencional)</li>
+                            <li>Los tickets de lotería aumentan tu probabilidad (hasta +50%)</li>
                             <li>El sistema es completamente aleatorio</li>
                             <li>Necesitas estar online en el momento del sorteo</li>
                             <li>Si ganaste recientemente, estás en cooldown</li>
@@ -814,6 +971,81 @@
                             <li>Distribución de premios por rareza</li>
                             <li>Jugadores únicos que han ganado</li>
                         </ul>
+                    </div>
+
+                    <h3>❌ No puedo comprar tickets</h3>
+                    <div class="warning-box">
+                        <strong>Posibles causas:</strong>
+                        <ul>
+                            <li><strong>Ventana cerrada:</strong> Los tickets solo se pueden comprar después de un sorteo y hasta 5 minutos antes del próximo</li>
+                            <li><strong>Límite alcanzado:</strong> Ya tienes el máximo de tickets permitidos (generalmente 3)</li>
+                            <li><strong>Boost máximo:</strong> Ya alcanzaste el 50% de boost máximo por tickets</li>
+                            <li><strong>Sin dinero:</strong> No tienes suficiente balance para comprar el ticket</li>
+                            <li><strong>Cooldown:</strong> Debes esperar 10 segundos entre compras de tickets</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Soluciones:</strong>
+                        <ul>
+                            <li>Usa <code>@tickets</code> para ver tus tickets actuales y cuándo se resetean</li>
+                            <li>Verifica tu balance con el comando de economía</li>
+                            <li>Espera al próximo sorteo para que se abra la ventana de compra</li>
+                            <li>Si tus tickets se resetean "on_draw", espera al sorteo para comprar nuevos</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ Me cobraron pero no recibí el ticket</h3>
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">
+                            data/lottery/tickets_storage.json
+                        </div>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre <code>tickets_storage.json</code></li>
+                            <li>Busca tu Steam ID o nombre</li>
+                            <li>Verifica el campo <code>"tickets"</code> (debe tener tu ticket listado)</li>
+                            <li>Verifica el campo <code>"total_boost"</code> (debe reflejar el boost de tus tickets)</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si el ticket aparece:</strong> Todo correcto, usa <code>@tickets</code> para ver el resumen</li>
+                            <li><strong>Si no aparece:</strong> Hubo un error, contacta a un admin con captura del chat mostrando el cobro</li>
+                            <li><strong>Si el dinero no se descontó:</strong> La compra falló, intenta de nuevo</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ No entiendo cuándo se resetean mis tickets</h3>
+                    <div class="info-box">
+                        <strong>Usa el comando <code>@tickets</code> para ver:</strong>
+                        <ul>
+                            <li>Todos tus tickets actuales</li>
+                            <li>El boost total que tienes</li>
+                            <li>Cuándo se resetearán (fecha/hora o "en próximo sorteo")</li>
+                        </ul>
+                        <p><strong>Ejemplo de respuesta:</strong></p>
+                        <div class="command-box">
+                            🎫 Tickets de ElFiru:<br>
+                            • 1x Platinum (+20%)<br>
+                            • 2x Gold (+10% cada uno)<br>
+                            💰 Boost total: +40%<br>
+                            🔄 Reset: En próximo sorteo (on_draw)
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Modos de reset configurables:</strong>
+                        <ul>
+                            <li><strong>on_draw:</strong> Se borran después de cada sorteo</li>
+                            <li><strong>daily:</strong> Se borran a medianoche (00:00)</li>
+                            <li><strong>weekly:</strong> Se borran cada lunes a medianoche</li>
+                            <li><strong>monthly:</strong> Se borran el día 1 de cada mes</li>
+                            <li><strong>on_win:</strong> Se borran solo cuando ganas (los guardas hasta ganar)</li>
+                        </ul>
+                        <p>El modo de reset lo configura el administrador del servidor.</p>
                     </div>
                 </div>
             </div>
@@ -1432,12 +1664,13 @@
                         Un pad es una zona específica del mapa identificada por una letra y un número:<br><br>
                         <strong>Ejemplos de pads disponibles:</strong>
                         <ul>
-                            <li>A0, A1, A2, A3, A4</li>
-                            <li>B0, B1, B2, B3, B4</li>
-                            <li>C0, C1, C2, C3, C4</li>
-                            <li>D0, D1, D2, D3, D4</li>
-                            <li>Z0, Z1, Z2, Z3, Z4</li>
+                            <li>D4, D3, D2, D1, D0</li>
+                            <li>C4, C3, C2, C1, C0</li>
+                            <li>B4, B3, B2, B1, B0</li>
+                            <li>A4, A3, A2, A1, A0</li>
+                            <li>Z4, Z3, Z2, Z1, Z0</li>
                         </ul>
+                        <p>Cada pad representa un área grande del mapa. Puedes viajar a cualquier pad configurado.</p>
                     </div>
 
                     <h3>💰 ¿Cuánto cuesta?</h3>
@@ -1453,25 +1686,53 @@
                     </div>
 
                     <h3>🎯 Tipos de Taxi</h3>
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <div class="icon">🚖</div>
-                            <h4>Taxi On Ground</h4>
-                            <p>Teleport directo al pad de destino. Te mueves al nivel del suelo.</p>
-                            <span class="badge-success">Más barato</span>
-                        </div>
-                        <div class="feature-item">
-                            <div class="icon">✈️</div>
-                            <h4>Taxi con Redespliegue</h4>
-                            <p>Te teletransporta al aire y haces paracaidismo hasta el destino.</p>
-                            <span class="badge-warning">Más caro</span>
-                        </div>
+                    <div class="info-box">
+                        <strong>Existen dos tipos de taxi:</strong>
+                        <h4>Puedes activarlos en el config.yaml (taxi_OnGroundEnabled: false), al activar esta opcion se desactiva el Aereo</h4>
+                    </div>
+
+                    <h4>🚖 Taxi On Ground</h4>
+                    <div class="info-box">
+                        <strong>Teleport directo al pad de destino</strong>
+                        <p>Este es el método estándar y más económico de viajar:</p>
+                        <ul>
+                            <li><strong>Funcionamiento:</strong> Te teletransporta directamente al nivel del suelo en el pad de destino</li>
+                            <li><strong>Zona de respawn:</strong> El Zones.yaml determina las zonas en las que puedes aparecer, el Respawn es aleatorio dentro de las zonas predefinidas</li>
+                            <li><strong>Llegada:</strong> Apareces de pie en el pad, listo para moverte</li>
+                            <li><strong>Costo:</strong> Precio base según distancia</li>
+                            <li><strong>Comando:</strong> <code>@taxi [DESTINO]</code> (por defecto usa este método)</li>
+                        </ul>
+                    </div>
+
+                    <h4>✈️ Taxi con Redespliegue (Paracaidismo)</h4>
+                    <div class="warning-box">
+                        <strong>Teleport aéreo con paracaídas</strong>
+                        <p>Te teletransporta al aire sobre el destino y debes usar el paracaídas para aterrizar:</p>
+                        <ul>
+                            <li><strong>Paracaídas:</strong> El sistema te da un paracaídas automáticamente y te alerta de los segundos que tienes para ponertelo</li>
+                            <li><strong>Zona:</strong> La Zona de aparicion es aleatoria segun el Pad seleccionado.</li>
+                            <li><strong>Restricciones:</strong> Se pueden configurar Restricciones de zona de Respawn para que no te lance encima de POIS</li>
+                            <li><strong>Altura:</strong> Apareces a gran altura sobre el pad de destino</li>
+                            <li><strong>Aterrizaje:</strong> Tú controlas dónde aterrizar en el área del pad</li>
+                            <li><strong>Costo:</strong> Más caro que el taxi normal (recargo por el paracaídas)</li>
+                            <li><strong>Comando:</strong> <code>@taxi [DESTINO] air</code> o <code>@taxi [DESTINO] parachute</code></li>
+                        </ul>
+                        <p><strong>Ventajas:</strong></p>
+                        <ul>
+                            <li>Mayor control del punto exacto de aterrizaje</li>
+                            <li>Puedes ver el área desde arriba antes de aterrizar</li>
+                            <li>Útil para reconocimiento táctico</li>
+                        </ul>
+                        <p><strong>⚠️ Importante:</strong> Asegúrate de abrir el paracaídas a tiempo para evitar morir por caída</p>
                     </div>
 
                     <h3>📋 Cómo Usar el Taxi</h3>
+
+                    <h4>Taxi Normal (On Ground)</h4>
                     <div class="info-box">
                         <strong>Paso a paso:</strong>
                         <ol>
+                            <li><strong>(Alert) </strong> Los comandos pueden usarse incluso dentro de squadron channel para evitar delatarte</li>
                             <li><strong>(Opcional) Consultar costo:</strong> Escribe <code>@taxicosto D3</code></li>
                             <li><strong>Solicitar taxi:</strong> Escribe <code>@taxi D3</code></li>
                             <li><strong>Confirmación:</strong> El bot verifica:
@@ -1483,7 +1744,27 @@
                             </li>
                             <li><strong>Cobro:</strong> Se descuenta el dinero de tu balance</li>
                             <li><strong>Espera:</strong> El bot ejecuta el teleport (puede tardar 5-10 segundos)</li>
-                            <li><strong>¡Listo!</strong> Ya estás en tu destino</li>
+                            <li><strong>¡Listo!</strong> Apareces en el pad de destino al nivel del suelo</li>
+                        </ol>
+                    </div>
+
+                    <h4>Taxi con Paracaídas</h4>
+                    <div class="warning-box">
+                        <strong>Paso a paso:</strong>
+                        <ol>
+                            <li><strong>(Alert) </strong> Los comandos pueden usarse incluso dentro de squadron channel para evitar delatarte</li>
+                            <li><strong>(Opcional) Consultar costo:</strong> Escribe <code>@taxicosto D3</code> (el costo será mayor que el taxi normal)</li>
+                            <li><strong>Solicitar taxi aéreo:</strong> Escribe <code>@taxi D3 air</code> o <code>@taxi D3 parachute</code></li>
+                            <li><strong>Confirmación y Cobro:</strong> El bot verifica y cobra el dinero (costo superior al taxi normal)</li>
+                            <li><strong>Teleport:</strong> Apareces en el aire a gran altura sobre el pad de destino</li>
+                            <li><strong>Paracaidismo:</strong>
+                                <ul>
+                                    <li>El sistema te da un paracaídas automáticamente</li>
+                                    <li>Controlas tu caída y dirección de aterrizaje</li>
+                                    <li>¡IMPORTANTE! Abre el paracaídas a tiempo para no morir</li>
+                                </ul>
+                            </li>
+                            <li><strong>¡Listo!</strong> Aterrizas en el área del pad que elijas</li>
                         </ol>
                     </div>
 
@@ -1499,7 +1780,126 @@
 
                     <h3>✨ Ventajas VIP</h3>
                     <div class="success-box">
-                        Los jugadores VIP reciben descuento en todos los viajes de taxi (configurable por el admin, generalmente 20% de descuento).
+                        <p>Los jugadores VIP reciben descuento en todos los viajes de taxi (configurable por el admin, generalmente 20% de descuento).</p>
+                    </div>
+
+                    <h3>🗺️ Sistema de Pads y Zonas</h3>
+
+                    <h4>Mapa de Pads Disponibles</h4>
+                    <div class="info-box">
+                        <strong>Pads del mapa SCUM (Grid)</strong>
+                        <p>El mapa está dividido en una cuadrícula con las siguientes zonas disponibles:</p>
+                        <ul>
+                            <li><strong>Fila D:</strong> D4, D3, D2, D1, D0</li>
+                            <li><strong>Fila C:</strong> C4, C3, C2, C1, C0</li>
+                            <li><strong>Fila B:</strong> B4, B3, B2, B1, B0</li>
+                            <li><strong>Fila A:</strong> A4, A3, A2, A1, A0</li>
+                            <li><strong>Fila Z:</strong> Z4, Z3, Z2, Z1, Z0</li>
+                        </ul>
+                        <p>Cada pad representa un área grande del mapa. Puedes viajar a cualquier pad configurado.</p>
+                        <p><strong>💡 Nota:</strong> Los números van de 4 (oeste) a 0 (este) en el mapa SCUM.</p>
+                    </div>
+
+                    <h4>⛔ Zonas Prohibidas de Taxi</h4>
+                    <div class="error-box">
+                        <strong>Áreas donde NO se puede solicitar taxi</strong>
+                        <p>Algunos pads tienen zonas prohibidas donde no puedes pedir taxi para proteger áreas estratégicas:</p>
+                        <ul>
+                            <li><strong>D4:</strong> Airfield Zone, Samobor City NW</li>
+                            <li><strong>D3:</strong> Samobor City NE</li>
+                            <li><strong>C4:</strong> Samobor City SW</li>
+                            <li><strong>C3:</strong> Samobor City SE</li>
+                        </ul>
+                        <p><strong>¿Qué pasa si estás en una zona prohibida?</strong> El bot te dirá que no puedes pedir taxi desde esa ubicación y deberás moverte a una zona permitida.</p>
+                    </div>
+
+                    <h4>📍 Sub-Zonas de Aterrizaje</h4>
+                    <div class="success-box">
+                        <strong>Puntos específicos de aterrizaje (Taxi On Ground)</strong>
+                        <p>Algunos pads tienen sub-zonas definidas para mayor precisión:</p>
+                        <p><strong>Ejemplo - Pad D4:</strong></p>
+                        <ul>
+                            <li>NW (Noroeste)</li>
+                            <li>CenterW (Centro Oeste)</li>
+                            <li>SW (Suroeste)</li>
+                            <li>NE (Noreste)</li>
+                            <li>CenterE (Centro Este)</li>
+                            <li>SE (Sureste)</li>
+                        </ul>
+                        <p>El sistema elige automáticamente la sub-zona más cercana a las coordenadas centrales del pad.</p>
+                    </div>
+
+                    <h4>✈️ Alturas de Paracaidismo</h4>
+                    <div class="warning-box">
+                        <strong>Alturas de spawn según el pad</strong>
+                        <p>Cuando usas taxi con paracaídas, la altura varía según el pad de destino:</p>
+                        <ul>
+                            <li><strong>Altura estándar (150,000):</strong> D4, D3, C4, C0, B4, B3, B2, B1, B0, A0-A4, Z0-Z4</li>
+                            <li><strong>Altura media (180,000):</strong> C3</li>
+                            <li><strong>Altura elevada (230,000):</strong> D2</li>
+                            <li><strong>Altura muy elevada (280,000):</strong> D1, D0, C2, C1</li>
+                        </ul>
+                        <p><strong>¿Por qué diferentes alturas?</strong> Algunas zonas tienen terreno más elevado o montañoso, por lo que necesitas más altura para aterrizar de forma segura.</p>
+                    </div>
+
+                    <h4>🎮 Modo de Zona (PVE/PVP)</h4>
+                    <div class="info-box">
+                        <strong>Visibilidad de zonas</strong>
+                        <p>Los pads tienen configuración de modo de zona:</p>
+                        <ul>
+                            <li><strong>PVE Mode:</strong> La zona se muestra y es accesible</li>
+                            <li><strong>PVP Mode:</strong> La zona puede estar oculta o tener restricciones especiales</li>
+                        </ul>
+                        <p>La mayoría de las zonas están configuradas como PVE para facilitar el acceso.</p>
+                    </div>
+
+                    <h4>🏛️ Puntos de Interés por Pad</h4>
+                    <div class="info-box">
+                        <strong>¿Qué hay en cada zona?</strong>
+                        <p>Aquí hay una referencia de los puntos de interés principales en cada pad:</p>
+
+                        <p><strong>Fila D (Norte):</strong></p>
+                        <ul>
+                            <li><strong>D4:</strong> Airfield (Aeródromo), Secret Bunker</li>
+                            <li><strong>D3:</strong> Bunker, Samobor City (ciudad principal)</li>
+                            <li><strong>D1:</strong> Abandoned Bunker</li>
+                            <li><strong>D0:</strong> Bunker, Military Barracks, Duga Radar</li>
+                        </ul>
+
+                        <p><strong>Fila C (Centro-Norte):</strong></p>
+                        <ul>
+                            <li><strong>C4:</strong> Abandoned Bunker, Barco Hundido</li>
+                            <li><strong>C2:</strong> Dam (Represa), Prison (Prisión), Secret Bunker</li>
+                            <li><strong>C1:</strong> Bunker</li>
+                            <li><strong>C0:</strong> Nuclear Plant, Nuclear City, Secret Bunker</li>
+                        </ul>
+
+                        <p><strong>Fila B (Centro):</strong></p>
+                        <ul>
+                            <li><strong>B4:</strong> Bunker</li>
+                            <li><strong>B3:</strong> Boot Camp, Secret Bunker</li>
+                            <li><strong>B2:</strong> Airport (Aeropuerto), Secret Bunker</li>
+                            <li><strong>B0:</strong> Hospital, Bunker</li>
+                        </ul>
+
+                        <p><strong>Fila A (Sur):</strong></p>
+                        <ul>
+                            <li><strong>A4:</strong> Naval Base (Base Naval), Bunker Secreto</li>
+                            <li><strong>A3:</strong> Abandoned Bunker</li>
+                            <li><strong>A2:</strong> Bunker</li>
+                            <li><strong>A1:</strong> Abandoned Bunker</li>
+                        </ul>
+
+                        <p><strong>Fila Z (Extremo Sur):</strong></p>
+                        <ul>
+                            <li><strong>Z4:</strong> Island (Isla)</li>
+                            <li><strong>Z3:</strong> Secret Bunker</li>
+                            <li><strong>Z2:</strong> Bunker</li>
+                            <li><strong>Z1:</strong> Trainyard, Weapon Factory, Secret Bunker</li>
+                            <li><strong>Z0:</strong> Bunker</li>
+                        </ul>
+
+                        <p><strong>💡 Tip:</strong> Usa esta información para planificar tus viajes. Por ejemplo, si necesitas ir a la prisión, pide taxi a C2.</p>
                     </div>
                 </div>
 
@@ -1507,15 +1907,39 @@
                     <h2>💬 Comandos de Taxi</h2>
 
                     <h3>🚖 Solicitar Taxi</h3>
+
+                    <h4>Taxi On Ground (por defecto)</h4>
                     <div class="command-box">@taxi [DESTINO]</div>
                     <div class="command-box">@tp [DESTINO]</div>
                     <div class="command-box">@teleport [DESTINO]</div>
 
                     <div class="example-box">
                         <strong>Ejemplos:</strong><br>
-                        <code>@taxi A4</code> → Ir al pad A4<br>
+                        <code>@taxi A4</code> → Ir al pad A4 (teleport al suelo)<br>
                         <code>@tp D3</code> → Ir al pad D3 (comando corto)<br>
                         <code>@teleport Z2</code> → Ir al pad Z2
+                    </div>
+
+                    <h4>✈️ Taxi con Redespliegue (Paracaídas)</h4>
+                    <div class="command-box">@taxi [DESTINO] air</div>
+                    <div class="command-box">@taxi [DESTINO] parachute</div>
+                    <div class="command-box">@tp [DESTINO] air</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos:</strong><br>
+                        <code>@taxi A4 air</code> → Ir al pad A4 con paracaídas (teleport aéreo)<br>
+                        <code>@tp D3 parachute</code> → Ir al pad D3 con paracaídas<br>
+                        <code>@teleport Z2 air</code> → Ir al pad Z2 con paracaídas
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Nota sobre paracaidismo:</strong>
+                        <ul>
+                            <li>El taxi con paracaídas cuesta más dinero que el normal</li>
+                            <li>Aparecerás en el aire y deberás controlar el aterrizaje</li>
+                            <li>El sistema te dará un paracaídas automáticamente</li>
+                            <li>¡Asegúrate de abrirlo a tiempo!</li>
+                        </ul>
                     </div>
 
                     <div class="info-box">
