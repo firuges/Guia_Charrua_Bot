@@ -2460,6 +2460,75 @@
                         </ul>
                     </div>
 
+                    <h3>⚙️ Configuración de Zonas de Respawn</h3>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de configuración:</h4>
+                        <div class="file-path">config/zones.yaml</div>
+                        <p><strong>IMPORTANTE:</strong> Las zonas de respawn se configuran en el archivo <code>zones.yaml</code>, NO en <code>config.yaml</code></p>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Estructura de configuración en zones.yaml:</strong>
+                        <p>El administrador define las zonas de respawn usando coordenadas rectangulares del mapa:</p>
+                        <pre>vehicle_respawn_zones:
+  enabled: true
+  grace_period_minutes: 30      # Tiempo antes de multa
+  check_interval_minutes: 15    # Frecuencia de chequeo
+
+  fine:
+    enabled: true
+    amount: 15000               # Monto de la multa
+    currency: "money"
+    interval_hours: 24          # Intervalo entre multas
+
+  zones:
+    - name: "Airfield Vehicle Spawn"
+      enabled: true
+      vehicle_types:            # Tipos de vehículos afectados
+        - "Rager_ES"            # Motorcycles
+        - "Kinglet_Duster_ES"   # Cars
+      topLeft: [540000, 615000]      # Coordenada superior izquierda
+      bottomRight: [520000, 595000]  # Coordenada inferior derecha
+
+      # Opcionales: Sobrescribir valores globales para esta zona
+      grace_period_minutes: 15  # Esta zona: solo 15 min
+      fine_amount: 25000        # Esta zona: multa más alta
+      fine_interval_hours: 12   # Esta zona: multas cada 12h</pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Solo el administrador puede modificar zonas:</strong>
+                        <ul>
+                            <li>Los jugadores NO pueden agregar o modificar zonas de respawn</li>
+                            <li>Las zonas se definen usando coordenadas del mapa SCUM</li>
+                            <li>Cada zona puede tener configuración individual (multa, grace period, etc.)</li>
+                            <li>Los cambios requieren reiniciar el bot para aplicarse</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Zonas configurables:</strong>
+                        <ul>
+                            <li><strong>Nombre de la zona:</strong> Identificador descriptivo</li>
+                            <li><strong>Tipos de vehículos:</strong> Qué vehículos se monitorean en esa zona</li>
+                            <li><strong>Coordenadas:</strong> Área rectangular usando TopLeft + BottomRight</li>
+                            <li><strong>Grace period:</strong> Tiempo de advertencia antes de multa (por zona)</li>
+                            <li><strong>Fine amount:</strong> Monto de multa específico para la zona</li>
+                            <li><strong>Fine interval:</strong> Frecuencia de multas repetitivas</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de zonas típicas:</strong>
+                        <ul>
+                            <li><strong>Airfield Vehicle Spawn (D4):</strong> Respawn de motorcycles y cars en el aeropuerto</li>
+                            <li><strong>Military Base Spawn (C2):</strong> Respawn de vehículos militares</li>
+                            <li><strong>City Spawn (B3):</strong> Respawn de vehículos en ciudad</li>
+                        </ul>
+                        <p><strong>💡 Nota:</strong> El admin configura qué zonas están activas y sus reglas específicas</p>
+                    </div>
+
                     <h3>✅ Cómo evitar penalizaciones</h3>
                     <div class="success-box">
                         <strong>Reglas simples:</strong>
@@ -2597,6 +2666,24 @@
                     <div class="warning-box">
                         <strong>Consejo:</strong><br>
                         Si ves muchos vehículos del mismo tipo en un área, probablemente sea una zona de respawn. Evita lockear vehículos ahí a menos que los vayas a usar inmediatamente.
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de configuración de zonas:</h4>
+                        <div class="file-path">config/zones.yaml</div>
+                        <p><strong>Importante:</strong> Las zonas de respawn monitoreadas por el sistema están definidas en <code>zones.yaml</code></p>
+                        <p>El administrador puede ver/modificar todas las zonas activas en ese archivo. Si crees que una zona no debería ser monitoreada (o viceversa), habla con el admin para revisar la configuración.</p>
+                    </div>
+
+                    <h3>❌ El sistema no detecta una zona de respawn conocida</h3>
+                    <div class="warning-box">
+                        <strong>Posible causa:</strong><br>
+                        La zona no está configurada en <code>zones.yaml</code> o está deshabilitada.
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Informa al administrador sobre la zona de respawn que no está siendo monitoreada. El admin puede agregar la zona en <code>zones.yaml</code> con las coordenadas correspondientes.
                     </div>
 
                     <h3>❌ Las multas son muy altas</h3>
