@@ -461,6 +461,7 @@
             <button class="main-tab" onclick="showMainTab('vehicle_limits')">🚙 Límites Vehículos</button>
             <!-- <button class="main-tab" onclick="showMainTab('theft_alerts')">🚨 Alertas de Robo</button> -->
             <button class="main-tab" onclick="showMainTab('vip_system')">👑 Sistema VIP</button>
+            <button class="main-tab" onclick="showMainTab('webhooks')">📡 Webhooks</button>
         </div>
 
         <div class="content">
@@ -3543,9 +3544,729 @@
                     </div>
                 </div>
             </div>
+
+            <!-- WEBHOOKS TAB -->
+            <div id="webhooks" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('webhooks', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('webhooks', 'types')">📊 Tipos de Webhooks</button>
+                    <button class="sub-tab" onclick="showSubTab('webhooks', 'examples')">💬 Ejemplos</button>
+                    <button class="sub-tab" onclick="showSubTab('webhooks', 'config')">⚙️ Configuración</button>
+                </div>
+
+                <!-- GUIDE -->
+                <div id="webhooks-guide" class="sub-panel active">
+                    <h2>📡 Sistema de Webhooks</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué son los Webhooks?</h3>
+                        <p>Los webhooks son notificaciones automáticas que el bot envía a Discord cuando ocurren eventos importantes en el servidor. Son embeds (mensajes enriquecidos) que muestran información detallada con formato profesional.</p>
+                    </div>
+
+                    <h3>🎯 ¿Para Qué Sirven?</h3>
+
+                    <div class="info-box">
+                        <strong>Monitoreo en Tiempo Real:</strong>
+                        <ul>
+                            <li><strong>Estado del servidor:</strong> Jugadores online, features activas, estado del bot</li>
+                            <li><strong>Leaderboards automáticos:</strong> Rankings actualizados cada hora</li>
+                            <li><strong>Violaciones y multas:</strong> Notificaciones de infracciones de límites</li>
+                            <li><strong>Bunkers activos:</strong> Estado actual de bunkers en el mapa</li>
+                            <li><strong>Alertas de robo:</strong> Notificaciones cuando roban vehículos</li>
+                            <li><strong>Violaciones PVE:</strong> Alertas de cofres/vehículos en zonas prohibidas</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚙️ Características Principales</h3>
+
+                    <div class="feature-card">
+                        <h4>🔄 Actualización Automática</h4>
+                        <p>Los webhooks pueden configurarse para actualizar mensajes existentes en lugar de crear nuevos:</p>
+                        <ul>
+                            <li><strong>Método "update":</strong> Edita el mismo mensaje (ideal para stats)</li>
+                            <li><strong>Método "create":</strong> Crea mensaje nuevo cada vez (ideal para alertas)</li>
+                            <li><strong>Intervalos configurables:</strong> Desde 1 minuto hasta 7 días</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📌 Múltiples Endpoints</h4>
+                        <p>Puedes configurar diferentes canales de Discord para diferentes tipos de notificaciones:</p>
+                        <ul>
+                            <li>Canal de stats del servidor</li>
+                            <li>Canal de leaderboards</li>
+                            <li>Canal de alertas/warnings</li>
+                            <li>Canal de multas/fines</li>
+                            <li>Canal de admin/logs</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎨 Embeds Personalizables</h4>
+                        <p>Los webhooks usan embeds de Discord con colores, iconos y campos personalizados:</p>
+                        <ul>
+                            <li><strong>Colores:</strong> Cada evento tiene su color distintivo</li>
+                            <li><strong>Iconos:</strong> Avatar y thumbnail personalizables</li>
+                            <li><strong>Campos:</strong> Información organizada en secciones</li>
+                            <li><strong>Timestamps:</strong> Fecha y hora de última actualización</li>
+                        </ul>
+                    </div>
+
+                    <h3>🛠️ ¿Cómo Funciona?</h3>
+
+                    <div class="info-box">
+                        <strong>Flujo de Webhooks:</strong>
+                        <ol>
+                            <li><strong>Evento ocurre:</strong> Algo sucede en el servidor (sorteo de lotería, jugador excede límite, etc.)</li>
+                            <li><strong>Bot procesa:</strong> El bot recopila la información relevante</li>
+                            <li><strong>Webhook se envía:</strong> Se crea/actualiza un embed en Discord</li>
+                            <li><strong>Notificación visual:</strong> Los admins/jugadores ven la información en tiempo real</li>
+                        </ol>
+                    </div>
+
+                    <h3>📋 Configuración Básica</h3>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de configuración:</h4>
+                        <div class="file-path">config/config.yaml</div>
+                        <p>La sección <code>webhooks</code> contiene toda la configuración del sistema.</p>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Estructura básica:</strong>
+                        <pre>webhooks:
+  enabled: true  # Master switch
+
+  global:
+    retry_count: 3
+    timeout_seconds: 10
+    max_concurrent_webhooks: 5
+
+  endpoints:
+    - id: "server_status"
+      webhook_url: "https://discord.com/api/webhooks/..."
+      event_types:
+        - "server_status"
+        - "bunkers_active"
+
+  events:
+    server_status:
+      enabled: true
+      method: "update"
+      update_interval_minutes: 10</pre>
+                    </div>
+
+                    <h3>🔑 Elementos Clave</h3>
+
+                    <div class="success-box">
+                        <strong>Master Switch:</strong><br>
+                        <code>webhooks.enabled: true</code> - Si está en false, NINGÚN webhook funciona.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Endpoints:</strong><br>
+                        Son las URLs de Discord donde se envían los mensajes. Cada endpoint puede suscribirse a múltiples eventos.
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Events:</strong><br>
+                        Configuración individual de cada tipo de evento (intervalo, método, formato del embed).
+                    </div>
+                </div>
+
+                <!-- TYPES -->
+                <div id="webhooks-types" class="sub-panel">
+                    <h2>📊 Tipos de Webhooks</h2>
+
+                    <h3>🎮 Server Status</h3>
+                    <div class="feature-card">
+                        <h4>Estado del Servidor</h4>
+                        <p><strong>Evento:</strong> <code>server_status</code></p>
+                        <p><strong>Actualización:</strong> Cada 10 minutos (configurable)</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Estado del bot (conectado/desconectado)</li>
+                            <li>Sistemas activos (lotería, seguros, taxi, etc.)</li>
+                            <li>Jugadores online (nombres y cantidad)</li>
+                        </ul>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #0080FF; color: white;">Azul (#0080FF)</span></p>
+                    </div>
+
+                    <h3>🏰 Bunkers Active</h3>
+                    <div class="feature-card">
+                        <h4>Bunkers Activos</h4>
+                        <p><strong>Evento:</strong> <code>bunkers_active</code></p>
+                        <p><strong>Actualización:</strong> Cada 15 minutos o al cambiar estado</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Lista de bunkers activos (desbloqueados)</li>
+                            <li>Lista de bunkers bloqueados</li>
+                            <li>Próxima apertura de bunker</li>
+                        </ul>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #FF8C00; color: white;">Naranja (#FF8C00)</span></p>
+                    </div>
+
+                    <h3>🏆 Leaderboards</h3>
+
+                    <div class="feature-card">
+                        <h4>Top Fame Points</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_fame</code></p>
+                        <p><strong>Actualización:</strong> Cada hora</p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más Fame Points</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #FFD700; color: white;">Dorado (#FFD700)</span></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>Top Supervivientes</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_survivors</code></p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más tiempo de supervivencia</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #0080FF; color: white;">Azul (#0080FF)</span></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>Top Killers (Puppets)</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_killers</code></p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más muertes de puppets</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #E74C3C; color: white;">Rojo (#E74C3C)</span></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>Top Snipers</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_snipers</code></p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más headshots</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #9B59B6; color: white;">Púrpura (#9B59B6)</span></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>Top Exploradores</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_explorers</code></p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más distancia recorrida</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #2ECC71; color: white;">Verde (#2ECC71)</span></p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>Top Más Ricos</h4>
+                        <p><strong>Evento:</strong> <code>leaderboard_wealth</code></p>
+                        <p><strong>Contenido:</strong> Top 10 jugadores con más dinero</p>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #F39C12; color: white;">Dorado Oscuro (#F39C12)</span></p>
+                    </div>
+
+                    <h3>🚙 Vehicle Limits - Warnings</h3>
+                    <div class="feature-card">
+                        <h4>Advertencias de Límites</h4>
+                        <p><strong>Evento:</strong> <code>vehicle_limits_warning</code></p>
+                        <p><strong>Trigger:</strong> Cuando jugador excede límite de vehículos</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Nombre del jugador / squad</li>
+                            <li>Vehículos totales vs límite</li>
+                            <li>Desglose por tipo de vehículo</li>
+                            <li>Tiempo de gracia restante</li>
+                            <li>Lista de Vehicle IDs</li>
+                        </ul>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #F39C12; color: white;">Naranja (#F39C12)</span></p>
+                    </div>
+
+                    <h3>💰 Vehicle Limits - Fines</h3>
+                    <div class="feature-card">
+                        <h4>Multas Aplicadas</h4>
+                        <p><strong>Evento:</strong> <code>vehicle_limits_fine</code></p>
+                        <p><strong>Trigger:</strong> Cuando expira el grace period sin resolver</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Jugador multado</li>
+                            <li>Monto de la multa</li>
+                            <li>Número de multa (1ª, 2ª, 3ª, etc.)</li>
+                            <li>Vehículos que aún exceden límite</li>
+                        </ul>
+                        <p><strong>Color:</strong> <span class="badge" style="background: #E74C3C; color: white;">Rojo (#E74C3C)</span></p>
+                    </div>
+
+                    <h3>📦 Chest Violations - Warnings/Fines</h3>
+                    <div class="feature-card">
+                        <h4>Violaciones de Cofres PVE</h4>
+                        <p><strong>Eventos:</strong></p>
+                        <ul>
+                            <li><code>chest_violation_warning</code> - Advertencia inicial</li>
+                            <li><code>chest_violation_fine</code> - Multa aplicada</li>
+                        </ul>
+                        <p><strong>Trigger:</strong> PVP squad/player coloca cofre locked en zona PVE</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Nombre del infractor (squad/player)</li>
+                            <li>Ubicación del cofre (coordenadas)</li>
+                            <li>Zona PVE afectada</li>
+                            <li>Tiempo de gracia / multa aplicada</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔄 Respawn Zone Violations - Warnings/Fines</h3>
+                    <div class="feature-card">
+                        <h4>Vehículos en Zonas de Respawn</h4>
+                        <p><strong>Eventos:</strong></p>
+                        <ul>
+                            <li><code>respawn_zone_violation_warning</code> - Advertencia</li>
+                            <li><code>respawn_zone_violation_fine</code> - Multa</li>
+                        </ul>
+                        <p><strong>Trigger:</strong> Vehículo locked bloqueando zona de respawn</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Propietario del vehículo</li>
+                            <li>Tipo de vehículo</li>
+                            <li>Zona de respawn bloqueada</li>
+                            <li>Multa aplicada (si corresponde)</li>
+                        </ul>
+                    </div>
+
+                    <h3>🚗 Vehicle PVE Violations - Warnings/Fines</h3>
+                    <div class="feature-card">
+                        <h4>Vehículos PVP en Zonas PVE</h4>
+                        <p><strong>Eventos:</strong></p>
+                        <ul>
+                            <li><code>vehicle_pve_violation_warning</code> - Advertencia</li>
+                            <li><code>vehicle_pve_violation_fine</code> - Multa</li>
+                        </ul>
+                        <p><strong>Trigger:</strong> PVP squad/player estaciona vehículo en zona PVE</p>
+                        <p><strong>Contenido:</strong> Similar a chest violations pero para vehículos</p>
+                    </div>
+
+                    <h3>🚨 Theft Alerts (VIP Only)</h3>
+                    <div class="feature-card">
+                        <h4>Alertas de Robo de Vehículos</h4>
+                        <p><strong>Evento:</strong> <code>vehicle_theft_alert</code></p>
+                        <p><strong>Trigger:</strong> Vehículo de VIP fue desbloqueado por otro jugador</p>
+                        <p><strong>Contenido:</strong></p>
+                        <ul>
+                            <li>Propietario del vehículo (VIP)</li>
+                            <li>Tipo de vehículo robado</li>
+                            <li>Sospechoso de robo (si está online)</li>
+                            <li>Ubicación aproximada</li>
+                            <li>Timestamp del robo</li>
+                        </ul>
+                        <p><strong>Nota:</strong> Solo funciona si VIP está configurado y el sistema de alertas está habilitado</p>
+                    </div>
+                </div>
+
+                <!-- EXAMPLES -->
+                <div id="webhooks-examples" class="sub-panel">
+                    <h2>💬 Ejemplos de Webhooks</h2>
+
+                    <h3>📊 Server Status</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 📊 Estado del Servidor SCUM<br>
+                        <strong>Color:</strong> Azul<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>🤖 Estado del Bot:</strong> ✅ Conectado y operativo</li>
+                            <li><strong>⚙️ Sistemas Activos:</strong>
+                                <ul>
+                                    <li>✅ Lotería Automática</li>
+                                    <li>✅ Sistema de Seguros</li>
+                                    <li>✅ Sistema de Taxi</li>
+                                    <li>✅ Límites de Vehículos</li>
+                                    <li>✅ Protección de Zonas PVE</li>
+                                </ul>
+                            </li>
+                            <li><strong>👥 Jugadores Online:</strong> 12 jugadores conectados
+                                <ul>
+                                    <li>ElFiru</li>
+                                    <li>Messirve</li>
+                                    <li>PlayerX</li>
+                                    <li>... (y 9 más)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <strong>Footer:</strong> Última actualización • [Timestamp]
+                    </div>
+
+                    <h3>🏆 Leaderboard - Fame Points</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 🏆 Top 10 - Puntos de Fama<br>
+                        <strong>Color:</strong> Dorado<br>
+                        <strong>Descripción:</strong> Los jugadores con más Fame Points del servidor<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Clasificación:</strong>
+                                <pre>
+🥇 1. ElFiru - 15,420 FP
+🥈 2. Messirve - 12,350 FP
+🥉 3. PlayerX - 10,890 FP
+4️⃣ 4. PlayerY - 8,750 FP
+5️⃣ 5. PlayerZ - 7,200 FP
+... (hasta top 10)</pre>
+                            </li>
+                        </ul>
+                        <strong>Footer:</strong> Actualizado cada hora • [Timestamp]
+                    </div>
+
+                    <h3>⚠️ Vehicle Limits - Warning</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> ⚠️ Advertencia: Límite de Vehículos Excedido<br>
+                        <strong>Color:</strong> Naranja<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Jugador / Squad:</strong> ElFiru</li>
+                            <li><strong>Vehículos Totales:</strong> 15 / 10 (límite)</li>
+                            <li><strong>Exceso:</strong> +5 vehículos sobre el límite</li>
+                            <li><strong>Desglose por Tipo:</strong>
+                                <ul>
+                                    <li>Motorcycles: 6 / 5</li>
+                                    <li>Cars: 5 / 3</li>
+                                    <li>Planes: 4 / 2</li>
+                                </ul>
+                            </li>
+                            <li><strong>⏰ Tiempo de Gracia:</strong> 24 horas restantes</li>
+                            <li><strong>💰 Multa Pendiente:</strong> $5,000 (si no se resuelve)</li>
+                            <li><strong>📋 Acción Requerida:</strong> Debes quitar candado o destruir 5 vehículos</li>
+                        </ul>
+                        <strong>Footer:</strong> Sistema de Límites • [Timestamp]
+                    </div>
+
+                    <h3>💰 Vehicle Limits - Fine</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 💰 Multa Aplicada: Límite de Vehículos<br>
+                        <strong>Color:</strong> Rojo<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Jugador Multado:</strong> ElFiru</li>
+                            <li><strong>Multa Aplicada:</strong> $5,000</li>
+                            <li><strong>Tipo de Multa:</strong> 1ª Multa</li>
+                            <li><strong>Razón:</strong> Exceso de 5 vehículos sobre el límite</li>
+                            <li><strong>Estado Actual:</strong> 15 vehículos / 10 límite</li>
+                            <li><strong>⚠️ Advertencia:</strong> Las multas continuarán cada 12 horas hasta resolver</li>
+                            <li><strong>Próxima Multa:</strong> $7,500 (incremento progresivo)</li>
+                        </ul>
+                        <strong>Footer:</strong> Sistema de Límites • [Timestamp]
+                    </div>
+
+                    <h3>📦 Chest Violation - Warning</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> ⚠️ Advertencia: Cofre PVP en Zona PVE<br>
+                        <strong>Color:</strong> Amarillo<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Infractor:</strong> Squad "Los Bandidos" (PVP)</li>
+                            <li><strong>Tipo:</strong> Cofre con candado</li>
+                            <li><strong>Zona PVE:</strong> D3 - Samobor NE</li>
+                            <li><strong>Ubicación:</strong> (X: 125000, Y: 350000)</li>
+                            <li><strong>⏰ Tiempo de Gracia:</strong> 30 minutos</li>
+                            <li><strong>💰 Multa si no se remueve:</strong> $10,000</li>
+                            <li><strong>📋 Acción:</strong> Remover el cofre o quitarle el candado</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔄 Respawn Zone Violation - Fine</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 💰 Multa: Vehículo en Zona de Respawn<br>
+                        <strong>Color:</strong> Rojo<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Propietario:</strong> ElFiru</li>
+                            <li><strong>Vehículo:</strong> Rager_ES (Motorcycle)</li>
+                            <li><strong>Zona Bloqueada:</strong> Airfield Vehicle Spawn (D4)</li>
+                            <li><strong>Multa Aplicada:</strong> $15,000</li>
+                            <li><strong>Advertencias Previas:</strong> 1</li>
+                            <li><strong>⚠️ Acción Urgente:</strong> Mover el vehículo INMEDIATAMENTE</li>
+                            <li><strong>🔄 Próxima Multa:</strong> En 24 horas si no se mueve</li>
+                        </ul>
+                    </div>
+
+                    <h3>🚨 Theft Alert (VIP)</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 🚨 ALERTA: Posible Robo de Vehículo<br>
+                        <strong>Color:</strong> Rojo Intenso<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Propietario:</strong> ElFiru (VIP)</li>
+                            <li><strong>Vehículo:</strong> BPC_Kinglet (Car)</li>
+                            <li><strong>ID del Vehículo:</strong> 637683</li>
+                            <li><strong>Estado:</strong> ❌ Candado removido</li>
+                            <li><strong>Sospechoso:</strong> PlayerX (último en interactuar)</li>
+                            <li><strong>Ubicación Aproximada:</strong> D3 - Samobor NE</li>
+                            <li><strong>Tiempo:</strong> Hace 2 minutos</li>
+                            <li><strong>🛡️ Seguro:</strong> Activo (respawneará en 24h si se destruye)</li>
+                        </ul>
+                    </div>
+
+                    <h3>🏰 Bunkers Active</h3>
+                    <div class="example-box">
+                        <strong>Título:</strong> 🏰 Bunkers Activos<br>
+                        <strong>Color:</strong> Naranja<br>
+                        <strong>Descripción:</strong> Estado actual de los bunkers en el mapa<br>
+                        <strong>Campos:</strong>
+                        <ul>
+                            <li><strong>Bunkers Activos (3):</strong>
+                                <ul>
+                                    <li>🟢 Alpha Bunker</li>
+                                    <li>🟢 Bravo Bunker</li>
+                                    <li>🟢 Charlie Bunker</li>
+                                </ul>
+                            </li>
+                            <li><strong>Bunkers Bloqueados (2):</strong>
+                                <ul>
+                                    <li>🔒 Delta Bunker</li>
+                                    <li>🔒 Echo Bunker</li>
+                                </ul>
+                            </li>
+                            <li><strong>Próxima Apertura:</strong> Delta Bunker - en 1h 30min</li>
+                        </ul>
+                        <strong>Footer:</strong> Se actualiza cada 15 minutos • [Timestamp]
+                    </div>
+                </div>
+
+                <!-- CONFIG -->
+                <div id="webhooks-config" class="sub-panel">
+                    <h2>⚙️ Configuración de Webhooks</h2>
+
+                    <div class="data-location">
+                        <h4>📁 Ubicación:</h4>
+                        <div class="file-path">config/config.yaml</div>
+                        <p>Sección: <code>webhooks</code></p>
+                    </div>
+
+                    <h3>🔑 Configuración Global</h3>
+
+                    <div class="example-box">
+                        <strong>Global Settings:</strong>
+                        <pre>webhooks:
+  enabled: true  # Master switch - deshabilita TODO el sistema si es false
+
+  global:
+    retry_count: 3                  # Reintentos en caso de fallo
+    timeout_seconds: 10             # Timeout de petición HTTP
+    retry_delay_seconds: 2          # Delay entre reintentos
+    max_concurrent_webhooks: 5      # Webhooks simultáneos máximos
+    use_custom_templates: true      # Usar templates personalizados</pre>
+                    </div>
+
+                    <h3>📍 Configurar un Endpoint</h3>
+
+                    <div class="example-box">
+                        <strong>Endpoint Example:</strong>
+                        <pre>endpoints:
+  - id: "server_status"                    # ID único del endpoint
+    enabled: true                          # Habilitar/deshabilitar
+    webhook_url: "https://discord.com/api/webhooks/..." # URL de Discord
+    webhook_name: "SCUM Server Status"     # Nombre del webhook
+    webhook_icon_url: "https://..."        # Icono del avatar
+    event_types:                           # Eventos suscritos
+      - "server_status"
+      - "bunkers_active"</pre>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Cómo obtener una Webhook URL de Discord:</strong>
+                        <ol>
+                            <li>Ve al canal de Discord donde quieres recibir notificaciones</li>
+                            <li>Click derecho en el canal → <strong>Editar canal</strong></li>
+                            <li>Ve a la sección <strong>Integraciones</strong></li>
+                            <li>Click en <strong>Crear Webhook</strong></li>
+                            <li>Dale un nombre y avatar (opcional)</li>
+                            <li>Click en <strong>Copiar URL del Webhook</strong></li>
+                            <li>Pega esa URL en <code>webhook_url</code></li>
+                        </ol>
+                    </div>
+
+                    <h3>⚙️ Configurar un Evento</h3>
+
+                    <div class="example-box">
+                        <strong>Event Example - Server Status:</strong>
+                        <pre>events:
+  server_status:
+    enabled: true                       # Habilitar evento
+    method: "update"                    # "update" o "create"
+    update_interval_minutes: 10         # Frecuencia de actualización
+    update_on_startup: true             # Actualizar al iniciar bot
+
+    # Configuración específica
+    include_features: true              # Mostrar features activas
+    include_players_online: true        # Mostrar jugadores online
+    show_player_names: true             # Mostrar nombres individuales
+
+    # Personalización del embed
+    embed:
+      title: "📊 Estado del Servidor SCUM"
+      color: 0x0080FF                   # Azul (hex color)
+      description: "Información general del servidor"
+      thumbnail_url: "https://..."
+      show_thumbnail: true
+      footer_text: "Última actualización"
+      include_timestamp: true
+
+      # Campos personalizados
+      fields:
+        - name: "🤖 Estado del Bot"
+          value: "{bot_status}"         # Variable dinámica
+          inline: false
+          enabled: true
+        - name: "👥 Jugadores Online"
+          value: "**{online_count}** conectados\n{player_list}"
+          inline: false
+          enabled: true</pre>
+                    </div>
+
+                    <h3>🎨 Variables Disponibles</h3>
+
+                    <div class="info-box">
+                        <strong>Variables por Evento:</strong>
+
+                        <h4>Server Status:</h4>
+                        <ul>
+                            <li><code>{bot_status}</code> - Estado del bot</li>
+                            <li><code>{online_count}</code> - Cantidad de jugadores</li>
+                            <li><code>{player_list}</code> - Lista de jugadores</li>
+                            <li><code>{features_list}</code> - Features activas</li>
+                        </ul>
+
+                        <h4>Leaderboards:</h4>
+                        <ul>
+                            <li><code>{leaderboard_table}</code> - Tabla formateada</li>
+                            <li><code>{top_count}</code> - Cantidad de jugadores en ranking</li>
+                        </ul>
+
+                        <h4>Vehicle Limits:</h4>
+                        <ul>
+                            <li><code>{player_name}</code> - Nombre del jugador</li>
+                            <li><code>{total_vehicles}</code> - Vehículos totales</li>
+                            <li><code>{vehicle_limit}</code> - Límite configurado</li>
+                            <li><code>{excess_count}</code> - Exceso de vehículos</li>
+                            <li><code>{grace_period_hours}</code> - Tiempo de gracia</li>
+                            <li><code>{fine_amount}</code> - Monto de multa</li>
+                        </ul>
+
+                        <h4>Bunkers:</h4>
+                        <ul>
+                            <li><code>{active_count}</code> - Bunkers activos</li>
+                            <li><code>{locked_count}</code> - Bunkers bloqueados</li>
+                            <li><code>{active_bunkers}</code> - Lista de activos</li>
+                            <li><code>{locked_bunkers}</code> - Lista de bloqueados</li>
+                            <li><code>{next_opening}</code> - Próxima apertura</li>
+                        </ul>
+                    </div>
+
+                    <h3>🎨 Colores de Discord (Hex)</h3>
+
+                    <table>
+                        <tr>
+                            <th>Color</th>
+                            <th>Hex</th>
+                            <th>Uso Sugerido</th>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #0080FF; color: white;">Azul</span></td>
+                            <td>0x0080FF</td>
+                            <td>Info general, stats</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #2ECC71; color: white;">Verde</span></td>
+                            <td>0x2ECC71</td>
+                            <td>Éxito, confirmaciones</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #F39C12; color: white;">Naranja</span></td>
+                            <td>0xF39C12</td>
+                            <td>Advertencias</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #E74C3C; color: white;">Rojo</span></td>
+                            <td>0xE74C3C</td>
+                            <td>Errores, multas</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #FFD700; color: white;">Dorado</span></td>
+                            <td>0xFFD700</td>
+                            <td>Leaderboards, premios</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #9B59B6; color: white;">Púrpura</span></td>
+                            <td>0x9B59B6</td>
+                            <td>Especial, VIP</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #FF8C00; color: white;">Naranja Oscuro</span></td>
+                            <td>0xFF8C00</td>
+                            <td>Bunkers, eventos</td>
+                        </tr>
+                    </table>
+
+                    <h3>⚡ Métodos de Actualización</h3>
+
+                    <div class="success-box">
+                        <strong>method: "update"</strong>
+                        <ul>
+                            <li>Edita el MISMO mensaje cada vez</li>
+                            <li>Ideal para: Stats, leaderboards, bunkers</li>
+                            <li>Ventaja: No llena el canal</li>
+                            <li>Desventaja: No guarda historial</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>method: "create"</strong>
+                        <ul>
+                            <li>Crea un NUEVO mensaje cada vez</li>
+                            <li>Ideal para: Alertas, warnings, fines, robos</li>
+                            <li>Ventaja: Mantiene historial completo</li>
+                            <li>Desventaja: Puede llenar el canal</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔧 Troubleshooting</h3>
+
+                    <h4>❌ Webhooks no se envían</h4>
+                    <div class="error-box">
+                        <strong>Verifica:</strong>
+                        <ul>
+                            <li><code>webhooks.enabled: true</code> en config.yaml</li>
+                            <li>El evento específico tiene <code>enabled: true</code></li>
+                            <li>El endpoint tiene <code>enabled: true</code></li>
+                            <li>La webhook_url es correcta y válida</li>
+                            <li>El bot tiene acceso a internet</li>
+                        </ul>
+                    </div>
+
+                    <h4>❌ Webhook se envía pero no se actualiza</h4>
+                    <div class="warning-box">
+                        <strong>Causas comunes:</strong>
+                        <ul>
+                            <li><code>method: "create"</code> en lugar de <code>"update"</code></li>
+                            <li>El webhook fue eliminado de Discord</li>
+                            <li>El mensaje original fue borrado manualmente</li>
+                            <li>Cambió el ID del mensaje almacenado</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Si usas method "update", NUNCA borres manualmente los mensajes de webhook en Discord. El bot necesita el mensaje original para editarlo.
+                    </div>
+
+                    <h4>❌ Variables no se reemplazan (aparecen como {variable})</h4>
+                    <div class="info-box">
+                        <strong>Causas:</strong>
+                        <ul>
+                            <li><code>use_custom_templates: false</code> en global config</li>
+                            <li>Nombre de variable incorrecto</li>
+                            <li>Variable no disponible para ese tipo de evento</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Storage de Webhooks:</h4>
+                        <div class="file-path">data/webhooks/</div>
+                        <p>Aquí se guardan los IDs de mensajes para método "update" y metadatos de webhooks.</p>
+
+                        <h4>🔍 Archivos:</h4>
+                        <ul>
+                            <li><code>message_storage.json</code> - IDs de mensajes actualizables</li>
+                            <li><code>webhook_history.json</code> - Historial de webhooks enviados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        
+
 
         <div class="footer">
             <p>© 2025 Charrua Bot - Sistema de Automatización para Servidores SCUM</p>
