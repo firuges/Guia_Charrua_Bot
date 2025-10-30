@@ -1,0 +1,3183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charrua Bot - Guía Completa de Usuario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #9b59b6;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --bg: #ffffff;
+            --text: #2c3e50;
+            --border: #bdc3c7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Main Tabs */
+        .main-tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 3px solid var(--border);
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .main-tab {
+            padding: 20px 30px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .main-tab:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .main-tab.active {
+            background: white;
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+
+        /* Sub Tabs */
+        .sub-tabs {
+            display: flex;
+            background: #f8f9fa;
+            padding: 10px 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sub-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: white;
+            color: var(--text);
+            font-size: 0.95em;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sub-tab:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .sub-tab.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sub-panel {
+            display: none;
+        }
+
+        .sub-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Content Elements */
+        h2 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+        }
+
+        h4 {
+            color: var(--dark);
+            font-size: 1.4em;
+            margin: 25px 0 10px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid var(--info);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid var(--warning);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid var(--success);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            border-left: 5px solid var(--danger);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        /* Mejoras de espaciado interno para contenedores */
+        .feature-card h4:first-child,
+        .info-box h4:first-child,
+        .warning-box h4:first-child,
+        .success-box h4:first-child,
+        .error-box h4:first-child {
+            margin-top: 0;
+        }
+
+        .feature-card p,
+        .info-box p,
+        .warning-box p,
+        .success-box p,
+        .error-box p {
+            margin-bottom: 15px;
+        }
+
+        .feature-card p:last-child,
+        .info-box p:last-child,
+        .warning-box p:last-child,
+        .success-box p:last-child,
+        .error-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-card ul,
+        .info-box ul,
+        .warning-box ul,
+        .success-box ul,
+        .error-box ul {
+            margin: 10px 0;
+        }
+
+        .feature-card ul:last-child,
+        .info-box ul:last-child,
+        .warning-box ul:last-child,
+        .success-box ul:last-child,
+        .error-box ul:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-card li,
+        .info-box li,
+        .warning-box li,
+        .success-box li,
+        .error-box li {
+            margin: 8px 0;
+        }
+
+        .feature-card ul ul,
+        .info-box ul ul,
+        .warning-box ul ul,
+        .success-box ul ul,
+        .error-box ul ul {
+            margin-top: 8px;
+            margin-bottom: 0;
+        }
+
+        .feature-card strong,
+        .info-box strong,
+        .warning-box strong,
+        .success-box strong,
+        .error-box strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Manejo de <br> dentro de contenedores */
+        .feature-card br,
+        .info-box br,
+        .warning-box br,
+        .success-box br,
+        .error-box br {
+            display: block;
+            content: "";
+            margin-bottom: 10px;
+        }
+
+        /* Los h4 dentro de contenedores no deben tener margin-top excesivo */
+        .feature-card h4,
+        .info-box h4,
+        .warning-box h4,
+        .success-box h4,
+        .error-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .command-box {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .command-box::before {
+            content: '💬';
+            margin-right: 10px;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border: 2px solid var(--border);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .example-box strong {
+            color: var(--secondary);
+        }
+
+        .data-location {
+            background: #fff;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .data-location h4 {
+            color: var(--secondary);
+            margin-top: 0;
+        }
+
+        .file-path {
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 40px;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: var(--secondary);
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+
+        .badge-success { background: var(--success); color: white; }
+        .badge-warning { background: var(--warning); color: white; }
+        .badge-danger { background: var(--danger); color: white; }
+        .badge-info { background: var(--info); color: white; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .main-tab { padding: 15px 20px; font-size: 0.95em; }
+            .content { padding: 20px; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+
+        .footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Charrua Bot - Guía Completa de Usuario</h1>
+            <p>Sistema automático de gestión para servidores SCUM</p>
+        </div>
+
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="showMainTab('rewards')">💰 Rewards</button>
+            <button class="main-tab" onclick="showMainTab('lottery')">🎰 Lotería</button>
+            <button class="main-tab" onclick="showMainTab('vehicles')">🚗 Vehículos</button>
+            <button class="main-tab" onclick="showMainTab('fame')">⭐ Fame Rewards</button>
+            <button class="main-tab" onclick="showMainTab('taxi')">🚖 Taxi</button>
+            <button class="main-tab" onclick="showMainTab('chests')">📦 Cofres PVE</button>
+            <button class="main-tab" onclick="showMainTab('respawn')">🔄 Anti-Lock Respawn</button>
+            <button class="main-tab" onclick="showMainTab('vehicle_limits')">🚙 Límites Vehículos</button>
+            <button class="main-tab" onclick="showMainTab('theft_alerts')">🚨 Alertas de Robo</button>
+            <button class="main-tab" onclick="showMainTab('vip_system')">👑 Sistema VIP</button>
+        </div>
+
+        <div class="content">
+            <!-- REWARDS TAB -->
+            <div id="rewards" class="tab-panel active">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('rewards', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('rewards', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('rewards', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="rewards-guide" class="sub-panel active">
+                    <h2>💰 Sistema de Rewards</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es el Sistema de Rewards?</h3>
+                        <p>Sistema automático que entrega recompensas diarias y packs de bienvenida a los jugadores del servidor. Todo funciona de manera automática sin que tengas que hacer nada.</p>
+                    </div>
+
+                    <h3>🎁 Tipos de Rewards</h3>
+
+                    <h4>1. Daily Cash - Recompensa Diaria</h4>
+                    <div class="info-box">
+                        <strong>¿Cómo funciona?</strong>
+                        <ul>
+                            <li>Se entrega automáticamente cada 24 horas cuando te conectas</li>
+                            <li>Recibes dinero directamente en tu billetera</li>
+                            <li>Cuantos más días consecutivos juegues, mayor es el bono</li>
+                            <li>No necesitas hacer nada, se entrega automáticamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <div class="icon">💵</div>
+                            <h4>Día 1-2</h4>
+                            <p>$500 base</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">💰</div>
+                            <h4>Día 3</h4>
+                            <p>$500 + $100 bono</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">💎</div>
+                            <h4>Día 7</h4>
+                            <p>$500 + $250 bono</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">🏆</div>
+                            <h4>Día 30</h4>
+                            <p>$500 + $1,000 bono</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Importante:</strong> Si dejas de jugar por 1 día o más, tu racha se reinicia y vuelves a empezar desde el día 1.
+                    </div>
+
+                    <h4>2. Welcome Pack - Pack de Bienvenida</h4>
+                    <div class="success-box">
+                        <strong>✅ Para nuevos jugadores:</strong>
+                        <ul>
+                            <li>Se entrega automáticamente la primera vez que te conectas</li>
+                            <li>Incluye dinero inicial y items básicos de supervivencia</li>
+                            <li>Solo lo recibes UNA VEZ (no se puede reclamar de nuevo)</li>
+                            <li>Te ayuda a empezar tu aventura en el servidor</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo típico de Welcome Pack:</strong><br>
+                        💵 $2,000 en efectivo<br>
+                        🎒 Mochila básica<br>
+                        🍗 Comida y agua<br>
+                        ⛏️ Herramientas básicas<br>
+                        🩹 Vendas y medicina
+                    </div>
+
+                    <h3>⏰ ¿Cuándo se entregan?</h3>
+                    <div class="info-box">
+                        Las recompensas se entregan automáticamente cada 5 minutos mientras estás jugando. El sistema verifica:
+                        <ul>
+                            <li>Estás conectado al servidor</li>
+                            <li>Ha pasado 24h desde tu última recompensa diaria</li>
+                            <li>Nunca has recibido el welcome pack (solo para nuevos jugadores)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="rewards-commands" class="sub-panel">
+                    <h2>💬 Comandos del Sistema</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ No hay comandos para jugadores</strong><br>
+                        El sistema de rewards funciona completamente automático. No necesitas escribir ningún comando.
+                    </div>
+
+                    <h3>📊 ¿Cómo saber si recibí mi reward?</h3>
+                    <div class="info-box">
+                        Cuando recibes una recompensa, verás un mensaje en el chat del juego:
+                        <ul>
+                            <li><strong>Daily Cash:</strong> "🎉 [Tu Nombre], has recibido tu recompensa diaria de $XXX! Racha: X días consecutivos."</li>
+                            <li><strong>Welcome Pack:</strong> "🎁 Bienvenido [Tu Nombre]! Has recibido tu pack de bienvenida: $XXX + items."</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos de mensajes:</strong><br><br>
+                        <div class="command-box">
+                            🎉 ElFiru, has recibido tu recompensa diaria de $500! Racha: 1 día consecutivo.
+                        </div>
+                        <div class="command-box">
+                            💎 ElFiru, has recibido tu recompensa diaria de $750! Racha: 7 días consecutivos. ¡Bono de racha: $250!
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rewards-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ No recibí mi Daily Cash</h3>
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">
+                            data/rewards/player_streaks.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Historial de tus recompensas diarias y tu racha actual</p>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre el archivo <code>player_streaks.json</code></li>
+                            <li>Busca tu Steam ID (número largo de 17 dígitos)</li>
+                            <li>Verifica el campo <code>"last_reward_date"</code> (última vez que recibiste reward)</li>
+                            <li>Verifica el campo <code>"current_streak"</code> (tu racha actual)</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si no aparece tu Steam ID:</strong> Espera a que estés online por al menos 5 minutos</li>
+                            <li><strong>Si last_reward_date es de hoy:</strong> Ya recibiste tu reward de hoy, espera hasta mañana</li>
+                            <li><strong>Si last_reward_date es de ayer o antes:</strong> Contacta a un admin, puede haber un problema</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ No recibí mi Welcome Pack</h3>
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">
+                            data/rewards/welcome_packs.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Lista de jugadores que ya recibieron su welcome pack</p>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre el archivo <code>welcome_packs.json</code></li>
+                            <li>Busca tu Steam ID en la lista <code>"claimed_packs"</code></li>
+                            <li>Si apareces, significa que ya reclamaste tu welcome pack antes</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si apareces en la lista:</strong> Ya recibiste tu welcome pack (solo se da una vez)</li>
+                            <li><strong>Si NO apareces en la lista:</strong> Espera 5-10 minutos después de conectarte por primera vez</li>
+                            <li><strong>Si pasaron más de 10 minutos:</strong> Contacta a un admin con tu Steam ID</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔄 Mi racha se reinició por error</h3>
+                    <div class="warning-box">
+                        <strong>Causas comunes:</strong>
+                        <ul>
+                            <li>No te conectaste durante 24+ horas (esto es normal y esperado)</li>
+                            <li>Problema de sincronización del servidor (raro)</li>
+                            <li>El servidor se reinició y los datos no se guardaron (muy raro)</li>
+                        </ul>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>⚠️ Si crees que es un error:</strong><br>
+                        Contacta a un admin con la siguiente información:
+                        <ul>
+                            <li>Tu nombre de jugador y Steam ID</li>
+                            <li>Cuántos días de racha tenías</li>
+                            <li>Fecha aproximada de la última vez que recibiste el daily cash</li>
+                        </ul>
+                        El admin puede revisar el archivo <code>rewards_history.json</code> que contiene todo el historial.
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOTTERY TAB -->
+            <div id="lottery" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('lottery', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('lottery', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('lottery', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="lottery-guide" class="sub-panel active">
+                    <h2>🎰 Sistema de Lotería</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es la Lotería?</h3>
+                        <p>Sistema de sorteos automáticos donde puedes ganar premios increíbles solo por estar jugando. El bot elige un ganador aleatorio cada cierto tiempo entre todos los jugadores conectados.</p>
+                    </div>
+
+                    <h3>🎁 ¿Cómo Funciona?</h3>
+                    <div class="info-box">
+                        <strong>Pasos del sorteo:</strong>
+                        <ol>
+                            <li>Cada 30 minutos (configurable por el admin) se realiza un sorteo automático</li>
+                            <li>Todos los jugadores online participan automáticamente</li>
+                            <li>Se elige un ganador aleatorio</li>
+                            <li>El premio se spawnea en la ubicación del ganador</li>
+                            <li>Se anuncia al ganador en el chat del servidor</li>
+                        </ol>
+                    </div>
+
+                    <h3>🏆 Tipos de Premios</h3>
+                    <table>
+                        <tr>
+                            <th>Rareza</th>
+                            <th>Probabilidad</th>
+                            <th>Ejemplos</th>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #95a5a6;">Común</span></td>
+                            <td>35%</td>
+                            <td>Manzanas, piedras, madera</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #3498db;">No Común</span></td>
+                            <td>30%</td>
+                            <td>Herramientas, comida, medicina</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #9b59b6;">Raro</span></td>
+                            <td>20%</td>
+                            <td>Munición, mochilas, medicina avanzada</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #e74c3c;">Épico</span></td>
+                            <td>10%</td>
+                            <td>Armas medias, equipo especial</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #f39c12;">Legendario</span></td>
+                            <td>5%</td>
+                            <td>AK-47, AWM, Barrett M82A1</td>
+                        </tr>
+                    </table>
+
+                    <h3>⭐ Ventajas VIP</h3>
+                    <div class="success-box">
+                        Los jugadores VIP tienen el doble de probabilidad de ganar que los jugadores normales. Si eres VIP, tienes más chances de llevarte los mejores premios!
+                    </div>
+
+                    <h3>⏰ Cooldown de Ganadores</h3>
+                    <div class="warning-box">
+                        <strong>Sistema justo para todos:</strong><br>
+                        Si ganas un sorteo, deberás esperar 3 sorteos (configurable) antes de poder ganar de nuevo. Esto asegura que todos los jugadores tengan oportunidad de ganar.
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo:</strong><br>
+                        Si ganas a las 14:00, no podrás ganar de nuevo hasta después de los sorteos de 14:30, 15:00 y 15:30. Recién volverás a ser elegible en el sorteo de las 16:00.
+                    </div>
+                </div>
+
+                <div id="lottery-commands" class="sub-panel">
+                    <h2>💬 Comandos del Sistema</h2>
+
+                    <h3>🎫 Tickets de Lotería (Sistema Futuro)</h3>
+                    <div class="warning-box">
+                        <strong>⚠️ No hay comandos activos actualmente</strong><br>
+                        El sistema de lotería funciona automático. Los sorteos se realizan sin que necesites hacer nada.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Sistema futuro planeado:</strong><br>
+                        En futuras versiones podrás comprar tickets adicionales para aumentar tus chances de ganar:
+                        <ul>
+                            <li><code>@comprar_ticket</code> - Comprar un ticket de lotería</li>
+                            <li><code>@mis_tickets</code> - Ver cuántos tickets tienes</li>
+                        </ul>
+                        Por ahora, todos participan automáticamente con las mismas chances (excepto VIPs).
+                    </div>
+
+                    <h3>📊 Ver Ganadores</h3>
+                    <div class="info-box">
+                        Los ganadores se anuncian automáticamente en el chat del servidor:
+                        <div class="command-box">
+                            🎰 ¡LOTERÍA! 🎊 El ganador es ElFiru! Premio: AK-47 (Legendario) 🏆
+                        </div>
+                    </div>
+                </div>
+
+                <div id="lottery-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ Gané pero no recibí el premio</h3>
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">
+                            data/lottery/winners_history.json<br>
+                            data/lottery/draws_history.json
+                        </div>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre <code>winners_history.json</code></li>
+                            <li>Busca tu nombre en la lista de ganadores recientes</li>
+                            <li>Verifica el campo <code>"delivered"</code> (debe ser <code>true</code>)</li>
+                            <li>Verifica el campo <code>"prize_name"</code> (qué ganaste)</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si delivered = true:</strong> El premio se spawneó en tu ubicación, búscalo cerca de donde estabas</li>
+                            <li><strong>Si delivered = false:</strong> Hubo un error en la entrega, contacta a un admin</li>
+                            <li><strong>Si no apareces en la lista:</strong> Es posible que no hayas ganado, verifica el chat del juego</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ No puedo ganar, siempre ganan los mismos</h3>
+                    <div class="warning-box">
+                        <strong>Verificar cooldown:</strong><br>
+                        Si alguien gana, no puede volver a ganar por 3 sorteos. Esto está diseñado para dar oportunidad a todos.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Factores que afectan tus chances:</strong>
+                        <ul>
+                            <li>Los jugadores VIP tienen 2x probabilidad (esto es intencional)</li>
+                            <li>El sistema es completamente aleatorio</li>
+                            <li>Necesitas estar online en el momento del sorteo</li>
+                            <li>Si ganaste recientemente, estás en cooldown</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>🔍 Ver estadísticas:</h4>
+                        <div class="file-path">
+                            data/lottery/lottery_stats.json
+                        </div>
+                        <p>Aquí puedes ver:</p>
+                        <ul>
+                            <li>Total de sorteos realizados</li>
+                            <li>Quién ha ganado más veces</li>
+                            <li>Distribución de premios por rareza</li>
+                            <li>Jugadores únicos que han ganado</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VEHICLES TAB -->
+            <div id="vehicles" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('vehicles', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('vehicles', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('vehicles', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="vehicles-guide" class="sub-panel active">
+                    <h2>🚗 Sistema de Vehículos</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">Sistema Completo de Gestión de Vehículos</h3>
+                        <p>Protege tus vehículos con seguros, registra automáticamente la propiedad, controla robos y evita abusos de estacionamiento en zonas PVE.</p>
+                    </div>
+
+                    <h3>🛡️ 1. Sistema de Seguros</h3>
+                    <div class="info-box">
+                        <strong>¿Para qué sirve?</strong><br>
+                        Si tu vehículo es destruido o robado, el seguro lo respawnea automáticamente después de un tiempo configurado (generalmente 24 horas).
+                    </div>
+
+                    <h4>Cómo comprar un seguro:</h4>
+                    <ol>
+                        <li>Verifica el ID de tu vehículo (aparece en la pantalla cuando miras el vehículo)</li>
+                        <li>Escribe en el chat: <code>!insurance_[ID]</code> o <code>!seguro_[ID]</code></li>
+                        <li>El bot verificará que el vehículo sea tuyo y que tengas dinero suficiente</li>
+                        <li>Se descontará el precio del seguro de tu balance</li>
+                        <li>Recibirás confirmación en el chat</li>
+                    </ol>
+
+                    <div class="example-box">
+                        <strong>Ejemplo:</strong><br>
+                        <div class="command-box">!insurance_637683</div>
+                        <strong>Respuesta:</strong><br>
+                        <div class="command-box">ElFiru, seguro comprado para tu BPC_Laika por $5000. El vehículo respawneará en 24 horas si es destruido.</div>
+                    </div>
+
+                    <h4>💰 Precios de Seguros (Configurables)</h4>
+                    <table>
+                        <tr>
+                            <th>Tipo de Vehículo</th>
+                            <th>Precio Normal</th>
+                            <th>Precio VIP</th>
+                        </tr>
+                        <tr>
+                            <td>Bicicleta</td>
+                            <td>$2,000</td>
+                            <td>$1,600</td>
+                        </tr>
+                        <tr>
+                            <td>Moto</td>
+                            <td>$3,000</td>
+                            <td>$2,400</td>
+                        </tr>
+                        <tr>
+                            <td>Auto</td>
+                            <td>$5,000</td>
+                            <td>$4,000</td>
+                        </tr>
+                        <tr>
+                            <td>Camión</td>
+                            <td>$7,000</td>
+                            <td>$5,600</td>
+                        </tr>
+                        <tr>
+                            <td>Avión/Hidroavión</td>
+                            <td>$20,000</td>
+                            <td>$16,000</td>
+                        </tr>
+                    </table>
+
+                    <h3>📝 2. Registro Automático</h3>
+                    <div class="success-box">
+                        <strong>Completamente automático:</strong><br>
+                        Todos los vehículos se registran automáticamente con su dueño. No necesitas hacer nada.
+                    </div>
+
+                    <h4>¿Qué información se registra?</h4>
+                    <ul>
+                        <li>ID único del vehículo</li>
+                        <li>Tipo de vehículo (auto, moto, avión, etc.)</li>
+                        <li>Dueño actual (tu Steam ID y nombre)</li>
+                        <li>Squad al que perteneces (si tienes uno)</li>
+                        <li>Ubicación actual (coordenadas X, Y, Z)</li>
+                        <li>Zona donde está estacionado (PVE o PVP)</li>
+                        <li>Estado del seguro</li>
+                    </ul>
+
+                    <h3>🔒 3. Control de Robos y Cambio de Dueño</h3>
+                    <div class="info-box">
+                        <strong>Detección automática:</strong><br>
+                        El sistema detecta automáticamente cuando un vehículo cambia de dueño o de squad.
+                    </div>
+
+                    <h4>Escenarios detectados:</h4>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <div class="icon">🔓</div>
+                            <h4>Cambio de Squad</h4>
+                            <p>Se registra si cambias de squad mientras tienes el vehículo</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">⚠️</div>
+                            <h4>Transferencia</h4>
+                            <p>Se registra si transfieres el vehículo a otro jugador</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">🚨</div>
+                            <h4>Robo Detectado</h4>
+                            <p>El sistema registra cambios sospechosos de propiedad</p>
+                        </div>
+                    </div>
+
+                    <h3>⚔️ 4. Control Anti-PVP Abuse (Vehículos en PVE)</h3>
+                    <div class="warning-box">
+                        <strong>⚠️ Regla importante:</strong><br>
+                        Si eres de un squad PVP o jugador PVP individual, NO puedes estacionar vehículos en zonas PVE cuando estás OFFLINE. Esto se considera abuse.
+                    </div>
+
+                    <h4>¿Cómo funciona el sistema?</h4>
+                    <ol>
+                        <li>El bot detecta automáticamente si tienes banderas en zona PVP</li>
+                        <li>Si estacionas vehículos en zona PVE y estás OFFLINE, se considera violación</li>
+                        <li>Recibes 3 advertencias progresivas en Discord</li>
+                        <li>Si no corriges la violación, recibes multas automáticas</li>
+                        <li>Las multas se cobran cuando te conectas al servidor</li>
+                    </ol>
+
+                    <div class="info-box">
+                        <strong>✅ Parking permitido:</strong>
+                        <ul>
+                            <li>Si estás ONLINE, puedes estacionar donde quieras (para jugar)</li>
+                            <li>Si eres de un squad PVE, puedes estacionar en PVE siempre</li>
+                            <li>Si eres jugador PVP pero sin banderas en PVP, no hay restricción</li>
+                        </ul>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>❌ Parking NO permitido:</strong>
+                        <ul>
+                            <li>Squad PVP con vehículos en PVE mientras el dueño está OFFLINE</li>
+                            <li>Jugador PVP individual con vehículos en PVE mientras está OFFLINE</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="vehicles-commands" class="sub-panel">
+                    <h2>💬 Comandos de Vehículos</h2>
+
+                    <h3>🛡️ Comandos de Seguros</h3>
+
+                    <h4>Comprar seguro:</h4>
+                    <div class="command-box">!insurance_[ID]</div>
+                    <div class="command-box">!seguro_[ID]</div>
+                    <div class="command-box">@insurance_[ID]</div>
+                    <div class="command-box">@seguro_[ID]</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos:</strong><br>
+                        <code>!insurance_637683</code> → Seguro con ID numérico<br>
+                        <code>!seguro_LAI-A3F</code> → Seguro con Custom ID<br>
+                        <code>@insurance_154789</code> → Alternativa con @
+                    </div>
+
+                    <h4>Reclamar seguro (vehículo destruido/robado):</h4>
+                    <div class="command-box">!claim_insurance_[ID]</div>
+                    <div class="command-box">!reclamar_seguro_[ID]</div>
+                    <div class="command-box">@claim_insurance_[ID]</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo:</strong><br>
+                        <code>!claim_insurance_LAI-A3F</code>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Cuándo reclamar:</strong><br>
+                        <ul>
+                            <li>Tu vehículo fue destruido</li>
+                            <li>Tu vehículo fue robado y no lo encuentras</li>
+                            <li>Tu vehículo desapareció del mapa</li>
+                        </ul>
+                        <strong>Nota:</strong> El sistema detecta fraudes automáticamente. Si tu vehículo aún existe en el mapa, la reclamación será rechazada.
+                    </div>
+
+                    <h4>Ver información de vehículo:</h4>
+                    <div class="command-box">@vehiculo_[ID]</div>
+                    <div class="command-box">@vehicle_[ID]</div>
+
+                    <div class="example-box">
+                        <strong>Respuesta típica:</strong><br>
+                        <div class="command-box">
+                            🚗 BPC_Laika (LAI-A3F)<br>
+                            👤 Dueño: ElFiru<br>
+                            🏴 Squad: Alpha Squad<br>
+                            📍 Zona: PVE - Refugio Academia<br>
+                            🛡️ Seguro: Activo (expira en 15 días)<br>
+                            💰 Costo de renovación: $4,000
+                        </div>
+                    </div>
+
+                    <h3>🚫 Comandos NO disponibles</h3>
+                    <div class="warning-box">
+                        <strong>Registro automático:</strong><br>
+                        No hay comandos para registrar vehículos manualmente. Todo se hace automático.
+                    </div>
+                </div>
+
+                <div id="vehicles-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ Mi vehículo no aparece registrado</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de datos:</h4>
+                        <div class="file-path">data/sync_data/vehicles.json</div>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre el archivo <code>vehicles.json</code></li>
+                            <li>Busca el ID de tu vehículo o tu nombre de jugador</li>
+                            <li>Verifica los campos <code>owner_name</code> y <code>entity_id</code></li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si no aparece:</strong> Espera 5 minutos, el sistema sincroniza cada cierto tiempo</li>
+                            <li><strong>Si aparece con otro dueño:</strong> Es posible que hayas sido robado o transferiste el vehículo</li>
+                            <li><strong>Si los datos son incorrectos:</strong> Contacta a un admin con el ID del vehículo</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ Recibí multa por estacionar en PVE</h3>
+                    <div class="warning-box">
+                        <strong>Esto es normal si:</strong>
+                        <ul>
+                            <li>Tienes banderas en zona PVP (eres squad PVP)</li>
+                            <li>Tienes vehículos estacionados en zona PVE</li>
+                            <li>Te desconectaste del servidor (owner OFFLINE)</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de violaciones:</h4>
+                        <div class="file-path">data/vehicle_violations/violations.json</div>
+
+                        <h4>🔍 Ver tu historial de violaciones:</h4>
+                        <ol>
+                            <li>Abre <code>violations.json</code></li>
+                            <li>Busca tu squad ID o nombre de squad</li>
+                            <li>Verifica <code>warnings_count</code> (advertencias recibidas)</li>
+                            <li>Verifica <code>fines_applied</code> (multas cobradas)</li>
+                            <li>Verifica <code>pending_fines</code> (multas pendientes)</li>
+                        </ol>
+
+                        <h4>✅ Cómo evitar multas:</h4>
+                        <ol>
+                            <li><strong>Opción 1:</strong> Mueve tus vehículos a zonas PVP antes de desconectarte</li>
+                            <li><strong>Opción 2:</strong> Cambia tu squad a PVE (remueve banderas PVP)</li>
+                            <li><strong>Opción 3:</strong> Quédate conectado (solo viola si estás OFFLINE)</li>
+                        </ol>
+                    </div>
+
+                    <h3>❌ No puedo reclamar mi seguro</h3>
+                    <div class="error-box">
+                        <strong>Motivos comunes de rechazo:</strong>
+                        <ul>
+                            <li><strong>"Vehículo aún existe":</strong> El vehículo todavía está en el mapa, búscalo</li>
+                            <li><strong>"No tienes seguro":</strong> Nunca compraste seguro para este vehículo</li>
+                            <li><strong>"Seguro expirado":</strong> Tu seguro venció (duración configurable, generalmente 30 días)</li>
+                            <li><strong>"Cooldown activo":</strong> Ya reclamaste un seguro recientemente</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de seguros:</h4>
+                        <div class="file-path">data/insurance/insurance_policies.json</div>
+
+                        <h4>🔍 Verificar tu seguro:</h4>
+                        <ol>
+                            <li>Abre <code>insurance_policies.json</code></li>
+                            <li>Busca el ID de tu vehículo</li>
+                            <li>Verifica el campo <code>expires_at</code> (fecha de expiración)</li>
+                            <li>Verifica el campo <code>status</code> (debe ser "active")</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAME TAB -->
+            <div id="fame" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('fame', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('fame', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('fame', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="fame-guide" class="sub-panel active">
+                    <h2>⭐ Sistema de Fame Rewards</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué son los Fame Rewards?</h3>
+                        <p>Sistema de recompensas basado en tus Fame Points (puntos de fama). Cuantos más puntos tengas, mejores premios puedes reclamar. Cada nivel de recompensa solo se puede reclamar UNA VEZ.</p>
+                    </div>
+
+                    <h3>⭐ Niveles de Fame (Tiers)</h3>
+                    <table>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Fame Points</th>
+                            <th>Premios Principales</th>
+                            <th>Vehículo</th>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-info">1</span></td>
+                            <td>100</td>
+                            <td>Mochila pequeña, vendas, agua</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-info">2</span></td>
+                            <td>500</td>
+                            <td>Mochila mediana, hacha, antibióticos</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-success">3</span></td>
+                            <td>750</td>
+                            <td>Mochila grande, pistola M9, munición</td>
+                            <td>🚲 Bicicleta</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-success">4</span></td>
+                            <td>1,000</td>
+                            <td>MP5, cargadores, munición</td>
+                            <td>🏍️ Moto de montaña</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-warning">5</span></td>
+                            <td>1,500</td>
+                            <td>M16 rifle, munición</td>
+                            <td>🏍️ Moto de cross</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-warning">6</span></td>
+                            <td>2,500</td>
+                            <td>AK-47, munición</td>
+                            <td>🚗 Auto Laika</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-danger">7</span></td>
+                            <td>5,000</td>
+                            <td>AWM sniper, munición</td>
+                            <td>🚙 Todoterreno Rager</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-danger">8</span></td>
+                            <td>7,500</td>
+                            <td>Barrett M82A1, munición</td>
+                            <td>✈️ Avioneta Kinglet Duster</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: gold; color: black;">9</span></td>
+                            <td>10,000</td>
+                            <td>Barrett + AK-47 + munición masiva</td>
+                            <td>✈️ Avioneta naval</td>
+                        </tr>
+                    </table>
+
+                    <h3>🎯 Cómo Funciona</h3>
+                    <div class="info-box">
+                        <strong>Proceso de reclamación:</strong>
+                        <ol>
+                            <li>Verificas tus Fame Points en el juego</li>
+                            <li>Escribes el comando en el chat (ej: <code>@claim_famepoint_1000</code>)</li>
+                            <li>El bot verifica automáticamente:
+                                <ul>
+                                    <li>Tienes suficientes Fame Points</li>
+                                    <li>NO has reclamado este tier antes</li>
+                                    <li>Estás online en el servidor</li>
+                                </ul>
+                            </li>
+                            <li>Recibes 2 avisos: "Premio en 60 segundos" y "Premio en 10 segundos"</li>
+                            <li>El bot obtiene tu ubicación actual</li>
+                            <li>Todos los items y vehículos se spawnean en tu ubicación</li>
+                            <li>Se marca el tier como reclamado (no podrás reclamarlo de nuevo)</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Importante:</strong>
+                        <ul>
+                            <li>Cada tier solo se puede reclamar UNA VEZ</li>
+                            <li>NO se pierden si mueres (los items sí, pero el tier ya fue reclamado)</li>
+                            <li>Debes estar ONLINE para reclamar</li>
+                            <li>No te muevas durante los 60 segundos de espera</li>
+                        </ul>
+                    </div>
+
+                    <h3>📊 ¿Cómo conseguir Fame Points?</h3>
+                    <div class="info-box">
+                        Los Fame Points se consiguen en el juego de SCUM mediante:
+                        <ul>
+                            <li>Matar zombies y animales</li>
+                            <li>Completar eventos del servidor</li>
+                            <li>Sobrevivir por mucho tiempo</li>
+                            <li>Craftear items</li>
+                            <li>Explorar el mapa</li>
+                        </ul>
+                        <strong>El bot LEE tus fame points del juego, no los genera.</strong>
+                    </div>
+                </div>
+
+                <div id="fame-commands" class="sub-panel">
+                    <h2>💬 Comandos de Fame Rewards</h2>
+
+                    <h3>🎁 Reclamar Premio</h3>
+
+                    <h4>Formato del comando:</h4>
+                    <div class="command-box">@claim_famepoint_[PUNTOS]</div>
+                    <div class="command-box">@reclamar_fama_[PUNTOS]</div>
+                    <div class="command-box">@canjear_fama_[PUNTOS]</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos:</strong><br>
+                        <code>@claim_famepoint_100</code> → Reclamar tier de 100 fame<br>
+                        <code>@reclamar_fama_1000</code> → Reclamar tier de 1000 fame (Español)<br>
+                        <code>@canjear_fama_5000</code> → Reclamar tier de 5000 fame (Español)<br>
+                        <code>@claim_famepoint_10000</code> → Reclamar tier máximo
+                    </div>
+
+                    <h3>📋 Lista completa de comandos por tier:</h3>
+                    <table>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Comando</th>
+                        </tr>
+                        <tr>
+                            <td>100</td>
+                            <td><code>@claim_famepoint_100</code></td>
+                        </tr>
+                        <tr>
+                            <td>500</td>
+                            <td><code>@claim_famepoint_500</code></td>
+                        </tr>
+                        <tr>
+                            <td>750</td>
+                            <td><code>@claim_famepoint_750</code></td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td><code>@claim_famepoint_1000</code></td>
+                        </tr>
+                        <tr>
+                            <td>1,500</td>
+                            <td><code>@claim_famepoint_1500</code></td>
+                        </tr>
+                        <tr>
+                            <td>2,500</td>
+                            <td><code>@claim_famepoint_2500</code></td>
+                        </tr>
+                        <tr>
+                            <td>5,000</td>
+                            <td><code>@claim_famepoint_5000</code></td>
+                        </tr>
+                        <tr>
+                            <td>7,500</td>
+                            <td><code>@claim_famepoint_7500</code></td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td><code>@claim_famepoint_10000</code></td>
+                        </tr>
+                    </table>
+
+                    <h3>📝 Flujo completo de ejemplo:</h3>
+                    <div class="example-box">
+                        <strong>Jugador escribe:</strong>
+                        <div class="command-box">@claim_famepoint_1000</div>
+
+                        <strong>Bot responde (1° aviso):</strong>
+                        <div class="command-box">
+                            🎁 ElFiru, tu premio se entregará en 60 segundos. No te muevas de tu posición actual!
+                        </div>
+
+                        <strong>Bot responde (2° aviso - 50 seg después):</strong>
+                        <div class="command-box">
+                            ⏰ ElFiru, ¡premio en 10 segundos! Mantente en tu posición.
+                        </div>
+
+                        <strong>Bot responde (entrega - 10 seg después):</strong>
+                        <div class="command-box">
+                            🎊 ElFiru, premio entregado! Has reclamado el tier de 1000 fame points: MP5, munición, moto de montaña. Disfruta!
+                        </div>
+                    </div>
+                </div>
+
+                <div id="fame-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ El bot dice que no tengo suficientes fame points</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de datos:</h4>
+                        <div class="file-path">data/sync_data/survival_stats.json</div>
+
+                        <h4>🔍 Cómo verificar:</h4>
+                        <ol>
+                            <li>Abre el archivo <code>survival_stats.json</code></li>
+                            <li>Busca tu Steam ID</li>
+                            <li>Verifica el campo <code>highest_positive_fame_points</code></li>
+                            <li>Este número debe ser MAYOR O IGUAL al tier que quieres reclamar</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si el número es menor:</strong> Necesitas conseguir más fame points jugando</li>
+                            <li><strong>Si el número es correcto en el juego pero no en el archivo:</strong> Espera 5 minutos, el sistema sincroniza periódicamente</li>
+                            <li><strong>Si el archivo no se actualiza:</strong> Contacta a un admin</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ El bot dice que ya reclamé este tier</h3>
+                    <div class="warning-box">
+                        <strong>Esto es normal y esperado.</strong><br>
+                        Cada tier solo se puede reclamar UNA VEZ por jugador. Si ya lo reclamaste antes, no puedes volver a reclamarlo.
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de claims:</h4>
+                        <div class="file-path">data/fame_claims/player_claims.json</div>
+
+                        <h4>🔍 Ver qué has reclamado:</h4>
+                        <ol>
+                            <li>Abre <code>player_claims.json</code></li>
+                            <li>Busca tu Steam ID</li>
+                            <li>Verás una lista de tiers reclamados con fechas</li>
+                        </ol>
+
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong>
+                            <pre>
+{
+  "76561198009017341": {
+    "100": {
+      "claimed_at": "2025-10-29T15:30:00",
+      "tier": 100
+    },
+    "500": {
+      "claimed_at": "2025-10-30T10:15:00",
+      "tier": 500
+    }
+  }
+}
+                            </pre>
+                            En este ejemplo, el jugador ya reclamó los tiers 100 y 500.
+                        </div>
+                    </div>
+
+                    <h3>❌ No recibí el premio después del aviso</h3>
+                    <div class="error-box">
+                        <strong>Causas comunes:</strong>
+                        <ul>
+                            <li><strong>Te moviste durante los 60 segundos:</strong> Debes quedarte quieto</li>
+                            <li><strong>Te desconectaste:</strong> Debes estar online</li>
+                            <li><strong>Error del servidor:</strong> Los items se spawnearon pero el servidor tuvo lag</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de historial:</h4>
+                        <div class="file-path">data/fame_claims/claims_history.json</div>
+
+                        <h4>🔍 Verificar la entrega:</h4>
+                        <ol>
+                            <li>Abre <code>claims_history.json</code></li>
+                            <li>Busca tu última reclamación</li>
+                            <li>Verifica el campo <code>"delivered"</code> (debe ser <code>true</code>)</li>
+                            <li>Verifica el campo <code>"location"</code> (coordenadas donde se entregó)</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si delivered = true:</strong> El premio se entregó, busca en el área donde estabas</li>
+                            <li><strong>Si delivered = false:</strong> Hubo un error, contacta a un admin con tu Steam ID y el tier que intentaste reclamar</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚠️ ¿Puedo reclamar un tier inferior después de uno superior?</h3>
+                    <div class="success-box">
+                        <strong>¡Sí!</strong> No importa el orden. Si tienes 10,000 fame points, puedes reclamar todos los tiers desde el 100 hasta el 10,000, en el orden que quieras.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAXI TAB -->
+            <div id="taxi" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('taxi', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('taxi', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('taxi', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="taxi-guide" class="sub-panel active">
+                    <h2>🚖 Sistema de Taxi</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es el Sistema de Taxi?</h3>
+                        <p>Sistema de teletransporte rápido entre pads (zonas) del mapa. Paga una tarifa y viaja instantáneamente a tu destino sin necesidad de correr largas distancias.</p>
+                    </div>
+
+                    <h3>🗺️ ¿Qué es un Pad?</h3>
+                    <div class="info-box">
+                        Un pad es una zona específica del mapa identificada por una letra y un número:<br><br>
+                        <strong>Ejemplos de pads disponibles:</strong>
+                        <ul>
+                            <li>A0, A1, A2, A3, A4</li>
+                            <li>B0, B1, B2, B3, B4</li>
+                            <li>C0, C1, C2, C3, C4</li>
+                            <li>D0, D1, D2, D3, D4</li>
+                            <li>Z0, Z1, Z2, Z3, Z4</li>
+                        </ul>
+                    </div>
+
+                    <h3>💰 ¿Cuánto cuesta?</h3>
+                    <div class="warning-box">
+                        <strong>El costo varía según la distancia:</strong><br>
+                        Cuanto más lejos viajes, más caro es el taxi. El precio se calcula automáticamente según tu ubicación actual y el destino.
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo:</strong><br>
+                        Si estás en A0 y quieres ir a A1 (zona vecina) → $500<br>
+                        Si estás en A0 y quieres ir a D4 (cruzar todo el mapa) → $3,000
+                    </div>
+
+                    <h3>🎯 Tipos de Taxi</h3>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <div class="icon">🚖</div>
+                            <h4>Taxi On Ground</h4>
+                            <p>Teleport directo al pad de destino. Te mueves al nivel del suelo.</p>
+                            <span class="badge-success">Más barato</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon">✈️</div>
+                            <h4>Taxi con Redespliegue</h4>
+                            <p>Te teletransporta al aire y haces paracaidismo hasta el destino.</p>
+                            <span class="badge-warning">Más caro</span>
+                        </div>
+                    </div>
+
+                    <h3>📋 Cómo Usar el Taxi</h3>
+                    <div class="info-box">
+                        <strong>Paso a paso:</strong>
+                        <ol>
+                            <li><strong>(Opcional) Consultar costo:</strong> Escribe <code>@taxicosto D3</code></li>
+                            <li><strong>Solicitar taxi:</strong> Escribe <code>@taxi D3</code></li>
+                            <li><strong>Confirmación:</strong> El bot verifica:
+                                <ul>
+                                    <li>Tienes suficiente dinero</li>
+                                    <li>El pad de destino existe</li>
+                                    <li>Estás online</li>
+                                </ul>
+                            </li>
+                            <li><strong>Cobro:</strong> Se descuenta el dinero de tu balance</li>
+                            <li><strong>Espera:</strong> El bot ejecuta el teleport (puede tardar 5-10 segundos)</li>
+                            <li><strong>¡Listo!</strong> Ya estás en tu destino</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Importante:</strong>
+                        <ul>
+                            <li>El dinero se cobra ANTES del teleport</li>
+                            <li>Si mueres durante el teleport, pierdes el dinero (no hay reembolsos)</li>
+                            <li>Asegúrate de estar en un lugar seguro antes de solicitar</li>
+                            <li>No puedes cancelar una solicitud en progreso</li>
+                        </ul>
+                    </div>
+
+                    <h3>✨ Ventajas VIP</h3>
+                    <div class="success-box">
+                        Los jugadores VIP reciben descuento en todos los viajes de taxi (configurable por el admin, generalmente 20% de descuento).
+                    </div>
+                </div>
+
+                <div id="taxi-commands" class="sub-panel">
+                    <h2>💬 Comandos de Taxi</h2>
+
+                    <h3>🚖 Solicitar Taxi</h3>
+                    <div class="command-box">@taxi [DESTINO]</div>
+                    <div class="command-box">@tp [DESTINO]</div>
+                    <div class="command-box">@teleport [DESTINO]</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos:</strong><br>
+                        <code>@taxi A4</code> → Ir al pad A4<br>
+                        <code>@tp D3</code> → Ir al pad D3 (comando corto)<br>
+                        <code>@teleport Z2</code> → Ir al pad Z2
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Idiomas soportados:</strong><br>
+                        Español: @taxi, @tp, @teleport<br>
+                        English: @taxi, @tp, @teleport<br>
+                        Português: @taxi, @tp, @teleport
+                    </div>
+
+                    <h3>💰 Consultar Costo</h3>
+                    <div class="command-box">@taxicosto [DESTINO]</div>
+                    <div class="command-box">@taxicost [DESTINO]</div>
+                    <div class="command-box">@taxicusto [DESTINO]</div>
+
+                    <div class="example-box">
+                        <strong>Ejemplos:</strong><br>
+                        <code>@taxicosto A4</code> → Ver cuánto cuesta ir a A4<br>
+                        <code>@taxicost D3</code> → Ver cuánto cuesta ir a D3 (English)<br>
+                        <code>@taxicusto Z2</code> → Ver cuánto cuesta ir a Z2 (Português)
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Respuesta típica:</strong>
+                        <div class="command-box">
+                            🚖 ElFiru, el viaje de [Tu Ubicación] a D3 cuesta $1,500. Balance actual: $25,000.
+                        </div>
+                    </div>
+
+                    <h3>❌ Cancelar Taxi</h3>
+                    <div class="command-box">@taxicancelar</div>
+                    <div class="command-box">@cancelar_taxi</div>
+                    <div class="command-box">@taxicancel</div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Solo funciona si:</strong>
+                        <ul>
+                            <li>Tienes una solicitud PENDIENTE (no ejecutada aún)</li>
+                            <li>El teleport no ha ocurrido todavía</li>
+                        </ul>
+                        Si cancelas a tiempo, se te devuelve el dinero.
+                    </div>
+
+                    <h3>📋 Lista completa de pads disponibles</h3>
+                    <table>
+                        <tr>
+                            <th>Fila</th>
+                            <th>Pads Disponibles</th>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>A0, A1, A2, A3, A4</td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td>B0, B1, B2, B3, B4</td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td>C0, C1, C2, C3, C4</td>
+                        </tr>
+                        <tr>
+                            <td>D</td>
+                            <td>D0, D1, D2, D3, D4</td>
+                        </tr>
+                        <tr>
+                            <td>Z</td>
+                            <td>Z0, Z1, Z2, Z3, Z4</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="taxi-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ El bot dice "Pad no encontrado"</h3>
+                    <div class="error-box">
+                        <strong>Causas:</strong>
+                        <ul>
+                            <li>Escribiste mal el pad (ej: "A5" no existe, solo van hasta A4)</li>
+                            <li>Pusiste espacios (ej: "A 4" en vez de "A4")</li>
+                            <li>Usaste minúsculas incorrectas (el sistema es flexible, pero prueba con mayúsculas)</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Formato correcto:</strong><br>
+                        <code>@taxi A4</code> ✓<br>
+                        <code>@taxi a4</code> ✓ (también funciona)<br>
+                        <br>
+                        <strong>❌ Formato incorrecto:</strong><br>
+                        <code>@taxi A 4</code> ✗ (espacio)<br>
+                        <code>@taxi A5</code> ✗ (no existe)
+                    </div>
+
+                    <h3>❌ Me cobraron pero no me teletransportaron</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de datos:</h4>
+                        <div class="file-path">data/taxi/taxi_requests.json</div>
+
+                        <h4>🔍 Verificar tu solicitud:</h4>
+                        <ol>
+                            <li>Abre <code>taxi_requests.json</code></li>
+                            <li>Busca tu Steam ID o nombre</li>
+                            <li>Verifica el campo <code>"status"</code>:
+                                <ul>
+                                    <li><code>"pending"</code> = En espera</li>
+                                    <li><code>"completed"</code> = Ejecutado</li>
+                                    <li><code>"failed"</code> = Falló</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si status = "failed":</strong> Hubo un error, contacta a un admin para reembolso</li>
+                            <li><strong>Si status = "completed":</strong> El teleport se ejecutó, verifica que no hayas muerto inmediatamente después</li>
+                            <li><strong>Si status = "pending":</strong> El teleport aún no se ejecutó, espera unos segundos más</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ No tengo suficiente dinero</h3>
+                    <div class="warning-box">
+                        <strong>El sistema verifica tu balance antes de cobrar.</strong><br>
+                        Si dice que no tienes suficiente dinero, significa que tu balance es menor al costo del viaje.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Cómo conseguir más dinero:</strong>
+                        <ul>
+                            <li>Espera tu daily cash reward (automático cada 24h)</li>
+                            <li>Participa en eventos del servidor</li>
+                            <li>Vende items a otros jugadores</li>
+                            <li>Completa misiones o actividades</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚠️ ¿Puedo usar taxi si estoy en combate?</h3>
+                    <div class="error-box">
+                        <strong>No recomendado.</strong><br>
+                        El sistema no tiene detección de combate, pero usar taxi en medio de una pelea se considera "combat logging" o escape injusto. Podría resultar en sanciones por parte de los admins.
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHESTS TAB -->
+            <div id="chests" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('chests', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('chests', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('chests', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="chests-guide" class="sub-panel active">
+                    <h2>📦 Protección Anti-Abuse de Cofres en PVE</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es este sistema?</h3>
+                        <p>Sistema que detecta y penaliza a squads/jugadores PVP que guardan cofres en zonas PVE, obteniendo almacenamiento seguro mientras juegan PVP. Similar al sistema de vehículos.</p>
+                    </div>
+
+                    <h3>⚔️ ¿Por qué existe este sistema?</h3>
+                    <div class="warning-box">
+                        <strong>El problema que resuelve:</strong><br>
+                        Algunos jugadores PVP colocan cofres en zonas PVE para tener almacenamiento 100% seguro (nadie puede atacarlos en PVE), mientras ellos juegan PVP y atacan a otros. Esto es considerado "abuse" o trampa.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Regla simple:</strong><br>
+                        Si eres de un squad PVP (tienes banderas en zona PVP), NO puedes tener cofres en zonas PVE. Debes guardar tus cosas en zonas PVP como todos los jugadores PVP.
+                    </div>
+
+                    <h3>🔍 ¿Cómo funciona la detección?</h3>
+                    <div class="info-box">
+                        <strong>El sistema detecta automáticamente:</strong>
+                        <ol>
+                            <li>Tu squad tiene banderas en zona PVP → Eres squad PVP</li>
+                            <li>Tienes cofres (de cualquier tipo) en zonas PVE</li>
+                            <li>Se marca como violación</li>
+                        </ol>
+                    </div>
+
+                    <h4>Tipos de cofres detectados:</h4>
+                    <ul>
+                        <li>📦 Cofres de base (construidos)</li>
+                        <li>🎒 Cofres virtualizados (dejados en el suelo)</li>
+                        <li>📦 Contenedores de cualquier tipo</li>
+                    </ul>
+
+                    <h3>⚠️ Sistema de Advertencias</h3>
+                    <div class="info-box">
+                        <strong>No se multa inmediatamente. Recibes advertencias primero:</strong>
+                        <ol>
+                            <li><strong>1° Advertencia:</strong> Notificación en Discord - "Tienes X cofres en PVE, muévelos a PVP"</li>
+                            <li><strong>2° Advertencia:</strong> Notificación en Discord - "Segunda advertencia. En la próxima multa se expondrán las coordenadas de tus cofres"</li>
+                            <li><strong>3° Advertencia:</strong> Notificación en Discord - "Última advertencia antes de multa"</li>
+                            <li><strong>Multa:</strong> Se aplica multa económica + <strong>se exponen públicamente las coordenadas</strong> de todos tus cofres en PVE</li>
+                        </ol>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>🗺️ Exposición de coordenadas:</strong><br>
+                        Cuando recibes la multa, el bot publica en Discord las coordenadas exactas (X, Y, Z) de TODOS tus cofres en PVE. Esto permite que otros jugadores encuentren y raideen tus cofres.
+                    </div>
+
+                    <h3>💰 Multas</h3>
+                    <div class="warning-box">
+                        <strong>Monto de multa:</strong> Configurable por el admin (generalmente $10,000 por multa)<br>
+                        <strong>Frecuencia:</strong> Si no corriges la violación, recibirás multas cada 12 horas<br>
+                        <strong>Exposición:</strong> Con cada multa se publican las coordenadas de tus cofres
+                    </div>
+
+                    <h3>✅ Cómo evitar multas</h3>
+                    <div class="success-box">
+                        <strong>Opciones para evitar violaciones:</strong>
+                        <ol>
+                            <li><strong>Opción 1:</strong> Mueve TODOS tus cofres a zonas PVP</li>
+                            <li><strong>Opción 2:</strong> Remueve tus banderas PVP (cambiate a squad PVE)</li>
+                            <li><strong>Opción 3:</strong> Elimina los cofres que están en PVE</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Squads permitidos tener cofres en PVE:</strong>
+                        <ul>
+                            <li>Squads PVE (sin banderas en PVP)</li>
+                            <li>Jugadores sin squad</li>
+                            <li>Squads VIP (exentos del sistema)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="chests-commands" class="sub-panel">
+                    <h2>💬 Comandos del Sistema</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ No hay comandos para jugadores</strong><br>
+                        Este sistema funciona completamente automático. No hay comandos que puedas usar para verificar tu estado o resolver violaciones.
+                    </div>
+
+                    <h3>📧 ¿Cómo sé si tengo una violación?</h3>
+                    <div class="info-box">
+                        <strong>Notificaciones automáticas en Discord:</strong><br>
+                        Si tienes cofres en PVE siendo un squad PVP, recibirás notificaciones automáticas en el canal de Discord configurado por el admin.
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de notificación (1° advertencia):</strong>
+                        <div class="command-box">
+                            ⚠️ <strong>Advertencia: Cofres en PVE</strong><br>
+                            Squad <strong>Alpha Squad</strong> tiene cofres en zonas PVE siendo un squad PVP.<br>
+                            <br>
+                            📦 Total Cofres en PVE: <strong>15 cofres</strong><br>
+                            📍 Ubicaciones:<br>
+                            • <strong>Refugio Academia</strong>: 10 cofre(s)<br>
+                            • <strong>Zona PVE Norte</strong>: 5 cofre(s)<br>
+                            <br>
+                            ⏰ Período de Gracia: <strong>23.5h restantes</strong><br>
+                            ⚠️ Advertencias Enviadas: <strong>1</strong><br>
+                            <br>
+                            📋 <strong>Acción Requerida:</strong><br>
+                            • Mover cofres a zonas PVP<br>
+                            • O remover banderas PVP del squad
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de notificación (2° advertencia - con aviso de coordenadas):</strong>
+                        <div class="command-box">
+                            ⚠️ <strong>Advertencia: Cofres en PVE</strong><br>
+                            Squad <strong>Alpha Squad</strong> tiene cofres en zonas PVE siendo un squad PVP.<br>
+                            <br>
+                            📦 Total Cofres en PVE: <strong>15 cofres</strong><br>
+                            ⚠️ Advertencias Enviadas: <strong>2</strong><br>
+                            <br>
+                            📋 <strong>Acción Requerida:</strong><br>
+                            • Mover cofres a zonas PVP<br>
+                            • O remover banderas PVP del squad<br>
+                            <br>
+                            ⚠️ <strong>ADVERTENCIA</strong>: Si continúa la violación, en la próxima multa se <strong>expondrán públicamente las coordenadas</strong> de todos los cofres.
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de notificación de multa (con coordenadas expuestas):</strong>
+                        <div class="command-box">
+                            💰 <strong>Multa Aplicada: Cofres en PVE</strong><br>
+                            Squad <strong>Alpha Squad</strong> ha sido multado por mantener cofres en zonas PVE.<br>
+                            <br>
+                            🏴 Squad: <strong>Alpha Squad</strong><br>
+                            💸 Multa Aplicada: <strong>$10,000</strong><br>
+                            📊 Total Multas: <strong>1 multas</strong> / <strong>$10,000 total</strong><br>
+                            <br>
+                            📦 Cofres en PVE: <strong>15 cofres</strong><br>
+                            📍 Ubicaciones:<br>
+                            • <strong>Refugio Academia</strong>: 10 cofre(s)<br>
+                            • <strong>Zona PVE Norte</strong>: 5 cofre(s)<br>
+                            <br>
+                            🗺️ <strong>Coordenadas de Cofres (EXPUESTAS PÚBLICAMENTE)</strong><br>
+                            1. <strong>Wood Storage</strong> en Refugio Academia<br>
+                               📍 X: `123456.0` Y: `789012.0` Z: `1500.0`<br>
+                            2. <strong>Metal Storage</strong> en Refugio Academia<br>
+                               📍 X: `123500.0` Y: `789100.0` Z: `1510.0`<br>
+                            3. <strong>Backpack</strong> en Zona PVE Norte<br>
+                               📍 X: `234567.0` Y: `890123.0` Z: `1600.0`<br>
+                            <em>... y 12 cofres más</em><br>
+                            <br>
+                            ❗ <strong>Acción Urgente</strong><br>
+                            ⚠️ <strong>Las multas continuarán cada 12h hasta que se corrija la violación</strong><br>
+                            • Mover cofres a zonas PVP<br>
+                            • O remover banderas PVP del squad
+                        </div>
+                    </div>
+                </div>
+
+                <div id="chests-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ Recibí multa pero ya moví mis cofres</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de datos:</h4>
+                        <div class="file-path">data/chest_violations/violations.json</div>
+
+                        <h4>🔍 Verificar tu violación:</h4>
+                        <ol>
+                            <li>Abre <code>violations.json</code></li>
+                            <li>Busca tu squad ID o nombre de squad</li>
+                            <li>Verifica el campo <code>"violating_chests"</code> (lista de cofres)</li>
+                            <li>Verifica si los cofres listados aún existen</li>
+                        </ol>
+
+                        <h4>✅ Soluciones:</h4>
+                        <ul>
+                            <li><strong>Si los cofres ya no existen:</strong> El sistema se actualizará en el próximo check (cada X minutos)</li>
+                            <li><strong>Si moviste los cofres a PVP:</strong> Espera el próximo check para que se detecte</li>
+                            <li><strong>Si el sistema no detecta el cambio:</strong> Contacta a un admin</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ No soy squad PVP pero recibí advertencia</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de banderas:</h4>
+                        <div class="file-path">data/sync_data/squad_zones.json</div>
+
+                        <h4>🔍 Verificar tus banderas:</h4>
+                        <ol>
+                            <li>Abre <code>squad_zones.json</code></li>
+                            <li>Busca tu squad ID</li>
+                            <li>Verifica el campo <code>"flags"</code></li>
+                            <li>Verifica el campo <code>"zone_type"</code> de cada bandera</li>
+                        </ol>
+
+                        <h4>📊 Interpretación:</h4>
+                        <ul>
+                            <li><strong>Si alguna bandera tiene zone_type = "PVP":</strong> Eres squad PVP (esto es correcto)</li>
+                            <li><strong>Si TODAS las banderas tienen zone_type = "PVE":</strong> Eres squad PVE (no deberías recibir advertencias)</li>
+                            <li><strong>Si tienes banderas en ambos tipos:</strong> El sistema te considera PVP por tener AL MENOS una bandera en PVP</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Solución:</strong><br>
+                        Si quieres ser squad PVE completamente, debes remover TODAS las banderas que están en zonas PVP. Basta con tener una sola bandera en PVP para que el sistema te considere squad PVP.
+                    </div>
+
+                    <h3>⚠️ ¿Cómo sé si mis cofres están en PVE o PVP?</h3>
+                    <div class="warning-box">
+                        <strong>Verifica en el juego:</strong><br>
+                        Cuando estás en una zona, el juego te indica si es PVE o PVP (generalmente en la esquina superior derecha de la pantalla o en el mapa).
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Regla general:</strong><br>
+                        <ul>
+                            <li>Las ciudades grandes suelen ser PVE</li>
+                            <li>Las zonas con recursos militares suelen ser PVP</li>
+                            <li>Las zonas de bunkers suelen ser PVP</li>
+                            <li>Verifica el mapa del servidor para conocer las zonas exactas</li>
+                        </ul>
+                    </div>
+
+                    <h3>❌ Mis coordenadas fueron expuestas, ¿qué hago?</h3>
+                    <div class="error-box">
+                        <strong>Acción urgente recomendada:</strong>
+                        <ol>
+                            <li>Mueve INMEDIATAMENTE todos tus cofres a zonas PVP</li>
+                            <li>Otros jugadores ahora conocen la ubicación exacta de tus cofres</li>
+                            <li>Es probable que intenten raidear tus cofres</li>
+                            <li>No esperes más multas, actúa ahora</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Prevención futura:</strong><br>
+                        Para evitar que esto vuelva a pasar:
+                        <ul>
+                            <li>No guardes items importantes en cofres de PVE si eres squad PVP</li>
+                            <li>Atiende las advertencias desde la primera</li>
+                            <li>Verifica periódicamente que todos tus cofres estén en zonas PVP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESPAWN TAB -->
+            <div id="respawn" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('respawn', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('respawn', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('respawn', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <div id="respawn-guide" class="sub-panel active">
+                    <h2>🔄 Protección Anti-Lock en Respawns</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es el Sistema Anti-Lock?</h3>
+                        <p>Sistema que detecta y penaliza el abuse de lockear vehículos en zonas de respawn, impidiendo que otros jugadores usen los vehículos de spawn.</p>
+                    </div>
+
+                    <h3>⚔️ ¿Qué problema resuelve?</h3>
+                    <div class="warning-box">
+                        <strong>El abuse detectado:</strong><br>
+                        Algunos jugadores van a las zonas de respawn de vehículos y lockean todos los vehículos que aparecen, impidiendo que otros jugadores puedan usarlos. Esto se considera "griefing" o abuse.
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de abuse:</strong><br>
+                        Un jugador va al respawn de autos en el pad C3. Cada vez que aparece un auto nuevo, lo lockea inmediatamente. Ahora nadie más puede usar esos autos, pero él tampoco los está usando. Solo está bloqueando el acceso.
+                    </div>
+
+                    <h3>🔍 ¿Cómo funciona la detección?</h3>
+                    <div class="info-box">
+                        <strong>El sistema detecta automáticamente:</strong>
+                        <ol>
+                            <li>Vehículos spawneados en zonas de respawn conocidas</li>
+                            <li>Vehículos que son lockeados inmediatamente después del spawn</li>
+                            <li>Vehículos lockeados que permanecen en la zona de respawn (no están siendo usados)</li>
+                            <li>Jugador que lockea múltiples vehículos en la misma zona</li>
+                        </ol>
+                    </div>
+
+                    <h4>¿Qué NO es abuse?</h4>
+                    <div class="success-box">
+                        <strong>✅ Uso legítimo:</strong>
+                        <ul>
+                            <li>Lockear un vehículo y USARLO (alejarte de la zona de respawn)</li>
+                            <li>Lockear tu vehículo personal que NO está en zona de respawn</li>
+                            <li>Lockear un vehículo que trajiste de otro lugar</li>
+                        </ul>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>❌ Abuse detectado:</strong>
+                        <ul>
+                            <li>Lockear múltiples vehículos en zona de respawn sin usarlos</li>
+                            <li>Lockear vehículos de respawn y dejarlos ahí bloqueados</li>
+                            <li>Volver repetidamente a lockear vehículos de respawn</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚠️ Sistema de Advertencias y Multas (Configurable)</h3>
+
+                    <div class="info-box">
+                        <strong>📋 Flujo de Penalización:</strong>
+                        <ol>
+                            <li><strong>Primera Detección → ADVERTENCIA:</strong><br>
+                                • 📨 Webhook en Discord<br>
+                                • 📢 Mensaje in-game (si estás online)<br>
+                                • ⏱️ Período de gracia: <code>30 minutos</code> (configurable)<br>
+                                • ❌ NO se cobra multa todavía
+                            </li>
+                            <br>
+                            <li><strong>Después del Período de Gracia → MULTA:</strong><br>
+                                • 💰 Multa automática: <code>$15,000</code> (configurable)<br>
+                                • 💸 Se deduce dinero de tu balance<br>
+                                • 📨 Webhook en Discord<br>
+                                • 📢 Notificación in-game
+                            </li>
+                            <br>
+                            <li><strong>Multas Repetitivas:</strong><br>
+                                • Si el vehículo NO se mueve<br>
+                                • Cada <code>24 horas</code> (configurable): Nueva multa de $15,000<br>
+                                • Se repite indefinidamente hasta que muevas el vehículo<br>
+                                • 💰 Monto fijo (NO aumenta)
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>💰 Sistema de Multas:</strong><br>
+                        <ul>
+                            <li><strong>Monto fijo:</strong> $15,000 por violación (configurable por el admin)</li>
+                            <li><strong>Período de gracia:</strong> 30 minutos desde la advertencia (configurable)</li>
+                            <li><strong>Intervalo de multas:</strong> 24 horas entre multas repetitivas (configurable)</li>
+                            <li><strong>Las multas se cobran REALMENTE</strong> usando #ChangeCurrencyBalance</li>
+                            <li><strong>Solo si estás online:</strong> Si estás offline, no se cobra (se intenta después)</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>⏱️ Ejemplo de Timing:</strong><br>
+                        10:00 - Lockeas vehículo → <strong>ADVERTENCIA</strong> (Discord + in-game si online)<br>
+                        10:30 - Vehículo aún ahí (30 min) → <strong>MULTA $15,000</strong> (Discord + in-game)<br>
+                        11:00 - Vehículo aún ahí → ⏭️ No acción (intervalo 24h no cumplido)<br>
+                        10:30 (día siguiente) - Vehículo aún ahí → <strong>MULTA $15,000</strong> nuevamente<br>
+                        <br>
+                        <strong>Solución:</strong> Mueve el vehículo antes de los 30 minutos para evitar multas.
+                    </div>
+
+                    <div class="error-box">
+                        <strong>❌ NO HAY UNLOCK AUTOMÁTICO</strong><br>
+                        <ul>
+                            <li>SCUM no tiene comando para unlock vehículos automáticamente</li>
+                            <li>DEBES mover el vehículo tú mismo manualmente</li>
+                            <li>Las multas continuarán cada 24 horas si no lo mueves</li>
+                            <li>El sistema solo puede detectar y multar, no puede unlock</li>
+                        </ul>
+                    </div>
+
+                    <h3>✅ Cómo evitar penalizaciones</h3>
+                    <div class="success-box">
+                        <strong>Reglas simples:</strong>
+                        <ol>
+                            <li><strong>Si lockeas un vehículo de respawn, ÚSALO:</strong> Aléjate de la zona de respawn</li>
+                            <li><strong>No lockees múltiples vehículos:</strong> Solo lockea el que vas a usar</li>
+                            <li><strong>No vuelvas a lockear:</strong> Si ya tienes un vehículo lockeado, no vayas por más</li>
+                            <li><strong>Si no vas a usar el vehículo, no lo lockees</strong></li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Uso correcto de locks:</strong><br>
+                        <ul>
+                            <li>Lockea tu vehículo personal donde quieras (fuera de respawns)</li>
+                            <li>Lockea un vehículo de respawn si lo vas a usar inmediatamente</li>
+                            <li>Unlockea vehículos que ya no vas a usar</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="respawn-commands" class="sub-panel">
+                    <h2>💬 Comandos del Sistema</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ No hay comandos para jugadores</strong><br>
+                        Este sistema funciona completamente automático. La detección y penalización ocurren sin intervención manual.
+                    </div>
+
+                    <h3>📧 ¿Cómo sé si fui detectado?</h3>
+                    <div class="info-box">
+                        <strong>Notificaciones automáticas:</strong><br>
+                        Si lockeas vehículos en zonas de respawn de manera sospechosa, recibirás notificaciones en el chat del juego y/o Discord.
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de notificación (1° advertencia):</strong>
+                        <div class="command-box">
+                            ⚠️ <strong>Advertencia: Lock Abuse Detectado</strong><br>
+                            <strong>ElFiru</strong>, se detectó que has lockeado vehículos en zona de respawn.<br>
+                            <br>
+                            🚗 Vehículos lockeados: <strong>3</strong><br>
+                            📍 Zona: <strong>Respawn C3</strong><br>
+                            <br>
+                            ❗ <strong>Acción requerida:</strong><br>
+                            • Si vas a usar el vehículo, aléjate de la zona de respawn<br>
+                            • Si no vas a usarlo, desbloquéalo<br>
+                            • No lockees múltiples vehículos de respawn
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de notificación de multa:</strong>
+                        <div class="command-box">
+                            💰 <strong>Multa Aplicada: Vehículo en Zona de Respawn</strong><br>
+                            <strong>ElFiru</strong>, se aplicó una multa por bloquear vehículo en zona de respawn.<br>
+                            <br>
+                            💸 Multa aplicada: <strong>$15,000</strong><br>
+                            📊 Advertencias previas: <strong>1</strong><br>
+                            🚗 Vehículo: <strong>Rager_ES</strong><br>
+                            📍 Zona: <strong>Airfield Vehicle Spawn</strong><br>
+                            <br>
+                            ❗ <strong>Acción Urgente:</strong><br>
+                            ⚠️ Mover el vehículo INMEDIATAMENTE<br>
+                            🔄 Las multas continuarán cada <strong>24 horas</strong> hasta que se mueva<br>
+                            💸 Próxima multa: <strong>$15,000</strong>
+                        </div>
+                    </div>
+
+                    <h3>🔓 ¿Cómo unlock manualmente?</h3>
+                    <div class="info-box">
+                        <strong>En el juego:</strong><br>
+                        Puedes unlockear tus propios vehículos usando las mecánicas normales del juego SCUM (generalmente con la tecla de interacción cerca del vehículo).
+                    </div>
+                </div>
+
+                <div id="respawn-troubleshoot" class="sub-panel">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <h3>❌ Me multaron pero no estaba haciendo abuse</h3>
+                    <div class="data-location">
+                        <h4>📁 Archivo de datos:</h4>
+                        <div class="file-path">data/respawn_violations/violations.json</div>
+
+                        <h4>🔍 Verificar tu violación:</h4>
+                        <ol>
+                            <li>Abre <code>violations.json</code></li>
+                            <li>Busca tu Steam ID o nombre</li>
+                            <li>Verifica los campos:
+                                <ul>
+                                    <li><code>"vehicles_locked"</code>: Cuántos vehículos lockeaste</li>
+                                    <li><code>"zone_name"</code>: En qué zona de respawn</li>
+                                    <li><code>"timestamp"</code>: Cuándo ocurrió</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>✅ Posibles causas de falso positivo:</h4>
+                        <ul>
+                            <li><strong>Lockeaste tu vehículo personal en una zona de respawn:</strong> El sistema puede confundirlo con vehículo de respawn</li>
+                            <li><strong>Lockeaste varios vehículos rápidamente:</strong> Aunque los ibas a usar, el sistema lo detectó como abuse</li>
+                            <li><strong>Error de detección de zona:</strong> El sistema identificó mal la zona como respawn</li>
+                        </ul>
+
+                        <p>Si crees que es un falso positivo, contacta a un admin con la información de <code>violations.json</code> y explica tu situación.</p>
+                    </div>
+
+                    <h3>❌ Mi vehículo personal fue unlockeado</h3>
+                    <div class="warning-box">
+                        <strong>Esto puede ocurrir si:</strong>
+                        <ul>
+                            <li>Tu vehículo personal está estacionado en una zona de respawn</li>
+                            <li>El sistema no puede distinguir entre tu vehículo y uno de respawn</li>
+                            <li>Tienes múltiples vehículos lockeados en la misma zona</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        No estaciones vehículos personales en zonas de respawn. Usa otras zonas del mapa para estacionar tus vehículos de forma segura.
+                    </div>
+
+                    <h3>⚠️ ¿Cómo identifico las zonas de respawn?</h3>
+                    <div class="info-box">
+                        <strong>Zonas de respawn comunes:</strong><br>
+                        Las zonas de respawn suelen estar marcadas en el mapa del servidor o son conocidas por la comunidad. Generalmente:
+                        <ul>
+                            <li>Gasolineras grandes</li>
+                            <li>Estacionamientos de supermercados</li>
+                            <li>Bases militares (para vehículos militares)</li>
+                            <li>Aeropuertos (para aviones)</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Consejo:</strong><br>
+                        Si ves muchos vehículos del mismo tipo en un área, probablemente sea una zona de respawn. Evita lockear vehículos ahí a menos que los vayas a usar inmediatamente.
+                    </div>
+
+                    <h3>❌ Las multas son muy altas</h3>
+                    <div class="info-box">
+                        <strong>Las multas aumentan progresivamente:</strong><br>
+                        Esto es intencional para desincentivar el abuse repetido. Si recibiste múltiples multas, significa que no corregiste el comportamiento después de las advertencias.
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Cómo resetear tu historial de multas:</strong><br>
+                        Si demuestras buen comportamiento por un período de tiempo (configurable por el admin, generalmente 7 días sin violaciones), tu historial de multas se resetea y vuelves a empezar desde la primera advertencia.
+                    </div>
+                </div>
+            </div>
+            <!-- VEHICLE LIMITS TAB -->
+            <div id="vehicle_limits" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('vehicle_limits', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('vehicle_limits', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('vehicle_limits', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <!-- GUIDE -->
+                <div id="vehicle_limits-guide" class="sub-panel active">
+                    <h2>📖 Sistema de Límites de Vehículos</h2>
+
+                    <div class="info-box">
+                        <strong>¿Qué es este sistema?</strong>
+                        <p>El Sistema de Límites de Vehículos controla la cantidad máxima de vehículos que pueden tener los Squads, miembros de squad y jugadores individuales. Incluye un sistema progresivo de advertencias, multas económicas y destrucción automática para prevenir el acaparamiento de vehículos.</p>
+                    </div>
+
+                    <h3>🎯 ¿Cómo funciona?</h3>
+
+                    <h4>1️⃣ Niveles de Control</h4>
+                    <div class="feature-card">
+                        <h4>🏛️ Límites por Squad</h4>
+                        <p>Control del total de vehículos que puede tener un squad completo:</p>
+                        <ul>
+                            <li><strong>Total máximo:</strong> 50 vehículos por squad</li>
+                            <li><strong>Por tipo:</strong>
+                                <ul>
+                                    <li>Motos: 20 máximo</li>
+                                    <li>Autos: 15 máximo</li>
+                                    <li>Camiones: 5 máximo</li>
+                                    <li>Aviones: 3 máximo</li>
+                                    <li>Botes: 3 máximo</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>👤 Límites por Miembro de Squad</h4>
+                        <p>Control individual para cada miembro dentro de un squad:</p>
+                        <ul>
+                            <li><strong>Total máximo:</strong> 3 vehículos por miembro</li>
+                            <li><strong>Por tipo:</strong> 1-2 vehículos dependiendo del tipo</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🚶 Límites por Jugador Individual</h4>
+                        <p>Control para jugadores sin squad:</p>
+                        <ul>
+                            <li><strong>Total máximo:</strong> 3 vehículos</li>
+                            <li><strong>Por tipo:</strong> 1 vehículo de cada tipo</li>
+                        </ul>
+                    </div>
+
+                    <h4>2️⃣ Sistema Progresivo de Acciones</h4>
+
+                    <div class="info-box">
+                        <strong>Fase 1: Período de Gracia (24 horas)</strong>
+                        <p>Cuando excedes los límites, entras en un período de gracia donde recibes advertencias:</p>
+                        <ul>
+                            <li>Se envían hasta 3 advertencias</li>
+                            <li>Recibes notificación in-game si estás conectado</li>
+                            <li>Se envían webhooks a Discord</li>
+                            <li>Tienes 24 horas para reducir tus vehículos</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Fase 2: Multas Progresivas</strong>
+                        <p>Si no reduces tus vehículos después de las advertencias:</p>
+                        <ul>
+                            <li><strong>Multa 1:</strong> $5,000 (monto base)</li>
+                            <li><strong>Multa 2:</strong> $7,500 (1.5x)</li>
+                            <li><strong>Multa 3:</strong> $11,250 (2.25x)</li>
+                        </ul>
+                        <p>El dinero se descuenta automáticamente de tu balance.</p>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>Fase 3: Destrucción Automática (Configurable para desactivado)</strong>
+                        <p>Después de 3 multas sin cumplir, los vehículos excedentes se destruyen automáticamente:</p>
+                        <ul>
+                            <li>Se destruyen los vehículos más antiguos primero</li>
+                            <li>Recibes notificación de cuáles fueron destruidos</li>
+                            <li>No hay forma de recuperarlos</li>
+                        </ul>
+                    </div>
+
+                    <h4>3️⃣ Detección de Vehículos Unlocked (Anti-Exploit)</h4>
+                    <div class="warning-box">
+                        <strong>🔓 Detección Especial</strong>
+                        <p>El sistema detecta vehículos sin cerradura (unlocked) dentro de las banderas de squad:</p>
+                        <ul>
+                            <li>Solo reporta violación si el squad <strong>ya está al límite</strong></li>
+                            <li>Identifica intentos de evadir límites parkando vehículos unlocked</li>
+                            <li><strong>Sin período de gracia</strong> - Acción inmediata</li>
+                            <li>Calcula automáticamente áreas de banderas (5000m de radio)</li>
+                        </ul>
+                    </div>
+
+                    <h4>4️⃣ Beneficios VIP</h4>
+                    <div class="success-box">
+                        <strong>👑 Ventajas para VIPs:</strong>
+                        <ul>
+                            <li><strong>Período de gracia extendido:</strong> 48 horas en lugar de 24h (2x)</li>
+                            <li><strong>Multas reducidas:</strong> 50% de descuento ($2,500 en lugar de $5,000)</li>
+                            <li>Mismo límite de vehículos (juego justo)</li>
+                        </ul>
+                    </div>
+
+                    <h3>📊 Ejemplo de Flujo</h3>
+                    <div class="example-box">
+                        <strong>Caso: Un squad tiene 55 vehículos (límite: 50)</strong><br><br>
+                        <strong>Día 1:</strong> Sistema detecta violación → Advertencia 1 enviada<br>
+                        <strong>Día 1 (+8h):</strong> Squad no reduce vehículos → Advertencia 2<br>
+                        <strong>Día 1 (+16h):</strong> Squad no reduce vehículos → Advertencia 3 (última)<br>
+                        <strong>Día 2:</strong> Termina período de gracia → Multa 1 ($5,000)<br>
+                        <strong>Día 3:</strong> Squad no reduce vehículos → Multa 2 ($7,500)<br>
+                        <strong>Día 4:</strong> Squad no reduce vehículos → Multa 3 ($11,250)<br>
+                        <strong>Día 5:</strong> Squad no reduce vehículos → <strong>Destrucción de 5 vehículos excedentes</strong><br>
+                    </div>
+                </div>
+
+                <!-- COMMANDS -->
+                <div id="vehicle_limits-commands" class="sub-panel">
+                    <h2>💬 Comandos Disponibles</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Nota Importante:</strong><br>
+                        Este sistema es completamente automático. <strong>No hay comandos disponibles para jugadores</strong>. El sistema detecta y aplica las acciones automáticamente.
+                    </div>
+
+                    <h3>📊 Información Disponible</h3>
+                    <p>Para ver tus vehículos actuales, usa:</p>
+                    <div class="command-box">@mis_vehiculos</div>
+                    <p>Este comando te mostrará todos tus vehículos registrados, pero no muestra información sobre límites o violaciones.</p>
+
+                    <h3>🔔 Notificaciones que Recibirás</h3>
+
+                    <div class="info-box">
+                        <strong>Advertencias (Período de Gracia):</strong><br>
+                        <div class="command-box">⚠️ ADVERTENCIA: Tu squad tiene 55 vehículos (límite: 50). Reduce 5 vehículos en las próximas 24 horas para evitar multas.</div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Multas Aplicadas:</strong><br>
+                        <div class="command-box">💰 MULTA APLICADA: $5,000 descontados por exceder límite de vehículos. Reduce tus vehículos para evitar más multas.</div>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>Destrucción de Vehículos:</strong><br>
+                        <div class="command-box">💥 DESTRUCCIÓN: 5 vehículos fueron destruidos por exceder límites después de múltiples multas: Moto #12345, Auto #67890, ...</div>
+                    </div>
+
+                    <h3>❓ ¿Cómo evito violaciones?</h3>
+                    <div class="success-box">
+                        <strong>✅ Mejores Prácticas:</strong>
+                        <ul>
+                            <li>Mantén un registro de cuántos vehículos tiene tu squad</li>
+                            <li>Coordina con tus compañeros de squad</li>
+                            <li>Destruye vehículos dañados que ya no uses</li>
+                            <li>Evita acaparar vehículos de respawn</li>
+                            <li>Si excedes el límite, reduce inmediatamente para evitar multas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TROUBLESHOOTING -->
+                <div id="vehicle_limits-troubleshoot" class="sub-panel">
+                    <h2>🔧 Troubleshooting - Dónde se Guardan los Datos</h2>
+
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">data/vehicle_limits/violations.json</div>
+                        <p>Este archivo contiene todas las violaciones activas, advertencias, multas y acciones aplicadas.</p>
+                    </div>
+
+                    <h3>🔍 Estructura de Datos</h3>
+                    <div class="example-box">
+                        <pre>{
+    "squad_123": {
+        "violation_type": "squad_total_limit",
+        "current_count": 55,
+        "limit": 50,
+        "excess_count": 5,
+        "status": "grace_period",
+        "warnings_sent": 2,
+        "fines_applied": 0,
+        "grace_period_ends": "2025-10-30T12:00:00",
+        "last_check": "2025-10-29T20:00:00"
+    }
+    }</pre>
+                    </div>
+
+                    <h3>❌ Problemas Comunes</h3>
+
+                    <h4>1. No recibí advertencia de violación</h4>
+                    <div class="info-box">
+                        <strong>Posibles causas:</strong>
+                        <ul>
+                            <li>No estabas conectado cuando se envió la advertencia</li>
+                            <li>Las advertencias se enviaron a Discord webhook</li>
+                            <li>El sistema aún está en el primer chequeo (espera 30 minutos)</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Verifica el archivo <code>violations.json</code> para ver si tienes violaciones activas y cuántas advertencias se han enviado.
+                    </div>
+
+                    <h4>2. Me aplicaron multa sin advertencias</h4>
+                    <div class="warning-box">
+                        <strong>Esto ocurre si:</strong>
+                        <ul>
+                            <li>Es una violación de <strong>vehículos unlocked</strong> (no tiene período de gracia)</li>
+                            <li>Ya habías recibido advertencias pero no las viste</li>
+                            <li>El período de gracia ya terminó</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Revisa <code>violations.json</code> para ver el historial completo de advertencias y la fecha en que terminó el período de gracia.
+                    </div>
+
+                    <h4>3. Reduje mis vehículos pero siguen multándome</h4>
+                    <div class="info-box">
+                        <strong>El sistema chequea cada 30 minutos:</strong><br>
+                        Después de reducir tus vehículos, espera hasta el próximo chequeo (máximo 30 minutos) para que el sistema detecte el cambio.
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo verificar:</strong>
+                        <ol>
+                            <li>Verifica que realmente redujiste los vehículos (destruye o transfiere)</li>
+                            <li>Espera 30 minutos</li>
+                            <li>Verifica <code>violations.json</code> - debería desaparecer tu entrada</li>
+                        </ol>
+                    </div>
+
+                    <h4>4. Destruyeron mis vehículos pero no estaba al límite</h4>
+                    <div class="error-box">
+                        <strong>Causas posibles:</strong>
+                        <ul>
+                            <li><strong>Violación histórica:</strong> Estabas al límite hace días, recibiste multas, y ahora se aplicó la destrucción</li>
+                            <li><strong>Límite por tipo:</strong> Aunque no excedas el total, puedes exceder el límite de un tipo específico (ej: demasiadas motos)</li>
+                            <li><strong>Vehículos unlocked:</strong> Tenías vehículos unlocked dentro de banderas y el squad estaba al límite</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo verificar:</strong><br>
+                        En <code>violations.json</code> busca el campo <code>"destruction_applied"</code> para ver:
+                        <ul>
+                            <li>Qué vehículos fueron destruidos</li>
+                            <li>Por qué límite específico</li>
+                            <li>Cuándo se aplicó la acción</li>
+                        </ul>
+                    </div>
+
+                    <h4>5. VIP: ¿Por qué me multan igual que otros?</h4>
+                    <div class="success-box">
+                        <strong>Beneficios VIP:</strong>
+                        <ul>
+                            <li><strong>Período de gracia:</strong> 48h (en lugar de 24h)</li>
+                            <li><strong>Multas:</strong> 50% de descuento</li>
+                            <li><strong>Límites:</strong> Los mismos que todos (juego justo)</li>
+                        </ul>
+                    </div>
+                    <div class="info-box">
+                        <strong>Verifica en violations.json:</strong><br>
+                        Busca el campo <code>"is_vip": true</code> para confirmar que el sistema te reconoce como VIP.
+                    </div>
+                </div>
+            </div>
+
+            <!-- THEFT ALERTS TAB -->
+            <div id="theft_alerts" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('theft_alerts', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('theft_alerts', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('theft_alerts', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <!-- GUIDE -->
+                <div id="theft_alerts-guide" class="sub-panel active">
+                    <h2>📖 Sistema de Alertas de Robo de Vehículos</h2>
+
+                    <div class="info-box">
+                        <strong>¿Qué es este sistema?</strong>
+                        <p>El Sistema de Alertas de Robo detecta cuando un vehículo cambia de propietario y envía alertas in-game y por Discord. Puede configurarse para alertar solo a jugadores VIP o a todos los jugadores.</p>
+                    </div>
+
+                    <h3>🎯 ¿Cómo funciona?</h3>
+
+                    <h4>1️⃣ Detección de Cambios de Propietario</h4>
+                    <div class="feature-card">
+                        <h4>🔍 ¿Qué detecta?</h4>
+                        <p>El sistema monitorea continuamente los vehículos y detecta cuando:</p>
+                        <ul>
+                            <li><strong>Cambio de propietario:</strong> El vehículo ahora pertenece a otra persona</li>
+                            <li><strong>Cambio de squad:</strong> El vehículo cambió de un squad a otro</li>
+                            <li><strong>Vehículo robado mientras offline:</strong> El cambio ocurrió cuando el dueño no estaba conectado</li>
+                            <li><strong>Robo confirmado:</strong> El cambio persiste por más de 24 horas (robo permanente)</li>
+                        </ul>
+                    </div>
+
+                    <h4>2️⃣ Tipos de Cambios</h4>
+
+                    <div class="warning-box">
+                        <strong>🚨 Cambio Externo (Robo Real)</strong>
+                        <p>Cuando un vehículo cambia a un squad diferente o a un jugador sin squad:</p>
+                        <ul>
+                            <li>Se envía alerta inmediata</li>
+                            <li>Indica robo probable</li>
+                            <li>Mensaje: <em>"⚠️ ALERTA: PlayerX perdió su Auto ID#12345 - Nuevo owner: LadronY"</em></li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>ℹ️ Cambio Intra-Squad</strong>
+                        <p>Cuando un vehículo cambia entre miembros del mismo squad:</p>
+                        <ul>
+                            <li>Normalmente desactivado (transferencia legítima)</li>
+                            <li>Puede activarse si quieres monitorear transferencias internas</li>
+                            <li>Mensaje: <em>"ℹ️ Auto ID#12345 transferido de PlayerX a PlayerY (mismo squad)"</em></li>
+                        </ul>
+                    </div>
+
+                    <h4>3️⃣ Modo VIP-Only</h4>
+                    <div class="success-box">
+                        <strong>👑 Alertas Solo para VIPs (Recomendado)</strong>
+                        <p>Configuración más común para servidores:</p>
+                        <ul>
+                            <li>Solo jugadores VIP reciben alertas cuando les roban</li>
+                            <li>Reduce spam de notificaciones</li>
+                            <li>Premia la membresía VIP con seguridad extra</li>
+                        </ul>
+                        <p><strong>Ejemplo:</strong><br>
+                        - Si le roban vehículo a VIP → <strong>SE ENVÍA ALERTA</strong> ✅<br>
+                        - Si le roban vehículo a no-VIP → <strong>NO se envía alerta</strong> ❌</p>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>🌐 Modo Alertas para Todos</strong>
+                        <p>Puede configurarse para enviar alertas a cualquier jugador:</p>
+                        <ul>
+                            <li>Todos reciben alertas de robo</li>
+                            <li>Mayor cantidad de notificaciones</li>
+                            <li>Útil en servidores pequeños</li>
+                        </ul>
+                    </div>
+
+                    <h4>4️⃣ Vehículos de Alto Valor</h4>
+                    <div class="warning-box">
+                        <strong>🔥 Prioridad Especial</strong>
+                        <p>Algunos vehículos reciben alertas prioritarias:</p>
+                        <ul>
+                            <li>SUVs Blindados</li>
+                            <li>Hummers</li>
+                            <li>Autos de Policía</li>
+                            <li>Helicópteros (si existen)</li>
+                        </ul>
+                        <p>Estas alertas se envían <strong>siempre</strong>, independientemente del modo VIP.</p>
+                    </div>
+
+                    <h4>5️⃣ Detección de Robo Offline</h4>
+                    <div class="error-box">
+                        <strong>🚨 Robo Mientras Desconectado</strong>
+                        <p>El sistema detecta robos que ocurren cuando el dueño no está conectado:</p>
+                        <ul>
+                            <li>Rastrea el estado online/offline de los jugadores</li>
+                            <li>Identifica robos aprovechando ausencia</li>
+                            <li>Mensaje especial: <em>"🚨 ROBO MIENTRAS OFFLINE: PlayerX perdió su vehículo mientras estaba desconectado"</em></li>
+                        </ul>
+                    </div>
+
+                    <h4>6️⃣ Confirmación de Robo Permanente</h4>
+                    <div class="warning-box">
+                        <strong>🔒 Robo Confirmado (24 horas)</strong>
+                        <p>Si un cambio persiste por 24 horas:</p>
+                        <ul>
+                            <li>Se considera robo permanente</li>
+                            <li>Se envía alerta de confirmación</li>
+                            <li>Mensaje: <em>"🔒 ROBO CONFIRMADO: Auto ID#12345 robado permanentemente de PlayerX por LadronY"</em></li>
+                        </ul>
+                    </div>
+
+                    <h3>📊 Ejemplo de Flujo</h3>
+                    <div class="example-box">
+                        <strong>Caso: VIP le roban un auto</strong><br><br>
+                        <strong>T=0:</strong> Sistema detecta cambio de propietario<br>
+                        <strong>T=0:</strong> Verifica: ¿Es VIP el dueño anterior? → Sí<br>
+                        <strong>T=0:</strong> ¿Es cambio externo (diferente squad)? → Sí<br>
+                        <strong>T=0:</strong> <strong>ALERTA ENVIADA:</strong> "⚠️ ALERTA: VIP_Player perdió su Auto ID#12345"<br>
+                        <strong>T=24h:</strong> Cambio persiste → "🔒 ROBO CONFIRMADO: Auto robado permanentemente"<br>
+                    </div>
+                </div>
+
+                <!-- COMMANDS -->
+                <div id="theft_alerts-commands" class="sub-panel">
+                    <h2>💬 Comandos Disponibles</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Nota Importante:</strong><br>
+                        Este sistema es completamente automático. <strong>No hay comandos disponibles para jugadores</strong>. Las alertas se envían automáticamente cuando ocurren cambios de propietario.
+                    </div>
+
+                    <h3>📊 Comandos Relacionados</h3>
+                    <p>Para ver información sobre tus vehículos:</p>
+                    <div class="command-box">@mis_vehiculos</div>
+                    <p>Este comando muestra todos tus vehículos registrados, incluyendo propietario actual y ubicación.</p>
+
+                    <h3>🔔 Tipos de Alertas que Recibirás</h3>
+
+                    <div class="warning-box">
+                        <strong>Robo Externo (Alerta Principal):</strong><br>
+                        <div class="command-box">⚠️ ALERTA: JugadorX perdió su Auto ID#12345 - Nuevo owner: LadronY</div>
+                        <p>Se envía cuando tu vehículo cambia a otro squad o jugador sin squad.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Cambio Intra-Squad (Opcional):</strong><br>
+                        <div class="command-box">ℹ️ Cambio interno: Auto ID#12345 transferido de JugadorX a JugadorY (mismo squad: Los Warriors)</div>
+                        <p>Solo si está habilitado. Indica transferencia entre miembros del mismo squad.</p>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>Robo Mientras Offline:</strong><br>
+                        <div class="command-box">🚨 ROBO MIENTRAS OFFLINE: JugadorX perdió su Auto ID#12345 mientras estaba desconectado - Ladrón: LadronY</div>
+                        <p>Alerta especial cuando te roban mientras no estás conectado.</p>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>Vehículo de Alto Valor:</strong><br>
+                        <div class="command-box">🚨 VEHÍCULO DE ALTO VALOR: Hummer ID#12345 cambió de owner: JugadorX → LadronY</div>
+                        <p>Alerta prioritaria para vehículos especiales (SUV Blindado, Hummer, etc.)</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>Robo Confirmado (24h):</strong><br>
+                        <div class="command-box">🔒 ROBO CONFIRMADO: Auto ID#12345 robado permanentemente de JugadorX por LadronY</div>
+                        <p>Se envía después de 24 horas si el cambio persiste.</p>
+                    </div>
+
+                    <h3>❓ ¿Cómo proteger mis vehículos?</h3>
+                    <div class="success-box">
+                        <strong>✅ Mejores Prácticas:</strong>
+                        <ul>
+                            <li><strong>Lockea tus vehículos:</strong> Siempre que no los uses</li>
+                            <li><strong>Estaciona en zonas seguras:</strong> Dentro de banderas de squad</li>
+                            <li><strong>Coordina con tu squad:</strong> Avisa si alguien puede usar tus vehículos</li>
+                            <li><strong>Registra el ID:</strong> Anota los IDs de tus vehículos importantes</li>
+                            <li><strong>Responde rápido:</strong> Si recibes alerta de robo, actúa inmediatamente</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TROUBLESHOOTING -->
+                <div id="theft_alerts-troubleshoot" class="sub-panel">
+                    <h2>🔧 Troubleshooting - Dónde se Guardan los Datos</h2>
+
+                    <div class="data-location">
+                        <h4>📁 Dónde se guardan los datos:</h4>
+                        <div class="file-path">data/vehicles/ownership_history/ownership_changes.json</div>
+                        <p>Este archivo contiene el historial completo de cambios de propietario.</p>
+                    </div>
+
+                    <h3>🔍 Estructura de Datos</h3>
+                    <div class="example-box">
+                        <pre>{
+    "vehicle_12345": {
+        "vehicle_class": "BPC_Rager",
+        "prev_owner": "PlayerX",
+        "new_owner": "LadronY",
+        "prev_squad": "Squad_Alpha",
+        "new_squad": "Squad_Beta",
+        "change_type": "external",
+        "timestamp": "2025-10-29T15:30:00",
+        "prev_owner_online": false,
+        "permanent": false
+    }
+    }</pre>
+                    </div>
+
+                    <h3>❌ Problemas Comunes</h3>
+
+                    <h4>1. No recibí alerta cuando me robaron</h4>
+                    <div class="info-box">
+                        <strong>Posibles causas:</strong>
+                        <ul>
+                            <li><strong>No eres VIP:</strong> Si el modo VIP-only está activado, solo VIPs reciben alertas</li>
+                            <li><strong>Cambio intra-squad:</strong> Si fue transferencia dentro del mismo squad, puede estar desactivado</li>
+                            <li><strong>No estabas conectado:</strong> Las alertas in-game solo se envían si estás online</li>
+                            <li><strong>Webhook deshabilitado:</strong> Las alertas por Discord pueden estar apagadas</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo verificar:</strong><br>
+                        Revisa <code>ownership_changes.json</code> para ver si hay registro del cambio. Si existe, el sistema lo detectó pero no envió alerta por la configuración.
+                    </div>
+
+                    <h4>2. Recibo demasiadas alertas</h4>
+                    <div class="warning-box">
+                        <strong>Esto puede ocurrir si:</strong>
+                        <ul>
+                            <li>Las alertas intra-squad están habilitadas (transferencias internas)</li>
+                            <li>Modo "alert_for_all" está activo (alertas para todos)</li>
+                            <li>Hay muchos robos legítimos en el servidor</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Contacta al admin para ajustar los filtros de alertas. Recomendado: VIP-only mode + solo cambios externos.
+                    </div>
+
+                    <h4>3. El cambio fue legítimo pero recibí alerta de "robo"</h4>
+                    <div class="info-box">
+                        <strong>Transferencias legítimas que activan alertas:</strong>
+                        <ul>
+                            <li>Vendiste o regalaste el vehículo a alguien de otro squad</li>
+                            <li>Saliste del squad y el vehículo quedó con otro miembro</li>
+                            <li>Hubo un cambio de líder de squad</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        El sistema detecta <strong>cambios de propietario</strong>, no puede distinguir entre robo y transferencia voluntaria. Esto es normal y esperado.
+                    </div>
+
+                    <h4>4. No apareció alerta de "robo confirmado" después de 24h</h4>
+                    <div class="info-box">
+                        <strong>La alerta de robo permanente se envía solo si:</strong>
+                        <ul>
+                            <li>El vehículo <strong>todavía existe</strong> después de 24h</li>
+                            <li>El propietario <strong>no cambió nuevamente</strong></li>
+                            <li>El vehículo <strong>no fue destruido</strong></li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo verificar:</strong><br>
+                        En <code>ownership_changes.json</code> busca el campo <code>"permanent": true</code> después de 24h. Si no está, es porque el vehículo ya no existe o cambió de dueño nuevamente.
+                    </div>
+
+                    <h4>5. Soy VIP pero no recibo alertas</h4>
+                    <div class="error-box">
+                        <strong>Verifica en la configuración:</strong>
+                        <ul>
+                            <li>Confirma que tu Steam ID está en la lista de VIPs</li>
+                            <li>Verifica que <code>vip_only.enabled = true</code></li>
+                            <li>Verifica que <code>alerts.enabled = true</code></li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo verificar:</strong><br>
+                        Contacta al admin y proporciona tu Steam ID. Ellos pueden verificar en el config si estás en la lista VIP correctamente.
+                    </div>
+
+                    <h4>6. ¿Dónde veo el historial de todos los robos?</h4>
+                    <div class="info-box">
+                        <strong>Archivo de historial:</strong><br>
+                        <div class="file-path">data/vehicles/ownership_history/ownership_changes.json</div>
+                        <p>Este archivo contiene <strong>todos</strong> los cambios de propietario detectados, incluyendo:</p>
+                        <ul>
+                            <li>Fecha y hora del cambio</li>
+                            <li>Propietario anterior y nuevo</li>
+                            <li>Squad anterior y nuevo</li>
+                            <li>Si el dueño anterior estaba online</li>
+                            <li>Si es cambio permanente (24h+)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIP SYSTEM TAB -->
+            <div id="vip_system" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('vip_system', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('vip_system', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('vip_system', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <!-- GUIDE -->
+                <div id="vip_system-guide" class="sub-panel active">
+                    <h2>📖 Sistema VIP</h2>
+
+                    <div class="info-box">
+                        <strong>¿Qué es el Sistema VIP?</strong><br>
+                        El Sistema VIP es una configuración centralizada que otorga beneficios especiales a jugadores premium en múltiples features del bot. Una vez que eres agregado como VIP, automáticamente recibes ventajas en todos los sistemas compatibles.
+                    </div>
+
+                    <h3>🎯 ¿Cómo funciona?</h3>
+
+                    <div class="feature-card">
+                        <h4>🔑 Lista Centralizada de VIPs</h4>
+                        <p>El administrador mantiene una lista única de Steam IDs VIP en la configuración del bot. Esta lista se usa automáticamente en todos los sistemas que soportan VIP.</p>
+                        <p><strong>Importante:</strong> No necesitas registrarte en cada sistema. Una vez agregado como VIP, todos tus beneficios se activan automáticamente.</p>
+                    </div>
+
+                    <h3>👑 Beneficios VIP por Sistema</h3>
+
+                    <h4>1️⃣ Sistema de Lotería</h4>
+                    <div class="success-box">
+                        <strong>Ventaja: Mayor probabilidad de ganar</strong>
+                        <ul>
+                            <li><strong>Multiplicador:</strong> 1.5x (50% más chances)</li>
+                            <li><strong>Ejemplo:</strong> Si un jugador normal tiene 10% de probabilidad, un VIP tiene 15%</li>
+                            <li>Se aplica automáticamente en cada sorteo</li>
+                            <li>Visible en logs del sistema</li>
+                        </ul>
+                    </div>
+
+                    <h4>2️⃣ Sistema de Límites de Vehículos</h4>
+                    <div class="success-box">
+                        <strong>Ventajas: Período de gracia extendido y multas reducidas</strong>
+                        <ul>
+                            <li><strong>Período de gracia:</strong> 48 horas (normal: 24h)</li>
+                            <li><strong>Multas:</strong> 50% de descuento
+                                <ul>
+                                    <li>Multa 1: $2,500 (normal: $5,000)</li>
+                                    <li>Multa 2: $3,750 (normal: $7,500)</li>
+                                    <li>Multa 3: $5,625 (normal: $11,250)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Límites:</strong> Los mismos (juego justo)</li>
+                        </ul>
+                    </div>
+
+                    <h4>3️⃣ Sistema de Alertas de Robo</h4>
+                    <div class="success-box">
+                        <strong>Ventaja: Alertas prioritarias de robo</strong>
+                        <ul>
+                            <li>Recibes alertas inmediatas cuando te roban un vehículo</li>
+                            <li>Alertas in-game si estás conectado</li>
+                            <li>Webhooks a Discord</li>
+                            <li>Seguimiento de robos offline</li>
+                            <li>Confirmación de robo permanente (24h)</li>
+                        </ul>
+                    </div>
+
+                    <h4>4️⃣ Sistema de Seguros de Vehículos</h4>
+                    <div class="success-box">
+                        <strong>Ventaja: Descuentos y beneficios especiales</strong>
+                        <ul>
+                            <li>Descuentos en primas de seguros (si configurado)</li>
+                            <li>Mayor cobertura o mejores términos</li>
+                            <li>Prioridad en procesamiento de claims</li>
+                        </ul>
+                    </div>
+
+                    <h4>5️⃣ Comandos de Chat</h4>
+                    <div class="success-box">
+                        <strong>Ventaja: Acceso a comandos especiales</strong>
+                        <ul>
+                            <li>Cooldowns reducidos en comandos</li>
+                            <li>Acceso a comandos VIP-only (si existen)</li>
+                            <li>Prioridad en procesamiento de comandos</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚙️ Sistema de Administradores Silenciosos</h3>
+
+                    <div class="warning-box">
+                        <strong>🎭 Silent Admins</strong>
+                        <p>Los administradores pueden configurar un <strong>nombre ficticio</strong> que aparecerá en el chat en lugar de su nombre real:</p>
+                        <ul>
+                            <li><strong>Propósito:</strong> Permite a admins probar el bot sin revelar su identidad</li>
+                            <li><strong>Funcionamiento:</strong> Los comandos y recompensas van al personaje real, pero el chat muestra el nombre ficticio</li>
+                            <li><strong>Ejemplo:</strong> Admin "El_Firu" configurado como "Goku" → Chat muestra "Goku ganó la lotería" pero el premio va a "El_Firu"</li>
+                            <li><strong>Transparencia:</strong> No afecta el gameplay, solo oculta la identidad en mensajes públicos</li>
+                        </ul>
+                    </div>
+
+                    <h3>📊 Tabla Resumen de Beneficios</h3>
+
+                    <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                        <thead>
+                            <tr style="background: var(--secondary); color: white;">
+                                <th style="padding: 10px; border: 1px solid var(--border);">Sistema</th>
+                                <th style="padding: 10px; border: 1px solid var(--border);">Beneficio</th>
+                                <th style="padding: 10px; border: 1px solid var(--border);">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">🎰 Lotería</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Mayor probabilidad</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">1.5x (50% más)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">🚙 Límites Vehículos</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Grace period extendido</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">48h (2x)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">🚙 Límites Vehículos</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Multas reducidas</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">50% descuento</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">🚨 Alertas de Robo</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Alertas prioritarias</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Sí</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">🛡️ Seguros</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Descuentos especiales</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Variable</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; border: 1px solid var(--border);">💬 Comandos</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Cooldowns reducidos</td>
+                                <td style="padding: 10px; border: 1px solid var(--border);">Variable</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>❓ ¿Cómo me convierto en VIP?</h3>
+                    <div class="info-box">
+                        <strong>Contacta al administrador del servidor:</strong>
+                        <ul>
+                            <li>El sistema VIP es gestionado por los administradores</li>
+                            <li>Proporciona tu <strong>Steam ID</strong></li>
+                            <li>El admin te agregará manualmente a la lista VIP</li>
+                            <li>Tus beneficios se activan <strong>inmediatamente</strong> después de ser agregado</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔍 ¿Cómo sé si soy VIP?</h3>
+                    <div class="success-box">
+                        <strong>Indicadores de que eres VIP:</strong>
+                        <ul>
+                            <li><strong>Lotería:</strong> Recibirás notificación de "mayor probabilidad de ganar" (en logs)</li>
+                            <li><strong>Límites Vehículos:</strong> Tus advertencias mencionarán "período de gracia extendido de 48h"</li>
+                            <li><strong>Alertas Robo:</strong> Recibirás alertas cuando te roben vehículos</li>
+                            <li><strong>Pregunta al admin:</strong> Ellos pueden confirmar tu estado VIP</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- COMMANDS -->
+                <div id="vip_system-commands" class="sub-panel">
+                    <h2>💬 Comandos Disponibles</h2>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Nota Importante:</strong><br>
+                        El sistema VIP es <strong>automático y pasivo</strong>. No hay comandos específicos para gestionar tu estado VIP. Tus beneficios se aplican automáticamente en todos los sistemas compatibles.
+                    </div>
+
+                    <h3>✅ Comandos que Aprovechan VIP</h3>
+
+                    <p>Todos los comandos normales del bot aprovechan automáticamente tus beneficios VIP:</p>
+
+                    <h4>🎰 Lotería</h4>
+                    <div class="command-box">@buy_ticket_bronze</div>
+                    <div class="command-box">@buy_ticket_silver</div>
+                    <div class="command-box">@buy_ticket_gold</div>
+                    <p>Al comprar tickets, automáticamente obtienes 1.5x probabilidad de ganar en los sorteos.</p>
+
+                    <h4>🚗 Vehículos</h4>
+                    <div class="command-box">@mis_vehiculos</div>
+                    <p>Este comando muestra tus vehículos. Si excedes límites, automáticamente obtienes 48h de gracia (en lugar de 24h).</p>
+
+                    <h4>🛡️ Seguros</h4>
+                    <div class="command-box">@insurance_&lt;VEHICLE_ID&gt;</div>
+                    <div class="command-box">@claim_insurance_&lt;CUSTOM_ID&gt;</div>
+                    <p>Al comprar o reclamar seguros, automáticamente obtienes descuentos VIP (si configurado).</p>
+
+                    <h3>👑 Comandos Administrativos (Solo Admins)</h3>
+
+                    <div class="info-box">
+                        <strong>Los admins pueden recargar la configuración VIP:</strong>
+                        <div class="command-box">@reload_config</div>
+                        <p>Este comando recarga toda la configuración del bot, incluyendo la lista VIP actualizada. Requiere permisos de administrador.</p>
+                    </div>
+
+                    <h3>❓ ¿Cómo verifico mis beneficios VIP?</h3>
+
+                    <div class="success-box">
+                        <strong>✅ Formas de Verificar:</strong>
+                        <ul>
+                            <li><strong>Prueba la lotería:</strong> Compra tickets y observa si ganas con más frecuencia</li>
+                            <li><strong>Excede un límite:</strong> Tendrás 48h en lugar de 24h (no recomendado a propósito)</li>
+                            <li><strong>Espera alertas de robo:</strong> Si te roban un vehículo, recibirás alerta</li>
+                            <li><strong>Pregunta al admin:</strong> Ellos pueden confirmar directamente</li>
+                        </ul>
+                    </div>
+
+                    <h3>🎭 Comandos con Silent Admin</h3>
+
+                    <div class="warning-box">
+                        <strong>Si eres un admin con nombre ficticio configurado:</strong>
+                        <p>Todos tus comandos funcionan normalmente, pero los mensajes públicos del bot mostrarán tu nombre ficticio en lugar de tu nombre real.</p>
+                        <p><strong>Ejemplo:</strong></p>
+                        <ul>
+                            <li>Comando ejecutado por: <code>El_Firu</code></li>
+                            <li>Chat muestra: <code>"Goku ganó la lotería"</code></li>
+                            <li>Premio entregado a: <code>El_Firu</code></li>
+                        </ul>
+                        <p>Esto te permite probar el bot sin revelar tu identidad de admin.</p>
+                    </div>
+                </div>
+
+                <!-- TROUBLESHOOTING -->
+                <div id="vip_system-troubleshoot" class="sub-panel">
+                    <h2>🔧 Troubleshooting - Configuración VIP</h2>
+
+                    <div class="data-location">
+                        <h4>📁 Dónde se guarda la configuración VIP:</h4>
+                        <div class="file-path">config/config.yaml</div>
+                        <p>La lista de VIPs está en la sección <code>vip_system</code> del archivo de configuración principal.</p>
+                    </div>
+
+                    <h3>🔍 Estructura de Configuración</h3>
+                    <div class="example-box">
+                        <pre>vip_system:
+    enabled: true
+    players:
+        - "76561198059658346"  # Steam ID del VIP 1
+        - "76561198371349858"  # Steam ID del VIP 2
+        # Agrega más Steam IDs aquí</pre>
+                    </div>
+
+                    <h3>❌ Problemas Comunes</h3>
+
+                    <h4>1. No recibo beneficios VIP</h4>
+                    <div class="error-box">
+                        <strong>Causas posibles:</strong>
+                        <ul>
+                            <li>Tu Steam ID no está en la lista VIP</li>
+                            <li>Tu Steam ID está mal escrito</li>
+                            <li>El sistema VIP está deshabilitado (<code>enabled: false</code>)</li>
+                            <li>El bot no recargó la configuración después de agregarte</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong>
+                        <ol>
+                            <li>Contacta al admin y proporciona tu Steam ID correcto</li>
+                            <li>Verifica que usas el formato correcto: <code>"76561198059658346"</code></li>
+                            <li>Pide al admin que ejecute <code>@reload_config</code></li>
+                            <li>Espera 1 minuto y prueba nuevamente</li>
+                        </ol>
+                    </div>
+
+                    <h4>2. Recibí beneficio VIP en un sistema pero no en otro</h4>
+                    <div class="info-box">
+                        <strong>Cada sistema puede tener su propia configuración VIP:</strong>
+                        <ul>
+                            <li><strong>Lotería:</strong> Sección <code>lottery.vip.multiplier</code></li>
+                            <li><strong>Alertas Robo:</strong> Sección <code>vehicle_ownership.alerts.vip_only.enabled</code></li>
+                            <li><strong>Límites Vehículos:</strong> Detecta automáticamente desde <code>vip_system</code></li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Si un sistema no reconoce tu VIP, el admin debe verificar que ese sistema específico tenga habilitado el soporte VIP en su configuración.
+                    </div>
+
+                    <h4>3. Mi Steam ID es correcto pero no funciona</h4>
+                    <div class="warning-box">
+                        <strong>Formato de Steam ID:</strong>
+                        <ul>
+                            <li><strong>Correcto:</strong> <code>"76561198059658346"</code> (con comillas)</li>
+                            <li><strong>Incorrecto:</strong> <code>76561198059658346</code> (sin comillas)</li>
+                            <li><strong>Incorrecto:</strong> <code>"STEAM_0:1:123456"</code> (formato antiguo)</li>
+                            <li><strong>Incorrecto:</strong> <code>"[U:1:123456]"</code> (formato Steam3)</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Cómo obtener tu Steam ID correcto:</strong>
+                        <ol>
+                            <li>Ve a <a href="https://steamid.io/" target="_blank">steamid.io</a></li>
+                            <li>Ingresa tu perfil de Steam</li>
+                            <li>Copia el <strong>steamID64</strong> (número largo de 17 dígitos)</li>
+                            <li>Proporciona ese número al admin</li>
+                        </ol>
+                    </div>
+
+                    <h4>4. Era VIP pero dejé de serlo</h4>
+                    <div class="error-box">
+                        <strong>Posibles razones:</strong>
+                        <ul>
+                            <li>El admin removió tu Steam ID de la lista</li>
+                            <li>Tu membresía VIP expiró (si es temporal)</li>
+                            <li>Hubo un error al actualizar la configuración</li>
+                            <li>El sistema VIP fue deshabilitado globalmente</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Contacta al administrador para verificar tu estado VIP y renovar si es necesario.
+                    </div>
+
+                    <h4>5. Soy admin con Silent Admin, ¿cómo funciona?</h4>
+                    <div class="info-box">
+                        <strong>Configuración de Silent Admin:</strong>
+                        <pre>admin_system:
+    enabled: true
+    admin_steam_ids:
+        - "76561198059658346"
+    silent_admins:
+        "76561198059658346": "Messirve"</pre>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Comportamiento:</strong>
+                        <ul>
+                            <li><strong>Comandos:</strong> Funcionan normalmente con tu personaje real</li>
+                            <li><strong>Recompensas:</strong> Van a tu personaje real</li>
+                            <li><strong>Chat público:</strong> Muestra tu nombre ficticio</li>
+                            <li><strong>Logs del sistema:</strong> Muestran tu nombre real</li>
+                            <li><strong>Propósito:</strong> Permite testing sin revelar identidad</li>
+                        </ul>
+                    </div>
+
+                    <h4>6. ¿Cómo verifico si el VIP system está habilitado?</h4>
+                    <div class="info-box">
+                        <strong>En config.yaml:</strong>
+                        <pre>vip_system:
+    enabled: true  # ← Debe estar en true</pre>
+                    </div>
+                    <div class="warning-box">
+                        <strong>Si está en false:</strong>
+                        <ul>
+                            <li>Ningún jugador recibe beneficios VIP</li>
+                            <li>La lista de VIPs existe pero no se usa</li>
+                            <li>Los sistemas individuales pueden tener su propio VIP habilitado pero no funcionará</li>
+                        </ul>
+                    </div>
+                    <div class="success-box">
+                        <strong>✅ Solución:</strong><br>
+                        Pide al admin que habilite <code>vip_system.enabled: true</code> y ejecute <code>@reload_config</code>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="footer">
+            <p>© 2025 Charrua Bot - Sistema de Automatización para Servidores SCUM</p>
+            <p>Documentación completa para usuarios finales</p>
+        </div>
+    </div>
+
+    <script>
+        function showMainTab(tabName) {
+            // Hide all panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Remove active from all tabs
+            document.querySelectorAll('.main-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected panel
+            document.getElementById(tabName).classList.add('active');
+
+            // Set active tab
+            event.target.classList.add('active');
+
+            // Show first sub-tab by default
+            showSubTab(tabName, 'guide');
+        }
+
+        function showSubTab(mainTab, subTab) {
+            // Hide all sub-panels for this main tab
+            document.querySelectorAll(`#${mainTab} .sub-panel`).forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Remove active from all sub-tabs
+            document.querySelectorAll(`#${mainTab} .sub-tab`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected sub-panel
+            document.getElementById(`${mainTab}-${subTab}`).classList.add('active');
+
+            // Set active sub-tab
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Default to first sub-tab
+                document.querySelector(`#${mainTab} .sub-tab`).classList.add('active');
+            }
+        }
+
+        // Initialize first tab
+        window.addEventListener('DOMContentLoaded', () => {
+            showMainTab('rewards');
+        });
+    </script>
+</body>
+</html>
