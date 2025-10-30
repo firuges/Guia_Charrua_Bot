@@ -589,9 +589,14 @@
                         <div class="file-path">
                             data/rewards/player_streaks.json
                         </div>
-                        <p><strong>Qué contiene:</strong> Historial de tus recompensas diarias y tu racha actual</p>
+                        <p><strong>Qué contiene:</strong> Tu racha actual de días consecutivos y última fecha de reward</p>
 
-                        <h4>🔍 Cómo verificar:</h4>
+                        <div class="file-path">
+                            data/rewards/daily_cash_history.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las recompensas diarias entregadas (con fechas, montos y razones)</p>
+
+                        <h4>🔍 Cómo verificar en player_streaks.json:</h4>
                         <ol>
                             <li>Abre el archivo <code>player_streaks.json</code></li>
                             <li>Busca tu Steam ID (número largo de 17 dígitos)</li>
@@ -599,11 +604,26 @@
                             <li>Verifica el campo <code>"current_streak"</code> (tu racha actual)</li>
                         </ol>
 
+                        <h4>🔍 Cómo verificar en daily_cash_history.json:</h4>
+                        <ol>
+                            <li>Abre el archivo <code>daily_cash_history.json</code></li>
+                            <li>Busca tu Steam ID en la lista de entregas</li>
+                            <li>Verifica los campos:
+                                <ul>
+                                    <li><code>"timestamp"</code> - Fecha/hora exacta de entrega</li>
+                                    <li><code>"amount"</code> - Cuánto dinero se te entregó</li>
+                                    <li><code>"streak_bonus"</code> - Bono por días consecutivos</li>
+                                    <li><code>"reason"</code> - Por qué se entregó (daily_reward)</li>
+                                </ul>
+                            </li>
+                        </ol>
+
                         <h4>✅ Soluciones:</h4>
                         <ul>
                             <li><strong>Si no aparece tu Steam ID:</strong> Espera a que estés online por al menos 5 minutos</li>
                             <li><strong>Si last_reward_date es de hoy:</strong> Ya recibiste tu reward de hoy, espera hasta mañana</li>
                             <li><strong>Si last_reward_date es de ayer o antes:</strong> Contacta a un admin, puede haber un problema</li>
+                            <li><strong>Para ver tu historial completo:</strong> Revisa daily_cash_history.json con tu Steam ID</li>
                         </ul>
                     </div>
 
@@ -611,14 +631,22 @@
                     <div class="data-location">
                         <h4>📁 Dónde se guardan los datos:</h4>
                         <div class="file-path">
-                            data/rewards/welcome_packs.json
+                            data/rewards/welcome_pack_history.json
                         </div>
-                        <p><strong>Qué contiene:</strong> Lista de jugadores que ya recibieron su welcome pack</p>
+                        <p><strong>Qué contiene:</strong> Historial completo de todos los welcome packs entregados (con fechas, items y montos)</p>
 
                         <h4>🔍 Cómo verificar:</h4>
                         <ol>
-                            <li>Abre el archivo <code>welcome_packs.json</code></li>
-                            <li>Busca tu Steam ID en la lista <code>"claimed_packs"</code></li>
+                            <li>Abre el archivo <code>welcome_pack_history.json</code></li>
+                            <li>Busca tu Steam ID en la lista de entregas</li>
+                            <li>Verifica los campos:
+                                <ul>
+                                    <li><code>"timestamp"</code> - Fecha/hora exacta de entrega</li>
+                                    <li><code>"cash_amount"</code> - Cuánto dinero recibiste</li>
+                                    <li><code>"items"</code> - Lista de items que se te entregaron</li>
+                                    <li><code>"player_name"</code> - Tu nombre en el servidor</li>
+                                </ul>
+                            </li>
                             <li>Si apareces, significa que ya reclamaste tu welcome pack antes</li>
                         </ol>
 
@@ -627,6 +655,7 @@
                             <li><strong>Si apareces en la lista:</strong> Ya recibiste tu welcome pack (solo se da una vez)</li>
                             <li><strong>Si NO apareces en la lista:</strong> Espera 5-10 minutos después de conectarte por primera vez</li>
                             <li><strong>Si pasaron más de 10 minutos:</strong> Contacta a un admin con tu Steam ID</li>
+                            <li><strong>Para ver qué recibiste exactamente:</strong> Revisa el campo "items" en tu entrada del historial</li>
                         </ul>
                     </div>
 
@@ -648,7 +677,7 @@
                             <li>Cuántos días de racha tenías</li>
                             <li>Fecha aproximada de la última vez que recibiste el daily cash</li>
                         </ul>
-                        El admin puede revisar el archivo <code>rewards_history.json</code> que contiene todo el historial.
+                        El admin puede revisar los archivos <code>player_streaks.json</code> y <code>daily_cash_history.json</code> que contienen todo el historial de tu racha y recompensas.
                     </div>
                 </div>
             </div>
@@ -923,23 +952,43 @@
                     <div class="data-location">
                         <h4>📁 Dónde se guardan los datos:</h4>
                         <div class="file-path">
-                            data/lottery/winners_history.json<br>
+                            data/lottery/winners_history.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Historial de todos los ganadores con premios, fechas y estado de entrega</p>
+
+                        <div class="file-path">
                             data/lottery/draws_history.json
                         </div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todos los sorteos realizados (fecha, participantes, ganador)</p>
 
-                        <h4>🔍 Cómo verificar:</h4>
+                        <div class="file-path">
+                            data/lottery/mailbox.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Premios pendientes de entrega (si estabas offline cuando ganaste)</p>
+
+                        <h4>🔍 Cómo verificar en winners_history.json:</h4>
                         <ol>
                             <li>Abre <code>winners_history.json</code></li>
-                            <li>Busca tu nombre en la lista de ganadores recientes</li>
+                            <li>Busca tu nombre o Steam ID en la lista de ganadores recientes</li>
                             <li>Verifica el campo <code>"delivered"</code> (debe ser <code>true</code>)</li>
                             <li>Verifica el campo <code>"prize_name"</code> (qué ganaste)</li>
+                            <li>Verifica el campo <code>"timestamp"</code> (cuándo ganaste)</li>
+                        </ol>
+
+                        <h4>🔍 Cómo verificar en mailbox.json:</h4>
+                        <ol>
+                            <li>Abre <code>mailbox.json</code></li>
+                            <li>Busca tu Steam ID</li>
+                            <li>Si apareces aquí, significa que ganaste pero el premio no se pudo entregar (estabas offline o hubo error)</li>
+                            <li>El sistema intentará entregarlo cuando te conectes</li>
                         </ol>
 
                         <h4>✅ Soluciones:</h4>
                         <ul>
                             <li><strong>Si delivered = true:</strong> El premio se spawneó en tu ubicación, búscalo cerca de donde estabas</li>
                             <li><strong>Si delivered = false:</strong> Hubo un error en la entrega, contacta a un admin</li>
-                            <li><strong>Si no apareces en la lista:</strong> Es posible que no hayas ganado, verifica el chat del juego</li>
+                            <li><strong>Si apareces en mailbox:</strong> Conéctate al servidor, el sistema intentará entregar automáticamente</li>
+                            <li><strong>Si no apareces en ninguna lista:</strong> Es posible que no hayas ganado, verifica el chat del juego</li>
                         </ul>
                     </div>
 
@@ -961,17 +1010,36 @@
                     </div>
 
                     <div class="data-location">
-                        <h4>🔍 Ver estadísticas:</h4>
+                        <h4>📁 Ver estadísticas y análisis:</h4>
                         <div class="file-path">
                             data/lottery/lottery_stats.json
                         </div>
-                        <p>Aquí puedes ver:</p>
+                        <p><strong>Qué contiene:</strong> Estadísticas globales del sistema de lotería</p>
                         <ul>
                             <li>Total de sorteos realizados</li>
                             <li>Quién ha ganado más veces</li>
                             <li>Distribución de premios por rareza</li>
                             <li>Jugadores únicos que han ganado</li>
                         </ul>
+
+                        <div class="file-path">
+                            data/lottery/draws_history.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Historial detallado sorteo por sorteo</p>
+                        <ul>
+                            <li>Fecha y hora de cada sorteo</li>
+                            <li>Cuántos jugadores participaron</li>
+                            <li>Quién ganó cada sorteo</li>
+                            <li>Qué premio se entregó</li>
+                        </ul>
+
+                        <h4>🔍 Cómo analizar tus estadísticas:</h4>
+                        <ol>
+                            <li>Abre <code>lottery_stats.json</code> para ver el panorama general</li>
+                            <li>Abre <code>draws_history.json</code> y busca tu nombre para ver todos los sorteos en los que participaste</li>
+                            <li>Compara cuántas veces participaste vs. cuántas veces ganaste</li>
+                            <li>Verifica si estás en cooldown revisando los últimos 3 sorteos</li>
+                        </ol>
                     </div>
 
                     <h3>❌ No puedo comprar tickets</h3>
@@ -1000,21 +1068,36 @@
                     <div class="data-location">
                         <h4>📁 Dónde se guardan los datos:</h4>
                         <div class="file-path">
-                            data/lottery/tickets_storage.json
+                            data/lottery/active_tickets.json
                         </div>
+                        <p><strong>Qué contiene:</strong> Todos los tickets activos de todos los jugadores con tier, boost y fecha de compra</p>
 
-                        <h4>🔍 Cómo verificar:</h4>
+                        <div class="file-path">
+                            data/lottery/tickets_history.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las compras de tickets (con timestamps y precios)</p>
+
+                        <h4>🔍 Cómo verificar en active_tickets.json:</h4>
                         <ol>
-                            <li>Abre <code>tickets_storage.json</code></li>
-                            <li>Busca tu Steam ID o nombre</li>
-                            <li>Verifica el campo <code>"tickets"</code> (debe tener tu ticket listado)</li>
+                            <li>Abre <code>active_tickets.json</code></li>
+                            <li>Busca tu Steam ID en la lista de jugadores</li>
+                            <li>Verifica el campo <code>"tickets"</code> (debe tener tu ticket listado con tier: "bronze", "silver", "gold" o "platinum")</li>
                             <li>Verifica el campo <code>"total_boost"</code> (debe reflejar el boost de tus tickets)</li>
+                            <li>Verifica el campo <code>"total_cost"</code> (cuánto gastaste en total en tickets)</li>
+                        </ol>
+
+                        <h4>🔍 Cómo verificar en tickets_history.json:</h4>
+                        <ol>
+                            <li>Abre <code>tickets_history.json</code></li>
+                            <li>Busca tu compra reciente (ordenado por timestamp)</li>
+                            <li>Verifica que el tier y precio coinciden con lo que compraste</li>
                         </ol>
 
                         <h4>✅ Soluciones:</h4>
                         <ul>
-                            <li><strong>Si el ticket aparece:</strong> Todo correcto, usa <code>@tickets</code> para ver el resumen</li>
-                            <li><strong>Si no aparece:</strong> Hubo un error, contacta a un admin con captura del chat mostrando el cobro</li>
+                            <li><strong>Si el ticket aparece en active_tickets:</strong> Todo correcto, usa <code>@tickets</code> para ver el resumen</li>
+                            <li><strong>Si aparece en history pero no en active:</strong> Se pudo haber reseteado, verifica el modo de reset</li>
+                            <li><strong>Si no aparece en ninguno:</strong> Hubo un error, contacta a un admin con captura del chat mostrando el cobro</li>
                             <li><strong>Si el dinero no se descontó:</strong> La compra falló, intenta de nuevo</li>
                         </ul>
                     </div>
@@ -1264,20 +1347,54 @@
 
                     <h3>❌ Mi vehículo no aparece registrado</h3>
                     <div class="data-location">
-                        <h4>📁 Archivo de datos:</h4>
+                        <h4>📁 Archivos de datos de vehículos:</h4>
                         <div class="file-path">data/sync_data/vehicles.json</div>
+                        <p><strong>Qué contiene:</strong> Estado actual de todos los vehículos en el servidor (owner, location, lock status)</p>
 
-                        <h4>🔍 Cómo verificar:</h4>
+                        <div class="file-path">data/vehicles/current_session.json</div>
+                        <p><strong>Qué contiene:</strong> Snapshot de la sesión actual de vehículos (registros y propietarios)</p>
+
+                        <div class="file-path">data/vehicles/ownership_history/ownership_changes.json</div>
+                        <p><strong>Qué contiene:</strong> Historial de cambios de propietario (transferencias, robos)</p>
+
+                        <div class="file-path">data/vehicles/ownership_history/destroyed_vehicles.json</div>
+                        <p><strong>Qué contiene:</strong> Vehículos destruidos (fecha, dueño, causa)</p>
+
+                        <h4>🔍 Verificar en vehicles.json:</h4>
                         <ol>
                             <li>Abre el archivo <code>vehicles.json</code></li>
                             <li>Busca el ID de tu vehículo o tu nombre de jugador</li>
-                            <li>Verifica los campos <code>owner_name</code> y <code>entity_id</code></li>
+                            <li>Verifica los campos <code>"owner_name"</code> y <code>"entity_id"</code></li>
+                            <li>Verifica el campo <code>"location"</code> (coordenadas X, Y)</li>
+                            <li>Verifica el campo <code>"locked"</code> (true/false)</li>
+                        </ol>
+
+                        <h4>🔍 Ver historial de cambios en ownership_changes.json:</h4>
+                        <ol>
+                            <li>Abre <code>ownership_changes.json</code></li>
+                            <li>Busca el ID de tu vehículo</li>
+                            <li>Verás todos los cambios de dueño:
+                                <ul>
+                                    <li><code>"previous_owner"</code> - Dueño anterior</li>
+                                    <li><code>"new_owner"</code> - Nuevo dueño</li>
+                                    <li><code>"timestamp"</code> - Cuándo cambió</li>
+                                    <li><code>"reason"</code> - Motivo (theft, transfer, claim)</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>🔍 Ver vehículos destruidos en destroyed_vehicles.json:</h4>
+                        <ol>
+                            <li>Abre <code>destroyed_vehicles.json</code></li>
+                            <li>Busca tu nombre o Steam ID</li>
+                            <li>Verás vehículos tuyos que fueron destruidos (con fecha y causa)</li>
                         </ol>
 
                         <h4>✅ Soluciones:</h4>
                         <ul>
-                            <li><strong>Si no aparece:</strong> Espera 5 minutos, el sistema sincroniza cada cierto tiempo</li>
-                            <li><strong>Si aparece con otro dueño:</strong> Es posible que hayas sido robado o transferiste el vehículo</li>
+                            <li><strong>Si no aparece en vehicles.json:</strong> Espera 5 minutos, el sistema sincroniza cada 20 segundos</li>
+                            <li><strong>Si aparece con otro dueño:</strong> Revisa ownership_changes.json para ver cuándo y por qué cambió</li>
+                            <li><strong>Si aparece en destroyed_vehicles:</strong> Tu vehículo fue destruido, reclama el seguro si lo tenías</li>
                             <li><strong>Si los datos son incorrectos:</strong> Contacta a un admin con el ID del vehículo</li>
                         </ul>
                     </div>
@@ -1293,16 +1410,57 @@
                     </div>
 
                     <div class="data-location">
-                        <h4>📁 Archivo de violaciones:</h4>
-                        <div class="file-path">data/vehicle_violations/violations.json</div>
+                        <h4>📁 Archivos de violaciones de límites de vehículos:</h4>
+                        <div class="file-path">data/vehicle_limits/violations.json</div>
+                        <p><strong>Qué contiene:</strong> Estado actual de violaciones por squad (warnings, multas pendientes)</p>
 
-                        <h4>🔍 Ver tu historial de violaciones:</h4>
+                        <div class="file-path">data/vehicle_limits/warnings_log.json</div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las advertencias enviadas (con fechas y detalles)</p>
+
+                        <div class="file-path">data/vehicle_limits/fines_log.json</div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las multas aplicadas (montos, fechas, squads afectados)</p>
+
+                        <h4>🔍 Ver tu estado actual en violations.json:</h4>
                         <ol>
                             <li>Abre <code>violations.json</code></li>
                             <li>Busca tu squad ID o nombre de squad</li>
-                            <li>Verifica <code>warnings_count</code> (advertencias recibidas)</li>
-                            <li>Verifica <code>fines_applied</code> (multas cobradas)</li>
-                            <li>Verifica <code>pending_fines</code> (multas pendientes)</li>
+                            <li>Verifica los campos:
+                                <ul>
+                                    <li><code>"warnings_count"</code> - Advertencias recibidas</li>
+                                    <li><code>"fines_applied"</code> - Multas ya cobradas</li>
+                                    <li><code>"pending_fines"</code> - Multas pendientes de cobro</li>
+                                    <li><code>"last_warning"</code> - Fecha de última advertencia</li>
+                                    <li><code>"last_fine"</code> - Fecha de última multa</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>🔍 Ver historial de advertencias en warnings_log.json:</h4>
+                        <ol>
+                            <li>Abre <code>warnings_log.json</code></li>
+                            <li>Busca tu squad ID o nombre</li>
+                            <li>Verás todas las advertencias con:
+                                <ul>
+                                    <li><code>"timestamp"</code> - Cuándo se envió la advertencia</li>
+                                    <li><code>"vehicle_count"</code> - Cuántos vehículos tenías en PVE</li>
+                                    <li><code>"limit"</code> - Cuál es el límite permitido</li>
+                                    <li><code>"owner_status"</code> - Si estabas online u offline</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>🔍 Ver historial de multas en fines_log.json:</h4>
+                        <ol>
+                            <li>Abre <code>fines_log.json</code></li>
+                            <li>Busca tu squad ID</li>
+                            <li>Verás todas las multas con:
+                                <ul>
+                                    <li><code>"timestamp"</code> - Cuándo se aplicó la multa</li>
+                                    <li><code>"amount"</code> - Monto cobrado</li>
+                                    <li><code>"reason"</code> - Por qué se aplicó</li>
+                                    <li><code>"paid"</code> - Si se cobró exitosamente (true/false)</li>
+                                </ul>
+                            </li>
                         </ol>
 
                         <h4>✅ Cómo evitar multas:</h4>
@@ -1325,15 +1483,40 @@
                     </div>
 
                     <div class="data-location">
-                        <h4>📁 Archivo de seguros:</h4>
-                        <div class="file-path">data/insurance/insurance_policies.json</div>
+                        <h4>📁 Archivos de seguros:</h4>
+                        <div class="file-path">data/insurances/active_insurances.json</div>
+                        <p><strong>Qué contiene:</strong> Todos los seguros actualmente activos (no expirados, no reclamados)</p>
 
-                        <h4>🔍 Verificar tu seguro:</h4>
+                        <div class="file-path">data/insurances/claimed_insurances.json</div>
+                        <p><strong>Qué contiene:</strong> Historial de seguros reclamados (vehículos que fueron reemplazados por seguro)</p>
+
+                        <div class="file-path">data/insurances/insurance_history.json</div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las compras y reclamaciones de seguros</p>
+
+                        <h4>🔍 Verificar en active_insurances.json:</h4>
                         <ol>
-                            <li>Abre <code>insurance_policies.json</code></li>
+                            <li>Abre <code>active_insurances.json</code></li>
                             <li>Busca el ID de tu vehículo</li>
-                            <li>Verifica el campo <code>expires_at</code> (fecha de expiración)</li>
-                            <li>Verifica el campo <code>status</code> (debe ser "active")</li>
+                            <li>Verifica el campo <code>"expires_at"</code> (fecha de expiración)</li>
+                            <li>Verifica el campo <code>"status"</code> (debe ser "active")</li>
+                            <li>Verifica el campo <code>"purchase_date"</code> (cuándo compraste el seguro)</li>
+                        </ol>
+
+                        <h4>🔍 Verificar en claimed_insurances.json:</h4>
+                        <ol>
+                            <li>Abre <code>claimed_insurances.json</code></li>
+                            <li>Busca tu Steam ID o nombre</li>
+                            <li>Verifica el campo <code>"claim_date"</code> (cuándo reclamaste)</li>
+                            <li>Verifica el campo <code>"respawn_date"</code> (cuándo se respawneará tu vehículo)</li>
+                            <li>Si apareces aquí, tu seguro fue reclamado exitosamente</li>
+                        </ol>
+
+                        <h4>🔍 Ver historial completo en insurance_history.json:</h4>
+                        <ol>
+                            <li>Abre <code>insurance_history.json</code></li>
+                            <li>Busca tu Steam ID</li>
+                            <li>Verás todas tus compras de seguros (fecha, vehículo, precio)</li>
+                            <li>Verás todas tus reclamaciones (fecha, motivo, éxito/fallo)</li>
                         </ol>
                     </div>
                 </div>
@@ -1578,10 +1761,17 @@
                     </div>
 
                     <div class="data-location">
-                        <h4>📁 Archivo de claims:</h4>
+                        <h4>📁 Archivos de claims:</h4>
                         <div class="file-path">data/fame_claims/player_claims.json</div>
+                        <p><strong>Qué contiene:</strong> Registro de qué tiers ha reclamado cada jugador (por Steam ID)</p>
 
-                        <h4>🔍 Ver qué has reclamado:</h4>
+                        <div class="file-path">data/fame_claims/claims_history.json</div>
+                        <p><strong>Qué contiene:</strong> Historial completo de todas las reclamaciones (con fechas, items entregados, estado de entrega)</p>
+
+                        <div class="file-path">data/fame_claims/fame_claim_stats.json</div>
+                        <p><strong>Qué contiene:</strong> Estadísticas globales del sistema (tier más reclamado, total de claims, etc.)</p>
+
+                        <h4>🔍 Ver qué has reclamado en player_claims.json:</h4>
                         <ol>
                             <li>Abre <code>player_claims.json</code></li>
                             <li>Busca tu Steam ID</li>
@@ -2037,12 +2227,22 @@
 
                     <h3>❌ Me cobraron pero no me teletransportaron</h3>
                     <div class="data-location">
-                        <h4>📁 Archivo de datos:</h4>
-                        <div class="file-path">data/taxi/taxi_requests.json</div>
+                        <h4>📁 Archivos de datos del sistema de taxi:</h4>
+                        <div class="file-path">data/taxi/taxi_requests_teleport.json</div>
+                        <p><strong>Qué contiene:</strong> Solicitudes de teleport (@taxi) con estado de ejecución</p>
 
-                        <h4>🔍 Verificar tu solicitud:</h4>
+                        <div class="file-path">data/taxi/taxi_requests_conductor.json</div>
+                        <p><strong>Qué contiene:</strong> Solicitudes de conductor (@conductor) con estado de ejecución</p>
+
+                        <div class="file-path">data/taxi/taxi_cooldown_teleport.json</div>
+                        <p><strong>Qué contiene:</strong> Cooldowns de teleports (cuándo puedes volver a usar @taxi)</p>
+
+                        <div class="file-path">data/taxi/taxi_cooldown_conductor.json</div>
+                        <p><strong>Qué contiene:</strong> Cooldowns de conductor (cuándo puedes volver a usar @conductor)</p>
+
+                        <h4>🔍 Verificar tu solicitud de teleport en taxi_requests_teleport.json:</h4>
                         <ol>
-                            <li>Abre <code>taxi_requests.json</code></li>
+                            <li>Abre <code>taxi_requests_teleport.json</code></li>
                             <li>Busca tu Steam ID o nombre</li>
                             <li>Verifica el campo <code>"status"</code>:
                                 <ul>
@@ -2051,6 +2251,16 @@
                                     <li><code>"failed"</code> = Falló</li>
                                 </ul>
                             </li>
+                            <li>Verifica el campo <code>"timestamp"</code> (cuándo solicitaste el taxi)</li>
+                            <li>Verifica el campo <code>"destination"</code> (a qué pad solicitaste ir)</li>
+                        </ol>
+
+                        <h4>🔍 Verificar cooldowns en taxi_cooldown_teleport.json:</h4>
+                        <ol>
+                            <li>Abre <code>taxi_cooldown_teleport.json</code></li>
+                            <li>Busca tu Steam ID</li>
+                            <li>Verifica el campo <code>"cooldown_until"</code> (timestamp de cuándo puedes volver a usar taxi)</li>
+                            <li>Si la fecha es futura, debes esperar hasta esa hora</li>
                         </ol>
 
                         <h4>✅ Soluciones:</h4>
@@ -2058,6 +2268,7 @@
                             <li><strong>Si status = "failed":</strong> Hubo un error, contacta a un admin para reembolso</li>
                             <li><strong>Si status = "completed":</strong> El teleport se ejecutó, verifica que no hayas muerto inmediatamente después</li>
                             <li><strong>Si status = "pending":</strong> El teleport aún no se ejecutó, espera unos segundos más</li>
+                            <li><strong>Para ver tu historial completo:</strong> Busca todas tus entradas en el archivo de requests</li>
                         </ul>
                     </div>
 
@@ -2260,22 +2471,35 @@
 
                     <h3>❌ Recibí multa pero ya moví mis cofres</h3>
                     <div class="data-location">
-                        <h4>📁 Archivo de datos:</h4>
-                        <div class="file-path">data/chest_violations/violations.json</div>
+                        <h4>📁 Archivos de datos de cofres:</h4>
+                        <div class="file-path">data/sync_data/base_element_chests.json</div>
+                        <p><strong>Qué contiene:</strong> Todos los cofres base_element (wooden chests, metal chests) en el servidor con owner y ubicación</p>
 
-                        <h4>🔍 Verificar tu violación:</h4>
+                        <div class="file-path">data/sync_data/container_chests.json</div>
+                        <p><strong>Qué contiene:</strong> Todos los containers (barrels, etc.) en el servidor con owner y ubicación</p>
+
+                        <h4>🔍 Verificar tus cofres en base_element_chests.json:</h4>
                         <ol>
-                            <li>Abre <code>violations.json</code></li>
-                            <li>Busca tu squad ID o nombre de squad</li>
-                            <li>Verifica el campo <code>"violating_chests"</code> (lista de cofres)</li>
-                            <li>Verifica si los cofres listados aún existen</li>
+                            <li>Abre <code>base_element_chests.json</code></li>
+                            <li>Busca tu squad ID o nombre en el campo <code>"owner"</code></li>
+                            <li>Verifica el campo <code>"location"</code> (coordenadas X, Y, Z)</li>
+                            <li>Verifica el campo <code>"zone_type"</code> (debe ser "PVP" o "PVE")</li>
+                            <li>Verifica el campo <code>"chest_type"</code> (wooden_chest, metal_chest, etc.)</li>
                         </ol>
+
+                        <h4>🔍 Cómo interpretar la zona:</h4>
+                        <ul>
+                            <li><strong>Si zone_type = "PVE" y tienes banderas PVP:</strong> Esto causará violación</li>
+                            <li><strong>Si zone_type = "PVP":</strong> No hay problema, puedes tener cofres ahí</li>
+                            <li><strong>Si no aparece zone_type:</strong> El sistema aún no sincronizó la zona</li>
+                        </ul>
 
                         <h4>✅ Soluciones:</h4>
                         <ul>
-                            <li><strong>Si los cofres ya no existen:</strong> El sistema se actualizará en el próximo check (cada X minutos)</li>
-                            <li><strong>Si moviste los cofres a PVP:</strong> Espera el próximo check para que se detecte</li>
-                            <li><strong>Si el sistema no detecta el cambio:</strong> Contacta a un admin</li>
+                            <li><strong>Si los cofres ya no existen:</strong> El sistema se actualizará en el próximo sync (cada 20 segundos)</li>
+                            <li><strong>Si moviste los cofres a PVP:</strong> Espera el próximo sync para que se detecte el cambio de zona</li>
+                            <li><strong>Si el sistema no detecta el cambio:</strong> Verifica que tus cofres realmente estén en zona PVP (mira el indicador en el juego)</li>
+                            <li><strong>Para ver todos tus cofres:</strong> Busca tu squad ID en ambos archivos JSON</li>
                         </ul>
                     </div>
 
