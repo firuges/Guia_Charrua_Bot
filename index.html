@@ -705,44 +705,80 @@
                             <li>Cada 30 minutos (configurable por el admin) se realiza un sorteo automático</li>
                             <li>Todos los jugadores online participan automáticamente</li>
                             <li>Se elige un ganador aleatorio</li>
+                            <li>El premio se selecciona usando <strong>sistema de weights</strong> (pesos)</li>
                             <li>El premio se spawnea en la ubicación del ganador</li>
+                            <li>Si el premio tiene múltiples unidades (munición, flechas), se divide en stacks correctos</li>
                             <li>Se anuncia al ganador en el chat del servidor</li>
                         </ol>
                     </div>
 
+                    <h3>⚖️ Sistema de Pesos (Weights)</h3>
+                    <div class="info-box">
+                        <strong>Cómo funcionan las probabilidades:</strong>
+                        <p>El sistema usa <strong>pesos enteros</strong> en lugar de porcentajes complicados. Cada premio tiene un "weight" (peso), y la probabilidad real se calcula dividiendo el peso del premio por la suma total de todos los pesos.</p>
+                        <ul>
+                            <li><strong>Total de weights:</strong> 1022 puntos distribuidos entre todos los premios</li>
+                            <li><strong>Ejemplo:</strong> Un premio con weight 5 tiene 5/1022 = 0.49% de probabilidad</li>
+                            <li><strong>Otro ejemplo:</strong> Un premio con weight 100 tiene 100/1022 = 9.78% de probabilidad</li>
+                        </ul>
+                        <p><strong>💡 Ventaja:</strong> Este sistema es más fácil de configurar y ajustar que los decimales tradicionales.</p>
+                    </div>
+
                     <h3>🏆 Tipos de Premios</h3>
+                    <div class="info-box">
+                        <strong>23 premios disponibles distribuidos por rareza:</strong>
+                    </div>
                     <table>
                         <tr>
                             <th>Rareza</th>
                             <th>Probabilidad</th>
+                            <th>Premios</th>
                             <th>Ejemplos</th>
                         </tr>
                         <tr>
-                            <td><span class="badge" style="background: #95a5a6;">Común</span></td>
-                            <td>35%</td>
-                            <td>Manzanas, piedras, madera</td>
+                            <td><span class="badge" style="background: #95a5a6;">⭐ Común</span></td>
+                            <td>~44%</td>
+                            <td>7 items</td>
+                            <td>Calibre 9mm, Calibre 22, Velas, M9, Destornillador</td>
                         </tr>
                         <tr>
-                            <td><span class="badge" style="background: #3498db;">No Común</span></td>
-                            <td>30%</td>
-                            <td>Herramientas, comida, medicina</td>
+                            <td><span class="badge" style="background: #3498db;">⭐⭐ No Común</span></td>
+                            <td>~29%</td>
+                            <td>6 items</td>
+                            <td>Flechas de Carbono, Hacha, Atún, Agua, Vendas, Analgésicos</td>
                         </tr>
                         <tr>
-                            <td><span class="badge" style="background: #9b59b6;">Raro</span></td>
-                            <td>20%</td>
-                            <td>Munición, mochilas, medicina avanzada</td>
+                            <td><span class="badge" style="background: #9b59b6;">⭐⭐⭐ Raro</span></td>
+                            <td>~18%</td>
+                            <td>4 items</td>
+                            <td>Cargadores AK47, Munición 7.62x39mm, Antibióticos, Mochila Policial</td>
                         </tr>
                         <tr>
-                            <td><span class="badge" style="background: #e74c3c;">Épico</span></td>
-                            <td>10%</td>
-                            <td>Armas medias, equipo especial</td>
+                            <td><span class="badge" style="background: #e74c3c;">⭐⭐⭐⭐ Épico</span></td>
+                            <td>~7%</td>
+                            <td>3 items</td>
+                            <td>M16 Rifle, MP5, Mochila de Senderismo</td>
                         </tr>
                         <tr>
-                            <td><span class="badge" style="background: #f39c12;">Legendario</span></td>
-                            <td>5%</td>
-                            <td>AK-47, AWM, Barrett M82A1</td>
+                            <td><span class="badge" style="background: #f39c12;">⭐⭐⭐⭐⭐ Legendario</span></td>
+                            <td>~2%</td>
+                            <td>3 items</td>
+                            <td>AK-47, AWM Sniper, Barrett M82A1</td>
                         </tr>
                     </table>
+
+                    <h3>📦 Spawning de Premios con Múltiples Unidades</h3>
+                    <div class="info-box">
+                        <strong>Sistema inteligente para munición y flechas:</strong>
+                        <p>Cuando ganas munición o flechas, el bot respeta los límites de stack del juego:</p>
+                        <ul>
+                            <li><strong>Munición 7.62x39mm:</strong> Max 30 por stack → 38 balas se spawnean como: 1 stack de 30 + 1 stack de 8</li>
+                            <li><strong>Calibre 9mm:</strong> Max 30 por stack → 40 balas = 1 stack de 30 + 1 stack de 10</li>
+                            <li><strong>Calibre 22:</strong> Max 20 por stack → 35 balas = 1 stack de 20 + 1 stack de 15</li>
+                            <li><strong>Flechas de Carbono:</strong> Max 12 por stack → 25 flechas = 2 stacks de 12 + 1 stack de 1</li>
+                        </ul>
+                        <p><strong>💡 Ventaja:</strong> Recibes stacks perfectamente divididos sin perder items por límites de stack.</p>
+                    </div>
 
                     <h3>⭐ Ventajas VIP (Desactivable)</h3>
                     <div class="success-box">
@@ -1876,6 +1912,46 @@
                         Si estás en A0 y quieres ir a D4 (cruzar todo el mapa) → $3,000
                     </div>
 
+                    <h3>⏱️ Sistema de Cooldown Inteligente</h3>
+                    <div class="success-box">
+                        <strong>✅ El sistema es justo y solo aplica cooldown cuando realmente usas el taxi</strong>
+                        <p>El cooldown del taxi se aplica de manera inteligente para no penalizarte por errores de validación que no son tu culpa:</p>
+                    </div>
+
+                    <h4>🚫 NO se aplica cooldown cuando:</h4>
+                    <div class="info-box">
+                        <ul>
+                            <li><strong>🗺️ Estás en zona prohibida:</strong> Si intentas pedir taxi desde una zona prohibida, el sistema te rechazará pero NO te aplicará cooldown. Puedes reintentar inmediatamente después de salir de la zona</li>
+                            <li><strong>📍 Ya estás en el destino:</strong> Si pides taxi al mismo pad donde ya estás, no tiene sentido aplicar cooldown</li>
+                            <li><strong>🎯 Destino inválido:</strong> Si escribes mal el destino o pides un pad que no existe</li>
+                            <li><strong>💰 Fondos insuficientes:</strong> Si no tienes suficiente dinero para pagar el taxi</li>
+                        </ul>
+                        <p><strong>💡 Ventaja:</strong> Esto significa que puedes intentar múltiples veces sin penalización si cometes errores o estás en una zona prohibida.</p>
+                    </div>
+
+                    <h4>✅ SÍ se aplica cooldown cuando:</h4>
+                    <div class="warning-box">
+                        <ul>
+                            <li><strong>✈️ Taxi completado exitosamente:</strong> Cuando el teleport se ejecuta correctamente (este es el comportamiento esperado)</li>
+                            <li><strong>⏰ Intentas usar taxi en cooldown:</strong> Si ya tienes un cooldown activo y lo intentas de nuevo</li>
+                            <li><strong>📝 Tienes solicitud pendiente:</strong> Si ya tienes un taxi en proceso y pides otro</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo práctico:</strong><br><br>
+                        <strong>ANTES (Sistema antiguo):</strong><br>
+                        1. Pides <code>@taxi A4</code> desde Airfield Zone<br>
+                        2. Bot: "🚫 No puedes solicitar taxi desde esta zona: Airfield_Zone"<br>
+                        3. Bot: "El Firu, espera 159s antes de usar @taxi nuevamente" ❌ INJUSTO<br><br>
+
+                        <strong>AHORA (Sistema nuevo):</strong><br>
+                        1. Pides <code>@taxi A4</code> desde Airfield Zone<br>
+                        2. Bot: "🚫 No puedes solicitar taxi desde esta zona: Airfield_Zone"<br>
+                        3. Sales de la zona y pides <code>@taxi A4</code> otra vez<br>
+                        4. Bot: "✅ Taxi procesado..." ✅ JUSTO (sin espera injusta)
+                    </div>
+
                     <h3>🎯 Tipos de Taxi</h3>
                     <div class="info-box">
                         <strong>Existen dos tipos de taxi:</strong>
@@ -1994,14 +2070,51 @@
                     <h4>⛔ Zonas Prohibidas de Taxi</h4>
                     <div class="error-box">
                         <strong>Áreas donde NO se puede solicitar taxi</strong>
-                        <p>Algunos pads tienen zonas prohibidas donde no puedes pedir taxi para proteger áreas estratégicas:</p>
+                        <p>Algunos pads tienen zonas prohibidas donde no puedes pedir taxi para proteger áreas estratégicas, militares y puntos de interés:</p>
+
+                        <p><strong>🏙️ Zonas Urbanas:</strong></p>
                         <ul>
-                            <li><strong>D4:</strong> Airfield Zone, Samobor City NW</li>
+                            <li><strong>D4:</strong> Samobor City NW</li>
                             <li><strong>D3:</strong> Samobor City NE</li>
                             <li><strong>C4:</strong> Samobor City SW</li>
                             <li><strong>C3:</strong> Samobor City SE</li>
                         </ul>
-                        <p><strong>¿Qué pasa si estás en una zona prohibida?</strong> El bot te dirá que no puedes pedir taxi desde esa ubicación y deberás moverte a una zona permitida.</p>
+
+                        <p><strong>✈️ Aeropuertos y Bases Militares:</strong></p>
+                        <ul>
+                            <li><strong>D4:</strong> Airfield Zone (Aeródromo)</li>
+                            <li><strong>A4:</strong> Airfield Zone (Base Aérea Sur)</li>
+                        </ul>
+
+                        <p><strong>🏚️ Búnkeres Abandonados:</strong></p>
+                        <ul>
+                            <li><strong>D1:</strong> Abandoned Bunker</li>
+                            <li><strong>C4:</strong> Abandoned Bunker</li>
+                            <li><strong>A3:</strong> Abandoned Bunker</li>
+                            <li><strong>A1:</strong> Abandoned Bunker</li>
+                        </ul>
+
+                        <p><strong>🛡️ Instalaciones Militares:</strong></p>
+                        <ul>
+                            <li><strong>D0:</strong> Bunker Militar</li>
+                            <li><strong>Z1:</strong> Fábrica de Armas (Weapon Factory)</li>
+                            <li><strong>Z1:</strong> Patio de Trenes (Trainyard)</li>
+                            <li><strong>Z0:</strong> Patio de Trenes (Trainyard)</li>
+                        </ul>
+
+                        <p><strong>☢️ Zonas Radioactivas y de Alto Riesgo:</strong></p>
+                        <ul>
+                            <li><strong>C2:</strong> Represa (Dam/Prison Area)</li>
+                            <li><strong>C0:</strong> Planta Nuclear (Radiation Reactor)</li>
+                            <li><strong>C0:</strong> Ciudad Nuclear (Radiation Zone City)</li>
+                        </ul>
+
+                        <p><strong>❓ ¿Qué pasa si estás en una zona prohibida?</strong></p>
+                        <ul>
+                            <li>El bot te dirá que no puedes pedir taxi desde esa ubicación específica</li>
+                            <li>Deberás moverte fuera de la zona prohibida para poder solicitar taxi</li>
+                            <li><strong>✅ Buenas noticias:</strong> NO se aplicará cooldown si intentas pedir taxi desde una zona prohibida (puedes reintentar inmediatamente al salir)</li>
+                        </ul>
                     </div>
 
                     <h4>📍 Sub-Zonas de Aterrizaje</h4>
@@ -2164,13 +2277,88 @@
                     <div class="command-box">@cancelar_taxi</div>
                     <div class="command-box">@taxicancel</div>
 
-                    <div class="warning-box">
-                        <strong>⚠️ Solo funciona si:</strong>
+                    <div class="success-box">
+                        <strong>✅ Sistema de Cancelación Mejorado:</strong>
                         <ul>
-                            <li>Tienes una solicitud PENDIENTE (no ejecutada aún)</li>
-                            <li>El teleport no ha ocurrido todavía</li>
+                            <li><strong>Cancelación Instantánea:</strong> El proceso se detiene inmediatamente (en menos de 1 segundo)</li>
+                            <li><strong>Devolución de Dinero:</strong> Tu dinero es reembolsado automáticamente</li>
+                            <li><strong>Detiene Todo:</strong> Si ya recibiste el paracaídas, el teleport NO se ejecutará</li>
+                            <li><strong>Confirmación Clara:</strong> Recibes un mensaje confirmando la cancelación y el reembolso</li>
                         </ul>
-                        Si cancelas a tiempo, se te devuelve el dinero.
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Importante sobre Cancelaciones:</strong>
+                        <ul>
+                            <li>Puedes cancelar incluso DESPUÉS de recibir el paracaídas</li>
+                            <li>El sistema registra las cancelaciones para prevenir abuso</li>
+                            <li>Cancelar frecuentemente después del paracaídas puede resultar en penalizaciones (ver más abajo)</li>
+                        </ul>
+                    </div>
+
+                    <h3>🛡️ Sistema de Protección contra Abuso de Cancelaciones</h3>
+                    <div class="feature-card">
+                        <h4 style="color: white;">¿Qué es el Sistema Anti-Abuso?</h4>
+                        <p>Un sistema inteligente que detecta patrones de abuso (jugadores que cancelan frecuentemente después de recibir el paracaídas gratis) y aplica penalizaciones temporales justas.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>🔍 Cómo Funciona:</strong>
+                        <ol>
+                            <li><strong>Tracking Automático:</strong> El sistema registra todas tus solicitudes, completados y cancelaciones de taxi</li>
+                            <li><strong>Protección para Nuevos:</strong> Los jugadores con menos de 10 taxis NO reciben penalizaciones (período de aprendizaje)</li>
+                            <li><strong>Análisis de Patrones:</strong> Se calcula un "abuse score" basado en tu comportamiento:
+                                <ul>
+                                    <li>50% peso: Cancelaciones DESPUÉS de recibir paracaídas</li>
+                                    <li>30% peso: Cancelaciones totales</li>
+                                    <li>20% peso: Frecuencia reciente (últimas 24h)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Estados Progresivos:</strong>
+                                <ul>
+                                    <li><strong>Normal</strong> (0-29% abuse): Sin penalizaciones</li>
+                                    <li><strong>⚠️ SOSPECHOSO</strong> (30-49% abuse): Cooldown x1.5 (ej: 60min → 90min)</li>
+                                    <li><strong>🚨 SANCIONADO</strong> (50%+ abuse): Cooldown x2.5 (ej: 60min → 150min)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>🚨 Notificaciones Automáticas:</strong><br>
+                        Si entras en estado SOSPECHOSO o SANCIONADO, recibirás un mensaje en el juego explicando:
+                        <ul>
+                            <li>Tu estado actual</li>
+                            <li>Cuánto tiempo de cooldown adicional tienes</li>
+                            <li>Cómo rehabilitarte (completar 5 taxis exitosos)</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Sistema de Rehabilitación:</strong>
+                        <ul>
+                            <li><strong>Decaimiento de Score:</strong> Cada taxi completado exitosamente reduce tu abuse score en 5%</li>
+                            <li><strong>Limpieza de Sanciones:</strong> Completa 5 taxis exitosos y tu estado SANCIONADO desaparece</li>
+                            <li><strong>Segunda Oportunidad:</strong> El sistema premia el buen comportamiento</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>📊 Ejemplo Práctico:</strong><br><br>
+                        <strong>Jugador Nuevo (5 taxis totales):</strong><br>
+                        • Cancela 3 después de paracaídas (60% abuse)<br>
+                        • <span style="color: green;">✅ Sin penalizaciones</span> (protegido por tener menos de 10 taxis)<br><br>
+
+                        <strong>Jugador Experimentado (20 taxis totales):</strong><br>
+                        • Cancela 10 después de paracaídas (50% abuse)<br>
+                        • <span style="color: red;">🚨 SANCIONADO</span> → Cooldown x2.5<br>
+                        • Completa 5 taxis exitosos → <span style="color: green;">✅ Rehabilitado</span><br>
+                    </div>
+
+                    <div class="data-location">
+                        <h4>📁 Archivo de Tracking de Abuso:</h4>
+                        <div class="file-path">data/taxi/taxi_cancellation_abuse.json</div>
+                        <p><strong>Qué contiene:</strong> Estadísticas de uso de taxi por jugador, abuse scores, estados de sanción</p>
                     </div>
 
                     <h3>📋 Lista completa de pads disponibles</h3>
@@ -2270,6 +2458,63 @@
                             <li><strong>Si status = "pending":</strong> El teleport aún no se ejecutó, espera unos segundos más</li>
                             <li><strong>Para ver tu historial completo:</strong> Busca todas tus entradas en el archivo de requests</li>
                         </ul>
+                    </div>
+
+                    <h3>⚠️ Mi cooldown es muy largo / Fui sancionado</h3>
+                    <div class="data-location">
+                        <h4>📁 Verificar tu estado de abuse en taxi_cancellation_abuse.json:</h4>
+                        <div class="file-path">data/taxi/taxi_cancellation_abuse.json</div>
+
+                        <h4>🔍 Cómo verificar tu estado:</h4>
+                        <ol>
+                            <li>Abre <code>taxi_cancellation_abuse.json</code></li>
+                            <li>Busca tu Steam ID en la sección <code>"players"</code></li>
+                            <li>Verifica los siguientes campos:
+                                <ul>
+                                    <li><code>"total_requests"</code>: Total de taxis solicitados</li>
+                                    <li><code>"completed"</code>: Taxis completados exitosamente</li>
+                                    <li><code>"cancelled_total"</code>: Total de cancelaciones</li>
+                                    <li><code>"cancelled_after_parachute"</code>: Cancelaciones DESPUÉS de recibir paracaídas</li>
+                                    <li><code>"abuse_score"</code>: Tu score de abuso (0.0 a 1.0)</li>
+                                    <li><code>"is_suspicious"</code>: Si estás en estado SOSPECHOSO</li>
+                                    <li><code>"is_flagged"</code>: Si estás SANCIONADO</li>
+                                    <li><code>"consecutive_completions"</code>: Taxis exitosos consecutivos (para rehabilitación)</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <h4>📊 Interpretación de tu Abuse Score:</h4>
+                        <ul>
+                            <li><strong>0.00 - 0.29:</strong> <span style="color: green;">✅ Normal</span> - Sin penalizaciones</li>
+                            <li><strong>0.30 - 0.49:</strong> <span style="color: orange;">⚠️ Sospechoso</span> - Cooldown x1.5</li>
+                            <li><strong>0.50 - 1.00:</strong> <span style="color: red;">🚨 Sancionado</span> - Cooldown x2.5</li>
+                        </ul>
+
+                        <h4>✅ Cómo Rehabilitarte:</h4>
+                        <ol>
+                            <li><strong>Completa taxis exitosos:</strong> Cada taxi reduce tu score en 5%</li>
+                            <li><strong>Evita cancelar:</strong> Especialmente después de recibir paracaídas</li>
+                            <li><strong>5 taxis consecutivos:</strong> Elimina completamente el estado SANCIONADO</li>
+                            <li><strong>Monitorea tu progreso:</strong> Verifica <code>"consecutive_completions"</code> en el archivo</li>
+                        </ol>
+
+                        <div class="example-box">
+                            <strong>Ejemplo de entrada en el archivo:</strong><br>
+                            <pre style="background: #2c3e50; color: #ecf0f1; padding: 10px; border-radius: 5px; overflow-x: auto;">
+"76561198XXXXXXXXX": {
+  "player_name": "TuNombre",
+  "stats": {
+    "total_requests": 15,
+    "completed": 10,
+    "cancelled_total": 5,
+    "cancelled_after_parachute": 3
+  },
+  "abuse_score": 0.35,
+  "is_suspicious": true,
+  "is_flagged": false,
+  "consecutive_completions": 2
+}</pre>
+                        </div>
                     </div>
 
                     <h3>❌ No tengo suficiente dinero</h3>
@@ -2977,16 +3222,76 @@
                         </ul>
                     </div>
 
+                    <h4>⭐ Conceptos Clave del Sistema (IMPORTANTE - Leer Primero)</h4>
+
+                    <div class="warning-box">
+                        <strong>🛡️ Protección para Jugadores Offline ("Modo Skip")</strong>
+                        <p>El sistema está configurado en <strong>modo skip</strong> para protegerte cuando estás offline:</p>
+                        <ul>
+                            <li><strong>¿Qué significa "skip"?</strong> Si estás OFFLINE cuando el sistema intenta enviarte una warning o multa, la acción se "salta" (skip) - NO se envía y NO se cuenta</li>
+                            <li><strong>¿Evito multas desconectándome?</strong> ❌ NO - Solo las RETRASA. Cuando vuelvas online, el sistema continúa donde quedó</li>
+                            <li><strong>Ejemplo práctico:</strong> Si debes recibir Warning #2 pero estás offline → El sistema la "skipea" → Cuando vuelvas online la envía inmediatamente</li>
+                            <li><strong>💡 Beneficio:</strong> NUNCA recibirás multas sin haber recibido las 3 warnings, sin importar cuánto tiempo estés offline</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>⏰ Grace Period (24 Horas CORRIDAS) vs Warnings</strong>
+                        <p>Entender la diferencia es crucial:</p>
+                        <ul>
+                            <li><strong>Grace Period:</strong> Timestamp ABSOLUTO de 24h desde la detección (cuenta siempre, online o offline)</li>
+                            <li><strong>Warnings:</strong> Solo se envían y cuentan cuando estás ONLINE (modo skip)</li>
+                            <li><strong>Ejemplo:</strong> Grace period expira en DÍA 2, pero si solo enviaste 1 warning porque estuviste offline → NO puede multar hasta enviar las 3 warnings</li>
+                            <li><strong>📊 Doble Protección:</strong>
+                                <ul>
+                                    <li>✅ Grace period debe haber expirado (24h corridas)</li>
+                                    <li>✅ Deben haberse enviado mínimo 3 warnings</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>🔄 Sistema de Auto-Restart (Enforcement Continuo)</strong>
+                        <p>Si alcanzas el máximo de multas (3) pero NO corriges el exceso:</p>
+                        <ul>
+                            <li><strong>¿Qué pasa?</strong> El sistema auto-resuelve la violación y crea una NUEVA automáticamente</li>
+                            <li><strong>Nuevo ciclo:</strong> Grace period 24h + 3 warnings + 3 nuevas multas ($47,500 adicionales)</li>
+                            <li><strong>¿Cuántas veces?</strong> Indefinidamente hasta que corrijas el exceso</li>
+                            <li><strong>Costo acumulado:</strong> Semana 1: $47,500 | Semana 2: $95,000 | Mes 1: $190,000+</li>
+                            <li><strong>💡 Recomendación:</strong> Te sale más barato destruir/regalar los vehículos excedentes</li>
+                        </ul>
+                    </div>
+
+                    <div class="error-box">
+                        <strong>⚠️ ADVERTENCIAS IMPORTANTES</strong>
+                        <ul>
+                            <li><strong>❌ Desconectarse NO evita las multas</strong> - Solo las retrasa hasta que vuelvas</li>
+                            <li><strong>❌ Las multas NO se acumulan</strong> - Si estás offline 1 mes después de Multa #2, cuando vuelvas recibes SOLO Multa #3 (no 30 multas acumuladas)</li>
+                            <li><strong>✅ El sistema es JUSTO</strong> - Siempre recibirás 3 warnings antes de cualquier multa, sin importar cuánto tiempo estés offline</li>
+                            <li><strong>✅ Intervalos permisivos</strong> - Warnings: 8h | Multas: 12h desde la última ENVIADA/APLICADA (no se apilan)</li>
+                            <li><strong>🔄 El ciclo continúa</strong> - Si no corriges, el sistema reinicia automáticamente (nueva violación, nuevas warnings, nuevas multas)</li>
+                        </ul>
+                    </div>
+
                     <h4>2️⃣ Sistema Progresivo de Acciones</h4>
 
                     <div class="info-box">
-                        <strong>Fase 1: Período de Gracia (24 horas)</strong>
+                        <strong>Fase 1: Período de Gracia (24 horas CORRIDAS)</strong>
                         <p>Cuando excedes los límites, entras en un período de gracia donde recibes advertencias:</p>
                         <ul>
-                            <li>Se envían hasta 3 advertencias</li>
+                            <li><strong>3 advertencias obligatorias:</strong> El sistema REQUIERE enviar 3 warnings antes de poder multar</li>
+                            <li><strong>Intervalo entre warnings:</strong> 8 horas desde el último warning ENVIADO</li>
+                            <li><strong>Grace period:</strong> 24 horas CORRIDAS desde la detección (timestamp absoluto)</li>
+                            <li><strong>Protección offline:</strong> Si estás offline, las warnings NO se envían ni cuentan (modo skip)</li>
+                            <li><strong>Al reconectar:</strong> Recibes las warnings pendientes inmediatamente (si ya pasó el cooldown)</li>
                             <li>Recibes notificación in-game si estás conectado</li>
                             <li>Se envían webhooks a Discord</li>
-                            <li>Tienes 24 horas para reducir tus vehículos</li>
+                        </ul>
+                        <p><strong>⚠️ Importante:</strong> Ambas condiciones deben cumplirse para que se apliquen multas:</p>
+                        <ul>
+                            <li>✅ Grace period de 24h debe haber expirado</li>
+                            <li>✅ Deben haberse enviado mínimo 3 warnings</li>
                         </ul>
                     </div>
 
@@ -2994,15 +3299,22 @@
                         <strong>Fase 2: Multas Progresivas</strong>
                         <p>Si no reduces tus vehículos después de las advertencias:</p>
                         <ul>
-                            <li><strong>Multa 1:</strong> $5,000 (monto base)</li>
-                            <li><strong>Multa 2:</strong> $7,500 (1.5x)</li>
-                            <li><strong>Multa 3:</strong> $11,250 (2.25x)</li>
+                            <li><strong>Multa 1:</strong> $10,000 (monto base)</li>
+                            <li><strong>Multa 2:</strong> $15,000 (1.5x)</li>
+                            <li><strong>Multa 3:</strong> $22,500 (2.25x)</li>
+                            <li><strong>Total multas:</strong> $47,500 si no corriges</li>
                         </ul>
-                        <p>El dinero se descuenta automáticamente de tu balance.</p>
+                        <p><strong>Intervalos permisivos:</strong></p>
+                        <ul>
+                            <li>12 horas desde la última multa APLICADA</li>
+                            <li>Si estás offline, la multa NO se aplica (modo skip)</li>
+                            <li>Al reconectar: Se aplica UNA multa (la que corresponde), no se acumulan</li>
+                            <li>El dinero se descuenta automáticamente de tu balance</li>
+                        </ul>
                     </div>
 
                     <div class="error-box">
-                        <strong>Fase 3: Destrucción Automática (Configurable para desactivado)</strong>
+                        <strong>Fase 3A: Destrucción Automática (Si está habilitada)</strong>
                         <p>Después de 3 multas sin cumplir, los vehículos excedentes se destruyen automáticamente:</p>
                         <ul>
                             <li>Se destruyen los vehículos más antiguos primero</li>
@@ -3011,15 +3323,61 @@
                         </ul>
                     </div>
 
-                    <h4>3️⃣ Detección de Vehículos Unlocked (Anti-Exploit)</h4>
                     <div class="warning-box">
-                        <strong>🔓 Detección Especial</strong>
-                        <p>El sistema detecta vehículos sin cerradura (unlocked) dentro de las banderas de squad:</p>
+                        <strong>Fase 3B: Reinicio Automático de Ciclo (Si destrucción está deshabilitada) 🔄</strong>
+                        <p>Si la destrucción está deshabilitada, el sistema REINICIA el ciclo de enforcement:</p>
                         <ul>
-                            <li>Solo reporta violación si el squad <strong>ya está al límite</strong></li>
-                            <li>Identifica intentos de evadir límites parkando vehículos unlocked</li>
-                            <li><strong>Sin período de gracia</strong> - Acción inmediata</li>
-                            <li>Calcula automáticamente áreas de banderas (5000m de radio)</li>
+                            <li><strong>Al alcanzar 3 multas:</strong> Recibes aviso en el webhook de Multa #3</li>
+                            <li><strong>Auto-resolución:</strong> La violación actual se cierra automáticamente</li>
+                            <li><strong>Nueva violación:</strong> Si sigues en exceso, se crea automáticamente en el próximo check (30 min)</li>
+                            <li><strong>Nuevo ciclo completo:</strong> Grace period 24h → 3 warnings → 3 multas ($47,500 adicionales)</li>
+                            <li><strong>Continúa indefinidamente:</strong> Hasta que corrijas el exceso de vehículos</li>
+                        </ul>
+                        <p><strong>💰 Costo acumulativo si no corriges:</strong></p>
+                        <ul>
+                            <li>Semana 1: $47,500</li>
+                            <li>Semana 2: $95,000</li>
+                            <li>Semana 3: $142,500</li>
+                            <li>Mes 1: $190,000+</li>
+                        </ul>
+                        <p><strong>💡 Conclusión:</strong> Te conviene más destruir/regalar los vehículos excedentes que pagar multas indefinidamente.</p>
+                    </div>
+
+                    <h4>3️⃣ Detección de Vehículos Sin Candado en Banderas (Anti-Exploit)</h4>
+                    <div class="warning-box">
+                        <strong>🔓 Sistema de 2 Pasos - Advertencia + Destrucción</strong>
+                        <p>El sistema detecta <strong>TODOS</strong> los vehículos sin candado (unlocked/sin owner) dentro de las zonas de bandera de squad:</p>
+                        <ul>
+                            <li><strong>Detección 100%:</strong> NO requiere que el squad esté en límite - detecta cualquier vehículo sin candado en tu bandera</li>
+                            <li><strong>Paso 1 - Primera Detección:</strong> Advertencia in-game + Discord embed naranja</li>
+                            <li><strong>Período de Gracia:</strong> 30 minutos para colocar candados (configurable)</li>
+                            <li><strong>Paso 2 - Segunda Detección:</strong> Si no se corrigió después del grace period → <strong>Destrucción automática</strong></li>
+                            <li><strong>Felicitación:</strong> Si corriges a tiempo (colocas candados), recibes mensaje de felicitación</li>
+                            <li>Calcula automáticamente áreas de banderas (radio configurable)</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>📋 Ejemplo de Flujo:</strong><br><br>
+                        <strong>Chequeo 1 (14:00):</strong> Sistema detecta 3 vehículos sin candado en tu bandera<br>
+                        → ⚠️ Advertencia in-game + Discord: "Tienes 30 minutos para colocar candados"<br><br>
+
+                        <strong>Chequeo 2 (14:30 - 30 min después):</strong><br>
+                        <strong>Escenario A - No corregido:</strong> Aún hay vehículos sin candado<br>
+                        → 💥 Destrucción automática de todos los vehículos sin candado<br>
+                        → Notificación in-game + Discord embed rojo<br><br>
+
+                        <strong>Escenario B - Corregido:</strong> Ya no hay vehículos sin candado<br>
+                        → ✅ Mensaje de felicitación: "¡Buen trabajo! Problema corregido"
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 Consejos Importantes:</strong>
+                        <ul>
+                            <li>Siempre coloca candado (#Lock) a tus vehículos antes de estacionarlos en tu bandera</li>
+                            <li>Vehículos sin owner/candado dentro de banderas se consideran "abuse" o intento de evadir límites</li>
+                            <li>El sistema puede deshabilitarse en config: <code>destroy_vehicle: false</code> (solo advertencias)</li>
+                            <li>Grace period configurable en: <code>grace_period_minutes</code></li>
                         </ul>
                     </div>
 
@@ -3028,21 +3386,182 @@
                         <strong>👑 Ventajas para VIPs:</strong>
                         <ul>
                             <li><strong>Período de gracia extendido:</strong> 48 horas en lugar de 24h (2x)</li>
-                            <li><strong>Multas reducidas:</strong> 50% de descuento ($2,500 en lugar de $5,000)</li>
+                            <li><strong>Multas reducidas:</strong> 50% de descuento ($5,000 en lugar de $10,000)</li>
                             <li>Mismo límite de vehículos (juego justo)</li>
                         </ul>
                     </div>
 
-                    <h3>📊 Ejemplo de Flujo</h3>
+                    <h3>📊 Ejemplos de Flujo Completo</h3>
+
                     <div class="example-box">
-                        <strong>Caso: Un squad tiene 55 vehículos (límite: 50)</strong><br><br>
-                        <strong>Día 1:</strong> Sistema detecta violación → Advertencia 1 enviada<br>
-                        <strong>Día 1 (+8h):</strong> Squad no reduce vehículos → Advertencia 2<br>
-                        <strong>Día 1 (+16h):</strong> Squad no reduce vehículos → Advertencia 3 (última)<br>
-                        <strong>Día 2:</strong> Termina período de gracia → Multa 1 ($5,000)<br>
-                        <strong>Día 3:</strong> Squad no reduce vehículos → Multa 2 ($7,500)<br>
-                        <strong>Día 4:</strong> Squad no reduce vehículos → Multa 3 ($11,250)<br>
-                        <strong>Día 5:</strong> Squad no reduce vehículos → <strong>Destrucción de 5 vehículos excedentes</strong><br>
+                        <strong>📋 Ejemplo 1: Jugador Siempre Online (Caso Normal)</strong><br><br>
+                        <strong>Caso:</strong> Un squad tiene 13 vehículos (límite: 10, exceso: 3)<br><br>
+
+                        <strong>DÍA 1 - 10:00:</strong> Sistema detecta violación<br>
+                        → Grace period inicia (expira en 24h: DÍA 2 10:00)<br>
+                        → Advertencia 1 enviada (warnings_sent: 1)<br><br>
+
+                        <strong>DÍA 1 - 18:00 (+8h):</strong> Squad no reduce vehículos<br>
+                        → Advertencia 2 enviada (warnings_sent: 2)<br><br>
+
+                        <strong>DÍA 2 - 02:00 (+8h):</strong> Squad no reduce vehículos<br>
+                        → Advertencia 3 enviada (warnings_sent: 3) ⚠️ Última warning<br><br>
+
+                        <strong>DÍA 2 - 10:00:</strong> Grace period EXPIRA (24h corridas)<br>
+                        → Estado: GRACE_PERIOD → ACTIVE<br>
+                        → Ahora se pueden aplicar multas (3 warnings ya enviados ✅)<br><br>
+
+                        <strong>DÍA 2 - 14:00:</strong> Primera multa aplicable (12h desde Warning #3)<br>
+                        → Multa 1: $10,000 (fines_applied: 1)<br><br>
+
+                        <strong>DÍA 3 - 02:00 (+12h):</strong> Squad no reduce vehículos<br>
+                        → Multa 2: $15,000 (fines_applied: 2)<br><br>
+
+                        <strong>DÍA 3 - 14:00 (+12h):</strong> Squad no reduce vehículos<br>
+                        → Multa 3: $22,500 (fines_applied: 3)<br>
+                        → 🔄 <strong>AVISO EN WEBHOOK:</strong> "Máximo de multas alcanzado - Si no corriges, el proceso se reiniciará"<br>
+                        → Total pagado hasta ahora: $47,500<br><br>
+
+                        <strong>DÍA 3 - 14:30 (+30 min - siguiente check):</strong><br>
+                        → Squad SIGUE con 13 vehículos (no corrigió)<br>
+                        → Sistema auto-resuelve violación actual<br>
+                        → Crea NUEVA violación automáticamente<br>
+                        → 🔄 <strong>CICLO 2 COMIENZA:</strong> Nuevo grace period 24h + warnings_sent = 0<br><br>
+
+                        <strong>CICLO 2 (continúa indefinidamente hasta corrección):</strong><br>
+                        → DÍA 3-4: 3 nuevas warnings<br>
+                        → DÍA 4-5: 3 nuevas multas ($47,500 adicionales)<br>
+                        → Total acumulado: $95,000<br>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>📋 Ejemplo 2: Jugador Offline Durante Grace Period</strong><br><br>
+                        <strong>Caso:</strong> Jugador tiene 13 vehículos (límite: 10), pero se desconecta 48 horas<br><br>
+
+                        <strong>DÍA 1 - 10:00:</strong> Detección (jugador ONLINE)<br>
+                        → Grace period: DÍA 2 10:00 (24h corridas)<br>
+                        → Warning #1 enviada ✅ (warnings_sent: 1)<br><br>
+
+                        <strong>DÍA 1 - 14:00:</strong> Jugador se desconecta ❌ OFFLINE<br><br>
+
+                        <strong>DÍA 1 - 18:00 (+8h):</strong> Check automático<br>
+                        → Jugador OFFLINE → Warning #2 SKIPPED ⏭️ (no se envía ni cuenta)<br>
+                        → warnings_sent sigue en 1<br><br>
+
+                        <strong>DÍA 2 - 02:00 (+8h):</strong> Check automático<br>
+                        → Jugador OFFLINE → Warning #3 SKIPPED ⏭️<br>
+                        → warnings_sent sigue en 1<br><br>
+
+                        <strong>DÍA 2 - 10:00:</strong> Grace period EXPIRA (24h corridas)<br>
+                        → Estado: ACTIVE<br>
+                        → Jugador SIGUE OFFLINE<br><br>
+
+                        <strong>DÍA 2 - 14:00:</strong> Intenta aplicar Multa #1<br>
+                        → ❌ BLOQUEADO: warnings_sent (1) < min_required (3)<br>
+                        → 💡 "Need 2 more warnings before applying fines"<br><br>
+
+                        <strong>DÍA 3 - 14:00:</strong> Jugador vuelve ✅ ONLINE<br><br>
+
+                        <strong>DÍA 3 - 14:30 (próximo check):</strong><br>
+                        → Warning #2 enviada INMEDIATAMENTE ✅ (cooldown expiró hace días)<br>
+                        → warnings_sent: 2<br><br>
+
+                        <strong>DÍA 3 - 22:30 (+8h):</strong><br>
+                        → Warning #3 enviada ✅<br>
+                        → warnings_sent: 3<br><br>
+
+                        <strong>DÍA 4 - 10:30 (+12h):</strong><br>
+                        → ✅ Ahora SÍ puede multar (grace expiró + 3 warnings enviados)<br>
+                        → Multa #1: $10,000<br><br>
+
+                        <strong>Continúa normalmente...</strong>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>📋 Ejemplo 3: Jugador Offline 1 Mes Después de Multa #2</strong><br><br>
+
+                        <strong>DÍA 5 - 10:00:</strong> Multa #2 aplicada ($15,000)<br>
+                        → Total pagado: $25,000<br>
+                        → fines_applied: 2<br><br>
+
+                        <strong>DÍA 5 - 14:00:</strong> Jugador se desconecta ❌ OFFLINE por 1 MES<br><br>
+
+                        <strong>DÍA 35 - 10:00:</strong> Jugador vuelve ✅ ONLINE<br><br>
+
+                        <strong>DÍA 35 - 10:30 (siguiente check):</strong><br>
+                        → Han pasado 720 horas (30 días) desde última multa<br>
+                        → Intervalo requerido: 12 horas ✅<br>
+                        → Multa #3: $22,500 (SOLO UNA - no se acumulan) ✅<br>
+                        → fines_applied: 3<br>
+                        → Total pagado: $47,500<br>
+                        → 🔄 Proceso se reiniciará si no corrige<br><br>
+
+                        <strong>💡 Importante:</strong> Las multas NO se acumulan mientras estás offline.<br>
+                        Solo se aplica la multa que corresponde según el contador fines_applied.
+                    </div>
+
+                    <h3>❓ Preguntas Frecuentes (FAQ)</h3>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Puedo evitar las multas desconectándome del servidor?</strong>
+                        <p><strong>R:</strong> ❌ NO. Desconectarse solo RETRASA las multas, no las evita. El sistema usa "modo skip" - cuando estás offline, las warnings y multas se ponen en pausa. Cuando vuelvas online, el sistema continúa exactamente donde quedó. Ejemplo: Si te desconectas después de Warning #1 y vuelves 1 semana después, recibirás Warning #2 inmediatamente (el cooldown de 8h expiró hace días).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: Si estoy offline 1 mes, ¿me cobran 60 multas acumuladas?</strong>
+                        <p><strong>R:</strong> ❌ NO. Las multas NO se acumulan. El sistema solo cobra la multa que CORRESPONDE según tu contador. Ejemplo: Si te desconectas después de Multa #2 y vuelves 1 mes después, solo recibirás Multa #3 ($22,500), no 30 multas de $22,500. El sistema respeta intervalos de 12h entre multas.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Qué pasa si el grace period expira pero estuve offline y solo recibí 1 warning?</strong>
+                        <p><strong>R:</strong> ✅ El sistema tiene DOBLE PROTECCIÓN. Aunque el grace period expire (timestamp de 24h), el sistema NO puede multar hasta que se envíen MÍNIMO 3 warnings. Esto te protege si estuviste offline durante el grace period. Cuando vuelvas online, recibirás las warnings pendientes ANTES de cualquier multa.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Cómo funciona el "auto-restart" del sistema?</strong>
+                        <p><strong>R:</strong> Cuando alcanzas el máximo de multas (3 = $47,500 total) pero NO corriges el exceso de vehículos, el sistema automáticamente:
+                        <ul>
+                            <li>1️⃣ Te envía un aviso en el webhook de Multa #3: "Máximo de multas alcanzado - El proceso se reiniciará"</li>
+                            <li>2️⃣ Auto-resuelve la violación actual (la cierra)</li>
+                            <li>3️⃣ En el próximo check (30 min), si SIGUES en exceso, crea una NUEVA violación con contadores en 0</li>
+                            <li>4️⃣ Comienza un NUEVO ciclo completo: Grace 24h → 3 warnings → 3 multas → $47,500 adicionales</li>
+                            <li>5️⃣ Este ciclo se repite INDEFINIDAMENTE hasta que corrijas</li>
+                        </ul>
+                        <strong>Costo total si no corriges:</strong> Semana 1: $47,500 | Semana 2: $95,000 | Mes 1: $190,000+</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Por qué el grace period es de "24 horas CORRIDAS"?</strong>
+                        <p><strong>R:</strong> El grace period es un timestamp ABSOLUTO desde el momento de detección. Cuenta siempre (online o offline). Ejemplo: Detección DÍA 1 10:00 → Grace expira DÍA 2 10:00 (exactamente 24h después). Esto evita que jugadores abusen desconectándose indefinidamente. PERO el sistema TAMBIÉN requiere mínimo 3 warnings enviados, así que estás protegido si estuviste offline.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Los intervalos de warnings y multas se acumulan si estoy offline?</strong>
+                        <p><strong>R:</strong> ❌ NO. Los intervalos cuentan desde la última warning/multa ENVIADA/APLICADA (no desde intentos fallidos). Ejemplo: Warning #1 enviada DÍA 1 10:00 → Te desconectas 1 semana → Vuelves DÍA 8 → Warning #2 se envía INMEDIATAMENTE (el cooldown de 8h expiró hace 6 días).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Cuál es la mejor estrategia si recibo warnings?</strong>
+                        <p><strong>R:</strong> ✅ CORRIGE INMEDIATAMENTE. Las opciones:
+                        <ul>
+                            <li><strong>Opción 1:</strong> Destruir vehículos excedentes (#DestroyVehicle)</li>
+                            <li><strong>Opción 2:</strong> Quitar candado y regalarlos a otros jugadores (#Unlock)</li>
+                            <li><strong>Opción 3:</strong> Mover vehículos fuera de la bandera (si es violación de squad)</li>
+                        </ul>
+                        Si corriges durante el grace period (24h), la violación se auto-resuelve y NO pagas multas. Una vez que corrijas, recibirás un webhook de confirmación: "✅ Infracción de Límites Resuelta".</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <strong>Q: ¿Puedo consultar mi estado actual de violación?</strong>
+                        <p><strong>R:</strong> Los admins pueden revisar el archivo <code>data/vehicle_limits/violations.json</code> que contiene:
+                        <ul>
+                            <li><code>warnings_sent</code>: Cuántas warnings has recibido</li>
+                            <li><code>fines_applied</code>: Cuántas multas has pagado</li>
+                            <li><code>total_fines_amount</code>: Total pagado en multas</li>
+                            <li><code>grace_period_ends</code>: Cuándo expira tu grace period</li>
+                            <li><code>status</code>: GRACE_PERIOD o ACTIVE</li>
+                        </ul>
+                        Todos los cambios también se envían a Discord vía webhooks.</p>
                     </div>
                 </div>
 
@@ -3069,7 +3588,7 @@
 
                     <div class="warning-box">
                         <strong>Multas Aplicadas:</strong><br>
-                        <div class="command-box">💰 MULTA APLICADA: $5,000 descontados por exceder límite de vehículos. Reduce tus vehículos para evitar más multas.</div>
+                        <div class="command-box">💰 MULTA APLICADA: $10,000 descontados por exceder límite de vehículos. Reduce tus vehículos para evitar más multas.</div>
                     </div>
 
                     <div class="error-box">
@@ -3539,9 +4058,10 @@
                             <li><strong>Período de gracia:</strong> 48 horas (normal: 24h)</li>
                             <li><strong>Multas:</strong> 50% de descuento
                                 <ul>
-                                    <li>Multa 1: $2,500 (normal: $5,000)</li>
-                                    <li>Multa 2: $3,750 (normal: $7,500)</li>
-                                    <li>Multa 3: $5,625 (normal: $11,250)</li>
+                                    <li>Multa 1: $5,000 (normal: $10,000)</li>
+                                    <li>Multa 2: $7,500 (normal: $15,000)</li>
+                                    <li>Multa 3: $11,250 (normal: $22,500)</li>
+                                    <li>Total VIP: $23,750 (normal: $47,500)</li>
                                 </ul>
                             </li>
                             <li><strong>Límites:</strong> Los mismos (juego justo)</li>
@@ -4227,7 +4747,7 @@
                                 </ul>
                             </li>
                             <li><strong>⏰ Tiempo de Gracia:</strong> 24 horas restantes</li>
-                            <li><strong>💰 Multa Pendiente:</strong> $5,000 (si no se resuelve)</li>
+                            <li><strong>💰 Multa Pendiente:</strong> $10,000 (si no se resuelve)</li>
                             <li><strong>📋 Acción Requerida:</strong> Debes quitar candado o destruir 5 vehículos</li>
                         </ul>
                         <strong>Footer:</strong> Sistema de Límites • [Timestamp]
@@ -4240,12 +4760,12 @@
                         <strong>Campos:</strong>
                         <ul>
                             <li><strong>Jugador Multado:</strong> ElFiru</li>
-                            <li><strong>Multa Aplicada:</strong> $5,000</li>
-                            <li><strong>Tipo de Multa:</strong> 1ª Multa</li>
+                            <li><strong>Multa Aplicada:</strong> $10,000</li>
+                            <li><strong>Tipo de Multa:</strong> 1ª Multa de 3</li>
                             <li><strong>Razón:</strong> Exceso de 5 vehículos sobre el límite</li>
                             <li><strong>Estado Actual:</strong> 15 vehículos / 10 límite</li>
-                            <li><strong>⚠️ Advertencia:</strong> Las multas continuarán cada 12 horas hasta resolver</li>
-                            <li><strong>Próxima Multa:</strong> $7,500 (incremento progresivo)</li>
+                            <li><strong>⚠️ Advertencias previas:</strong> 3 warnings enviados antes de multar</li>
+                            <li><strong>📈 Progreso:</strong> Multa #1 de 3 → Próxima multa: $15,000 en 12h</li>
                         </ul>
                         <strong>Footer:</strong> Sistema de Límites • [Timestamp]
                     </div>
