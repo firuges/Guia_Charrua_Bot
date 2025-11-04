@@ -456,6 +456,7 @@
             <button class="main-tab" onclick="showMainTab('vehicles')">🚗 Vehículos</button>
             <button class="main-tab" onclick="showMainTab('fame')">⭐ Fame Rewards</button>
             <button class="main-tab" onclick="showMainTab('taxi')">🚖 Taxi</button>
+            <button class="main-tab" onclick="showMainTab('safe_teleport')">🛡️ Safe Teleport</button>
             <button class="main-tab" onclick="showMainTab('chests')">📦 Cofres PVE</button>
             <button class="main-tab" onclick="showMainTab('respawn')">🔄 Anti-Lock Respawn</button>
             <button class="main-tab" onclick="showMainTab('vehicle_limits')">🚙 Límites Vehículos</button>
@@ -525,11 +526,21 @@
                     <div class="success-box">
                         <strong>✅ Para nuevos jugadores:</strong>
                         <ul>
-                            <li>Se entrega automáticamente la primera vez que te conectas</li>
+                            <li><strong>Modo Automático:</strong> Se entrega automáticamente la primera vez que te conectas</li>
+                            <li><strong>Modo Manual:</strong> Recibes una notificación y debes usar el comando <code>@welcomepack</code> para reclamar</li>
                             <li>Incluye dinero inicial y items básicos de supervivencia</li>
                             <li>Solo lo recibes UNA VEZ (no se puede reclamar de nuevo)</li>
                             <li>Te ayuda a empezar tu aventura en el servidor</li>
                         </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>🎮 ¿Qué modo está activo?</strong>
+                        <ul>
+                            <li><strong>Modo Automático:</strong> Si recibes el pack sin hacer nada</li>
+                            <li><strong>Modo Manual:</strong> Si recibes un mensaje como "🎁 {TuNombre}, ¡bienvenido al servidor! Usa @welcomepack para reclamar tu pack inicial."</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">El modo lo configura el administrador del servidor.</p>
                     </div>
 
                     <div class="example-box">
@@ -555,9 +566,65 @@
                 <div id="rewards-commands" class="sub-panel">
                     <h2>💬 Comandos del Sistema</h2>
 
-                    <div class="warning-box">
-                        <strong>⚠️ No hay comandos para jugadores</strong><br>
-                        El sistema de rewards funciona completamente automático. No necesitas escribir ningún comando.
+                    <div class="info-box">
+                        <strong>ℹ️ Comandos Disponibles</strong><br>
+                        El sistema de rewards funciona principalmente automático, pero incluye un comando opcional para el modo manual del Welcome Pack.
+                    </div>
+
+                    <h3>🎁 @welcomepack - Reclamar Welcome Pack (Solo Modo Manual)</h3>
+                    <div class="command-detail">
+                        <div class="command-header">
+                            <strong>Comando:</strong> <code>@welcomepack</code>
+                        </div>
+                        <div class="command-aliases">
+                            <strong>Aliases:</strong>
+                            <ul style="margin: 5px 0 5px 20px; font-size: 0.9em;">
+                                <li>🇪🇸 Español: <code>@welcomepack</code>, <code>@wp</code>, <code>@bienvenida</code></li>
+                                <li>🇬🇧 English: <code>@welcomepack</code>, <code>@wp</code>, <code>@welcome</code></li>
+                                <li>🇧🇷 Português: <code>@welcomepack</code>, <code>@wp</code>, <code>@bemvindo</code></li>
+                            </ul>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <strong>Descripción:</strong> Reclama tu pack de bienvenida cuando el servidor está en modo manual.
+                        </div>
+                        <div class="warning-box" style="margin-top: 10px;">
+                            <strong>⚠️ Importante:</strong>
+                            <ul>
+                                <li>Este comando SOLO funciona si el servidor está en <strong>modo manual</strong></li>
+                                <li>Si el servidor está en modo automático, recibirás el pack sin usar comandos</li>
+                                <li>Solo puedes reclamar UNA VEZ (no se puede usar de nuevo)</li>
+                                <li><strong>NO TE MUEVAS</strong> durante la entrega (recibirás advertencias antes)</li>
+                            </ul>
+                        </div>
+                        <div class="success-box" style="margin-top: 10px;">
+                            <strong>✅ Flujo de uso:</strong>
+                            <ol style="margin: 5px 0 5px 20px;">
+                                <li>Te conectas por primera vez al servidor</li>
+                                <li>Recibes una notificación: "🎁 {TuNombre}, ¡bienvenido al servidor! Usa @welcomepack para reclamar tu pack inicial."</li>
+                                <li>Escribes en el chat: <code>@welcomepack</code></li>
+                                <li>El sistema verifica tu elegibilidad</li>
+                                <li>Recibes advertencia de 60 segundos → espera 50s → advertencia de 10 segundos → espera 10s</li>
+                                <li>Se entrega el pack en tu posición actual</li>
+                            </ol>
+                        </div>
+                        <div class="example-box" style="margin-top: 10px;">
+                            <strong>Ejemplo de uso:</strong><br><br>
+                            <div class="command-box">
+                                👤 ElFiru: @welcomepack
+                            </div>
+                            <div class="command-box" style="background: #1a4d2e;">
+                                🎁 ElFiru, procesando tu welcome pack... Recibirás advertencias antes de la entrega. ¡NO TE MUEVAS!
+                            </div>
+                            <div class="command-box" style="background: #2d5a3d;">
+                                ⏰ ElFiru, tu welcome pack será entregado en 60 segundos. ¡NO TE MUEVAS!
+                            </div>
+                            <div class="command-box" style="background: #3d6a4d;">
+                                ⚠️ ElFiru, tu welcome pack será entregado en 10 segundos. ¡QUÉDATE QUIETO!
+                            </div>
+                            <div class="command-box" style="background: #1a4d2e;">
+                                ✅ ElFiru, ¡welcome pack entregado exitosamente! Disfruta tu recompensa.
+                            </div>
+                        </div>
                     </div>
 
                     <h3>📊 ¿Cómo saber si recibí mi reward?</h3>
@@ -565,7 +632,8 @@
                         Cuando recibes una recompensa, verás un mensaje en el chat del juego:
                         <ul>
                             <li><strong>Daily Cash:</strong> "🎉 [Tu Nombre], has recibido tu recompensa diaria de $XXX! Racha: X días consecutivos."</li>
-                            <li><strong>Welcome Pack:</strong> "🎁 Bienvenido [Tu Nombre]! Has recibido tu pack de bienvenida: $XXX + items."</li>
+                            <li><strong>Welcome Pack (Automático):</strong> "🎁 Bienvenido [Tu Nombre]! Has recibido tu pack de bienvenida: $XXX + items."</li>
+                            <li><strong>Welcome Pack (Manual):</strong> "✅ [Tu Nombre], ¡welcome pack entregado exitosamente! Disfruta tu recompensa."</li>
                         </ul>
                     </div>
 
@@ -635,7 +703,29 @@
                         </div>
                         <p><strong>Qué contiene:</strong> Historial completo de todos los welcome packs entregados (con fechas, items y montos)</p>
 
-                        <h4>🔍 Cómo verificar:</h4>
+                        <div class="file-path">
+                            data/rewards/pending_welcome_packs.json
+                        </div>
+                        <p><strong>Qué contiene:</strong> Jugadores que recibieron notificación pero aún no han reclamado (solo en modo manual)</p>
+
+                        <h4>🔍 Primero: ¿Qué modo está activo?</h4>
+                        <div class="info-box">
+                            <strong>Modo Automático:</strong> Si no recibiste ninguna notificación sobre usar @welcomepack
+                            <ul>
+                                <li>El pack se entrega automáticamente</li>
+                                <li>Espera 5-10 minutos después de conectarte</li>
+                                <li>Verifica <code>welcome_pack_history.json</code></li>
+                            </ul>
+                            <br>
+                            <strong>Modo Manual:</strong> Si recibiste notificación "Usa @welcomepack para reclamar"
+                            <ul>
+                                <li>Debes escribir el comando <code>@welcomepack</code> para recibir el pack</li>
+                                <li>Verifica <code>pending_welcome_packs.json</code> para ver si estás pendiente</li>
+                                <li>Si apareces en pending, usa <code>@welcomepack</code> en el chat</li>
+                            </ul>
+                        </div>
+
+                        <h4>🔍 Cómo verificar en welcome_pack_history.json:</h4>
                         <ol>
                             <li>Abre el archivo <code>welcome_pack_history.json</code></li>
                             <li>Busca tu Steam ID en la lista de entregas</li>
@@ -650,13 +740,39 @@
                             <li>Si apareces, significa que ya reclamaste tu welcome pack antes</li>
                         </ol>
 
-                        <h4>✅ Soluciones:</h4>
+                        <h4>🔍 Cómo verificar en pending_welcome_packs.json (Solo Modo Manual):</h4>
+                        <ol>
+                            <li>Abre el archivo <code>pending_welcome_packs.json</code></li>
+                            <li>Busca tu Steam ID en la lista</li>
+                            <li>Si apareces, verifica:
+                                <ul>
+                                    <li><code>"notified_at"</code> - Cuándo recibiste la notificación</li>
+                                    <li><code>"notification_count"</code> - Cuántas veces se te notificó</li>
+                                </ul>
+                            </li>
+                            <li>Si apareces aquí, escribe <code>@welcomepack</code> en el chat del juego</li>
+                        </ol>
+
+                        <h4>✅ Soluciones según el caso:</h4>
                         <ul>
-                            <li><strong>Si apareces en la lista:</strong> Ya recibiste tu welcome pack (solo se da una vez)</li>
-                            <li><strong>Si NO apareces en la lista:</strong> Espera 5-10 minutos después de conectarte por primera vez</li>
+                            <li><strong>Apareces en welcome_pack_history.json:</strong> Ya recibiste tu welcome pack (solo se da una vez)</li>
+                            <li><strong>Apareces en pending_welcome_packs.json:</strong> Escribe <code>@welcomepack</code> en el chat para reclamar</li>
+                            <li><strong>NO apareces en ningún archivo (Modo Automático):</strong> Espera 5-10 minutos después de conectarte</li>
+                            <li><strong>NO apareces en ningún archivo (Modo Manual):</strong> Espera la próxima verificación (cada 5 min) para recibir la notificación</li>
                             <li><strong>Si pasaron más de 10 minutos:</strong> Contacta a un admin con tu Steam ID</li>
-                            <li><strong>Para ver qué recibiste exactamente:</strong> Revisa el campo "items" en tu entrada del historial</li>
+                            <li><strong>Error al usar @welcomepack:</strong> Verifica que no estés ya en welcome_pack_history.json</li>
                         </ul>
+                    </div>
+
+                    <h3>⚠️ Error: "No tienes un welcome pack pendiente"</h3>
+                    <div class="warning-box">
+                        <strong>Causas comunes de este error:</strong>
+                        <ul>
+                            <li><strong>Ya reclamaste antes:</strong> El welcome pack solo se da UNA VEZ. Verifica <code>welcome_pack_history.json</code></li>
+                            <li><strong>No estás en pending:</strong> El servidor está en modo automático o aún no te llegó la notificación</li>
+                            <li><strong>Modo Automático activo:</strong> En modo automático no necesitas usar el comando, se entrega solo</li>
+                        </ul>
+                        <strong>Solución:</strong> Revisa los archivos mencionados arriba para confirmar tu situación
                     </div>
 
                     <h3>🔄 Mi racha se reinició por error</h3>
@@ -2537,6 +2653,509 @@
                     <div class="error-box">
                         <strong>No recomendado.</strong><br>
                         El sistema no tiene detección de combate, pero usar taxi en medio de una pelea se considera "combat logging" o escape injusto. Podría resultar en sanciones por parte de los admins.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAFE TELEPORT TAB -->
+            <div id="safe_teleport" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('safe_teleport', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('safe_teleport', 'commands')">💬 Comandos</button>
+                    <button class="sub-tab" onclick="showSubTab('safe_teleport', 'tracking')">📊 Tracking</button>
+                    <button class="sub-tab" onclick="showSubTab('safe_teleport', 'troubleshoot')">🔧 Troubleshooting</button>
+                </div>
+
+                <!-- GUÍA -->
+                <div id="safe_teleport-guide" class="sub-tab-content active">
+                    <h2>🛡️ Safe Teleport - Teletransporte de Emergencia</h2>
+
+                    <div class="warning-box" style="background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0; color: #856404;">⚠️ IMPORTANTE: Este comando es SOLO para emergencias</h3>
+                        <p style="font-size: 16px; margin-bottom: 10px;"><strong>Propósito:</strong> Ayudar a jugadores que quedaron <strong>ATORADOS</strong> en el mapa (glitches, bugs, caídas en texturas).</p>
+                        <p style="font-size: 16px; margin-bottom: 10px;"><strong>NO es para:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>❌ Escapar durante raids o combates</li>
+                            <li>❌ Evitar ser cazado por otros jugadores</li>
+                            <li>❌ Teletransportarse por comodidad</li>
+                            <li>❌ Evadir situaciones de peligro normales del juego</li>
+                        </ul>
+                        <p style="font-size: 18px; font-weight: bold; color: #d32f2f; margin-top: 15px;">
+                            🚨 TODOS LOS USOS QUEDAN REGISTRADOS Y LOS ABUSOS QUEDAN GUARDADOS EN: <code>data/safe_teleport/flag_escapes.json</code>
+                        </p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>¿Qué es Safe Teleport?</h3>
+                        <p>Sistema de <strong>teletransporte de emergencia</strong> para rescatar jugadores atorados con protecciones anti-abuse:</p>
+                        <ul>
+                            <li>✅ <strong>Detección Automática</strong>: Identifica si estás en una bandera enemiga</li>
+                            <li>✅ <strong>Evacuación Inteligente</strong>: Te saca 10 metros fuera de la bandera si estás dentro de una</li>
+                            <li>✅ <strong>Validación de Mapa</strong>: Garantiza que no salgas de los límites del mapa</li>
+                            <li>✅ <strong>Soporte Multiidioma</strong>: Funciona en español, inglés y portugués</li>
+                            <li>✅ <strong>Modo Silencioso</strong>: El comando funciona sin enviar mensajes al chat del juego</li>
+                            <li>🔍 <strong>Tracking Completo</strong>: Cada uso queda registrado con fecha, hora y posición</li>
+                            <li>⚠️ <strong>Detección de Abuso</strong>: Escapes repetidos de banderas quedan marcados como sospechosos</li>
+                        </ul>
+                    </div>
+
+                    <div class="error-box" style="background-color: #ffebee; border-left: 5px solid #f44336; padding: 15px; margin: 20px 0;">
+                        <h3 style="margin-top: 0; color: #c62828;">🔍 Sistema de Detección de Abuso</h3>
+                        <p style="font-size: 16px;"><strong>Cada vez que usas @safe o @liberar, el sistema registra:</strong></p>
+                        <ul style="margin-left: 20px; font-size: 15px;">
+                            <li>📅 Fecha y hora exacta</li>
+                            <li>👤 Tu nombre y Steam ID</li>
+                            <li>📍 Posición exacta (coordenadas X, Y, Z)</li>
+                            <li>🚩 Si estabas dentro de una bandera enemiga</li>
+                            <li>🧭 Dirección de escape (norte, sur, este, oeste)</li>
+                            <li>📏 Distancia que te moviste</li>
+                        </ul>
+                        <p style="font-size: 17px; font-weight: bold; margin-top: 15px; color: #c62828;">
+                            ⚠️ Si escapas 3+ veces de la MISMA bandera = ABUSO CONFIRMADO
+                        </p>
+                        <p style="font-size: 15px;">
+                            Los administradores pueden revisar el archivo <code>data/safe_teleport/flag_escapes.json</code>
+                            para ver quién abusa del comando durante raids.
+                        </p>
+                        <p style="font-size: 15px; background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                            💡 <strong>Consejo:</strong> Usa este comando SOLO si realmente estás atorado.
+                            Si lo usas para escapar durante raids, quedarás marcado como abusador.
+                        </p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🎯 ¿Cuándo Usar Este Comando?</h3>
+
+                        <h4 style="color: #4caf50;">✅ USO CORRECTO - Jugador Atorado:</h4>
+                        <ul style="margin-left: 20px; font-size: 15px;">
+                            <li>Caíste dentro de una textura del mapa y no puedes salir</li>
+                            <li>Quedaste atrapado en geometría del mapa (edificios, rocas, agujeros)</li>
+                            <li>Bug del juego te dejó en una posición sin salida</li>
+                            <li>Glitch te teletransportó bajo el mapa</li>
+                        </ul>
+
+                        <h4 style="color: #f44336;">❌ USO INCORRECTO - Será Detectado Como Abuso:</h4>
+                        <ul style="margin-left: 20px; font-size: 15px;">
+                            <li>Estás siendo raideado y quieres escapar</li>
+                            <li>Te están persiguiendo y quieres huir</li>
+                            <li>Estás en combate y quieres evitar morir</li>
+                            <li>Usas el comando repetidamente desde la misma bandera</li>
+                            <li>Lo usas por comodidad en lugar de caminar</li>
+                        </ul>
+
+                        <h4>🔧 Cómo Funciona el Teletransporte:</h4>
+                        <p><strong>Caso 1: Atorado dentro de una bandera enemiga</strong></p>
+                        <ol>
+                            <li>El bot detecta que estás en bandera que NO es de tu squad</li>
+                            <li>Identifica el borde más cercano de la bandera</li>
+                            <li>Te evacúa 10 metros fuera del borde (para evitar re-detección)</li>
+                            <li>🚨 <strong>Este escape queda registrado en flag_escapes.json</strong></li>
+                        </ol>
+
+                        <p><strong>Caso 2: Atorado en otro lugar del mapa</strong></p>
+                        <ol>
+                            <li>El bot aplica un <strong>offset</strong> desde tu posición actual</li>
+                            <li>Offset configurable (default: +100 unidades en X e Y)</li>
+                            <li>Valida que el destino esté dentro de los límites del mapa</li>
+                            <li>Te teletransporta a la nueva posición segura</li>
+                        </ol>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>⏱️ Cooldown y Límites</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Tipo de Jugador</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Cooldown</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>Normal</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">5 minutos (300s)</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>VIP</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">2.5 minutos (150s - 50% reducción)</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <p><strong>Anti-Abuse:</strong> Máximo 20 usos por hora por defecto</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>💡 Ejemplos de Uso</h3>
+                        <div class="code-block">
+                            <strong>Ejemplo 1: Evacuación de Bandera Enemiga</strong><br>
+                            <em>Situación:</em> Entras accidentalmente a bandera de "Enemigos Squad"<br><br>
+                            Jugador: <code>@safe</code><br>
+                            Bot: <span style="color: #28a745;">✅ Has sido evacuado de la bandera enemiga "Enemigos Squad" por el lado este</span><br><br>
+                            <strong>Resultado:</strong> Apareces 10 metros al este de la bandera, fuera de peligro
+                        </div>
+
+                        <div class="code-block">
+                            <strong>Ejemplo 2: Teletransporte Normal</strong><br>
+                            <em>Situación:</em> Estás en medio del bosque y necesitas moverte<br><br>
+                            Jugador: <code>@liberar</code><br>
+                            Bot: <span style="color: #28a745;">✅ Teletransporte completado exitosamente</span><br><br>
+                            <strong>Resultado:</strong> Te mueves 100 unidades al noreste (configurable)
+                        </div>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>⚙️ Configuración</h3>
+                        <p>El sistema es altamente configurable en <code>config/config.yaml</code>:</p>
+                        <div class="code-block">
+                            safe_teleport:<br>
+                            &nbsp;&nbsp;enabled: true  # Master switch<br>
+                            &nbsp;&nbsp;default_offset:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;x: 100.0  # Offset en X<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;y: 100.0  # Offset en Y<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;z: 0.0  # Z: 0=suelo, null=preservar altura<br>
+                            &nbsp;&nbsp;flag_exit:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;distance_from_border: 10.0  # Metros fuera de bandera<br>
+                            &nbsp;&nbsp;anti_abuse:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;max_uses_per_hour: 20  # Límite de usos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMANDOS -->
+                <div id="safe_teleport-commands" class="sub-tab-content">
+                    <h2>💬 Comandos de Safe Teleport</h2>
+
+                    <div class="feature-box">
+                        <h3>📝 Comando Principal</h3>
+                        <div class="code-block">
+                            <strong>@safe</strong> - Teletransporte seguro con detección de banderas<br>
+                            <em>Cooldown:</em> 5 minutos (2.5 min VIP)<br>
+                            <em>Gratis:</em> No consume fame points ni tickets
+                        </div>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🌍 Aliases por Idioma</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Idioma</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Aliases</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>Español 🇪🇸</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>@safe</code>, <code>@liberar</code>, <code>@evacuate</code>, <code>@salir</code></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>English 🇬🇧</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>@safe</code>, <code>@evacuate</code>, <code>@escape</code>, <code>@exit</code></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>Português 🇵🇹</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>@safe</code>, <code>@liberar</code>, <code>@evacuar</code>, <code>@sair</code></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🔇 Modo Silencioso</h3>
+                        <p><strong>IMPORTANTE:</strong> El comando <code>@safe</code> funciona en <strong>modo silencioso</strong>, lo que significa:</p>
+                        <ul>
+                            <li>✅ El teletransporte se ejecuta correctamente</li>
+                            <li>✅ NO se envían mensajes al chat del juego</li>
+                            <li>✅ NO aparece confirmación en pantalla</li>
+                            <li>✅ El comando se registra en los logs del bot</li>
+                        </ul>
+                        <p><em>Esto previene spam en el chat y mantiene la discreción del sistema.</em></p>
+                    </div>
+                </div>
+
+                <!-- TRACKING TAB -->
+                <div id="safe_teleport-tracking" class="sub-tab-content">
+                    <h2>📊 Sistema de Tracking y Detección de Abuso</h2>
+
+                    <div class="error-box" style="background-color: #ffebee; border-left: 5px solid #f44336; padding: 15px; margin-bottom: 20px;">
+                        <h3 style="margin-top: 0; color: #c62828;">🚨 ADVERTENCIA: Todo Queda Registrado</h3>
+                        <p style="font-size: 17px; font-weight: bold;">
+                            Cada vez que usas @safe, @liberar o cualquier alias, el sistema registra TODA la información en archivos JSON.
+                        </p>
+                        <p style="font-size: 16px; margin-top: 10px;">
+                            <strong>Los administradores pueden ver:</strong>
+                        </p>
+                        <ul style="font-size: 15px; margin-left: 20px;">
+                            <li>Cuántas veces usaste el comando</li>
+                            <li>Desde qué banderas escapaste</li>
+                            <li>Si escapaste repetidamente de la MISMA bandera (raid escape)</li>
+                            <li>Tus coordenadas exactas en cada uso</li>
+                            <li>Fecha y hora de cada escape</li>
+                        </ul>
+                        <p style="font-size: 16px; font-weight: bold; margin-top: 15px; color: #d32f2f;">
+                            📍 Ubicación del archivo de abusos: <code style="background: white; padding: 3px 8px; border-radius: 3px;">data/safe_teleport/flag_escapes.json</code>
+                        </p>
+                        <p style="font-size: 15px; margin-top: 10px;">
+                            Este archivo contiene SOLO los escapes de banderas enemigas, facilitando la detección de raid escapes.
+                        </p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>📁 Archivos de Registro</h3>
+                        <p>El sistema guarda automáticamente <strong>todos los usos</strong> del comando <code>@safe</code> en tres archivos JSON:</p>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Archivo</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Contenido</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Límite</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>safe_executions.json</code></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Todas las ejecuciones (normales + evacuaciones)</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Últimas 10,000</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>flag_escapes.json</code></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>Solo escapes de banderas</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Últimas 5,000</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><code>safe_stats.json</code></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Estadísticas agregadas</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Completo</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🚩 Tracking de Escapes de Banderas</h3>
+                        <p>Cada vez que un jugador usa <code>@safe</code> <strong>dentro de una bandera enemiga</strong>, se registra:</p>
+                        <ul>
+                            <li>📅 <strong>Fecha y Hora</strong>: Timestamp completo (separado en date + time para filtrado)</li>
+                            <li>👤 <strong>Jugador</strong>: Nombre y Steam ID</li>
+                            <li>🚩 <strong>Bandera</strong>: Nombre de la bandera y Squad ID</li>
+                            <li>🧭 <strong>Dirección</strong>: Por qué lado escapó (north/south/east/west)</li>
+                            <li>📏 <strong>Distancia</strong>: Cuánto se movió (en metros)</li>
+                            <li>📍 <strong>Posiciones</strong>: Coordenadas originales y de escape</li>
+                        </ul>
+                        <p><em><strong>Uso principal:</strong> Detectar jugadores que abusan escapando repetidamente durante raids.</em></p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🔍 Cómo Revisar los Datos</h3>
+                        <p>Los archivos JSON se pueden abrir con cualquier editor de texto. Están ubicados en: <code>data/safe_teleport/</code></p>
+
+                        <h4>Estructura de flag_escapes.json</h4>
+                        <div class="code-block" style="font-size: 11px;">
+{<br>
+&nbsp;&nbsp;"flag_escapes": [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"escape_id": "20251103_145230_76561198059658346_El Firu",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"timestamp_str": "2025-11-03 14:52:30",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "2025-11-03",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time": "14:52:30",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"player_name": "El Firu",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"steam_id": "76561198059658346",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"flag_name": "Scum Academy",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"flag_squad_id": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"exit_direction": "north",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"distance_moved": 141.42<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;"metadata": {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"total_escapes": 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"last_updated": "2025-11-03T14:52:30"<br>
+&nbsp;&nbsp;}<br>
+}
+                        </div>
+
+                        <h4>Campos Importantes:</h4>
+                        <ul>
+                            <li><strong>date</strong>: Fecha del escape (YYYY-MM-DD) - Útil para filtrar por día</li>
+                            <li><strong>time</strong>: Hora exacta (HH:MM:SS)</li>
+                            <li><strong>player_name / steam_id</strong>: Identifica al jugador</li>
+                            <li><strong>flag_name</strong>: De qué bandera escapó</li>
+                            <li><strong>exit_direction</strong>: Dirección de salida (north/south/east/west)</li>
+                            <li><strong>distance_moved</strong>: Distancia en cm desde el punto original</li>
+                        </ul>
+
+                        <p><strong>Tip:</strong> Busca (Ctrl+F) por el nombre de tu bandera o Steam ID de jugador sospechoso para ver su historial.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>⚠️ Detección de Patrones de Abuso</h3>
+                        <p>El sistema detecta automáticamente jugadores sospechosos usando un <strong>sistema de puntuación</strong>:</p>
+
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Patrón Detectado</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Puntos</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Descripción</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Alta frecuencia</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">+2</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">>5 usos en ventana de tiempo</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Solo evacuaciones</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">+3</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">NUNCA usa teleport normal</td>
+                            </tr>
+                            <tr style="background-color: #fff3cd;">
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>Escape repetido (RAID)</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;"><strong>+5</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">>2 escapes de la MISMA bandera</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px;">Alto ratio evacuación</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">+2</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">>80% de usos son evacuaciones</td>
+                            </tr>
+                        </table>
+
+                        <p><strong>Score ≥ 4 = Jugador Sospechoso</strong></p>
+                        <p><em>El patrón más importante es el <strong>escape repetido de la misma bandera</strong> (indica raid escape).</em></p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>📋 Ejemplo de Datos en flag_escapes.json</h3>
+                        <p>El archivo contiene información que permite identificar patrones. Ejemplo de análisis manual:</p>
+                        <div class="code-block" style="font-family: monospace; font-size: 12px;">
+<strong>ANÁLISIS POR BANDERA:</strong><br><br>
+Si buscas "Scum Academy" en el archivo, podrías encontrar:<br>
+- 25 escapes totales de esa bandera<br>
+- 8 jugadores diferentes que escaparon<br>
+- PlayerX aparece 10 veces (SOSPECHOSO)<br>
+- PlayerY aparece 5 veces<br>
+- PlayerZ aparece 4 veces<br><br>
+<strong>ANÁLISIS POR JUGADOR:</strong><br><br>
+Si buscas el Steam ID "76561198123456789" (PlayerX):<br>
+- Aparece 15 veces en total<br>
+- 10 escapes de "Scum Academy" ⚠️ ABUSO<br>
+- 5 escapes de "MN9"<br>
+- Último escape: 2025-11-03 14:52:30<br><br>
+<strong>Conclusión:</strong> PlayerX está abusando para escapar durante raids.
+                        </div>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>🎯 Casos de Uso</h3>
+
+                        <h4>Detectar Raid Escapes</h4>
+                        <p>Si un jugador está raideando tu bandera y usa <code>@safe</code> repetidamente para escapar:</p>
+                        <ol>
+                            <li>Abre el archivo <code>data/safe_teleport/flag_escapes.json</code></li>
+                            <li>Busca (Ctrl+F) el nombre de tu bandera</li>
+                            <li>Cuenta cuántas veces aparece el mismo jugador (mismo steam_id)</li>
+                            <li>Si un jugador escapó >3 veces de tu bandera = ABUSO CONFIRMADO</li>
+                        </ol>
+
+                        <h4>Investigar Jugador Sospechoso</h4>
+                        <p>Si sospechas que un jugador abusa del comando:</p>
+                        <ol>
+                            <li>Abre <code>data/safe_teleport/flag_escapes.json</code></li>
+                            <li>Busca (Ctrl+F) el Steam ID del jugador</li>
+                            <li>Revisa cuántas veces escapó y de qué banderas</li>
+                            <li>Si escapó >5 veces de la misma bandera = ABUSO CONFIRMADO</li>
+                        </ol>
+
+                        <h4>Revisión por Fecha</h4>
+                        <p>Para ver escapes de un día específico:</p>
+                        <ol>
+                            <li>Abre <code>data/safe_teleport/flag_escapes.json</code></li>
+                            <li>Busca (Ctrl+F) la fecha en formato YYYY-MM-DD (ej: "2025-11-03")</li>
+                            <li>Todos los escapes de ese día aparecerán con el campo "date": "YYYY-MM-DD"</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- TROUBLESHOOTING -->
+                <div id="safe_teleport-troubleshoot" class="sub-tab-content">
+                    <h2>🔧 Solución de Problemas</h2>
+
+                    <div class="feature-box">
+                        <h3>❌ Error: "El comando de teletransporte seguro está deshabilitado"</h3>
+                        <p><strong>Causa:</strong> El feature está deshabilitado en configuración</p>
+                        <p><strong>Solución:</strong> Verifica que en <code>config.yaml</code>:</p>
+                        <div class="code-block">
+                            safe_teleport:<br>
+                            &nbsp;&nbsp;enabled: true  # Debe estar en true
+                        </div>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>❌ Error: "Servicio de teletransporte no disponible"</h3>
+                        <p><strong>Causa:</strong> El bot no pudo inicializar el servicio</p>
+                        <p><strong>Solución:</strong></p>
+                        <ol>
+                            <li>Verifica que <code>squad_zones.json</code> exista en <code>data/sync_data/</code></li>
+                            <li>Asegúrate de que SCUM_Data_Sync está corriendo</li>
+                            <li>Revisa los logs del bot para más detalles</li>
+                        </ol>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>❌ Error: "No se pudo identificar tu Steam ID"</h3>
+                        <p><strong>Causa:</strong> El bot no puede obtener tu Steam ID del chat log</p>
+                        <p><strong>Solución:</strong></p>
+                        <ol>
+                            <li>Usa el canal correcto (Global)</li>
+                            <li>Verifica que <code>chat_log_monitoring</code> está habilitado</li>
+                            <li>Revisa que SCUM_Data_Sync esté sincronizando <code>chat_logs.json</code></li>
+                        </ol>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>⚠️ Advertencia: "Has excedido el límite de 20 usos por hora"</h3>
+                        <p><strong>Causa:</strong> Sistema anti-abuse detectó uso excesivo</p>
+                        <p><strong>Solución:</strong></p>
+                        <ul>
+                            <li>Espera 1 hora desde tu primer uso</li>
+                            <li>El contador se resetea automáticamente</li>
+                            <li>Contacta admin para ajustar límite en config si necesario</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>❓ Preguntas Frecuentes</h3>
+                        <p><strong>¿El comando funciona si estoy en mi propia bandera?</strong></p>
+                        <p>Sí, pero NO te evacúa. Simplemente aplica el offset normal porque no estás en peligro.</p>
+
+                        <p><strong>¿Qué pasa si hay múltiples banderas cerca?</strong></p>
+                        <p>El bot solo evacúa si estás DENTRO de una bandera, no cerca. Detecta la bandera específica en la que estás.</p>
+
+                        <p><strong>¿El comando gasta tickets o fame points?</strong></p>
+                        <p>No, el comando safe teleport es completamente gratuito.</p>
+
+                        <p><strong>¿Funciona con banderas de aliados?</strong></p>
+                        <p>El bot verifica <code>squad_id</code>. Si no eres parte del squad dueño, se considera "enemiga" y te evacúa.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>📊 Archivos de Datos del Sistema</h3>
+                        <p>El sistema Safe Teleport almacena toda la información en archivos JSON accesibles:</p>
+
+                        <h4 style="margin-top: 15px;">📁 Ubicación: <code>data/safe_teleport/</code></h4>
+
+                        <div style="margin-left: 20px; margin-top: 10px;">
+                            <p><strong>1. safe_executions.json</strong> - Historial completo de ejecuciones</p>
+                            <ul>
+                                <li>Todas las veces que se usó @safe / @liberar</li>
+                                <li>Incluye: jugador, fecha/hora, posición, tipo (normal/evacuación)</li>
+                                <li>Máximo 10,000 registros (auto-limpieza)</li>
+                            </ul>
+
+                            <p><strong>2. flag_escapes.json</strong> - Escapes de banderas enemigas</p>
+                            <ul>
+                                <li>Solo las evacuaciones automáticas desde banderas</li>
+                                <li>Incluye: bandera, jugador, hora, dirección de salida, distancia</li>
+                                <li>Útil para detectar posibles "raid escapes"</li>
+                                <li>Máximo 5,000 registros</li>
+                            </ul>
+
+                            <p><strong>3. safe_stats.json</strong> - Estadísticas agregadas</p>
+                            <ul>
+                                <li>Total de ejecuciones, evacuaciones, teleports normales</li>
+                                <li>Última actualización del sistema</li>
+                                <li>Métricas generales de uso</li>
+                            </ul>
+                        </div>
+
+                        <p style="margin-top: 15px;"><strong>Nota:</strong> Puedes abrir estos archivos con cualquier editor de texto para ver el historial completo de uso del comando.</p>
                     </div>
                 </div>
             </div>
