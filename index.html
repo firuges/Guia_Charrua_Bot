@@ -189,6 +189,7 @@
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
+            color: #1a237e;  /* Azul oscuro para buen contraste */
         }
 
         .warning-box {
@@ -197,6 +198,7 @@
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
+            color: #7a5300;  /* Marrón oscuro para buen contraste */
         }
 
         .success-box {
@@ -205,6 +207,7 @@
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
+            color: #0d5c1f;  /* Verde oscuro para buen contraste */
         }
 
         .error-box {
@@ -213,6 +216,7 @@
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
+            color: #721c24;  /* Rojo oscuro para buen contraste */
         }
 
         .beta-badge {
@@ -240,6 +244,27 @@
         .success-box h4:first-child,
         .error-box h4:first-child {
             margin-top: 0;
+        }
+
+        /* Colores de títulos dentro de cajas para buen contraste */
+        .info-box h4,
+        .info-box h5 {
+            color: #0d47a1;  /* Azul más oscuro para títulos */
+        }
+
+        .warning-box h4,
+        .warning-box h5 {
+            color: #5a3d00;  /* Marrón muy oscuro para títulos */
+        }
+
+        .success-box h4,
+        .success-box h5 {
+            color: #0a4918;  /* Verde muy oscuro para títulos */
+        }
+
+        .error-box h4,
+        .error-box h5 {
+            color: #5c1419;  /* Rojo muy oscuro para títulos */
         }
 
         .feature-card p,
@@ -6262,12 +6287,12 @@ server_restart_schedules:<br>
                         <div class="feature-card">
                             <h4>⚔️ 4. Spawn de Enemigos</h4>
                             <p>NPCs o zombis spawean cerca de los puntos de recompensa para crear desafío.</p>
-                            <p><strong>Escalado:</strong> 2 enemigos por jugador (máximo 20)</p>
+                            <p><strong>Escalado:</strong> 3 enemigos por jugador (Configurable)</p>
                         </div>
 
                         <div class="feature-card">
                             <h4>🔄 5. Rotación de Zona</h4>
-                            <p>Cada <strong>6 horas</strong>, el evento cambia a una nueva zona aleatoria del sistema.</p>
+                            <p>Cada <strong>6 horas (Configurable)</strong>, el evento cambia a una nueva zona aleatoria del sistema.</p>
                             <p><strong>Variedad:</strong> Mantiene el evento fresco y dinámico</p>
                         </div>
 
