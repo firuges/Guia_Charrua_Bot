@@ -215,6 +215,24 @@
             border-radius: 5px;
         }
 
+        .beta-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-left: 5px;
+            vertical-align: middle;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
         /* Mejoras de espaciado interno para contenedores */
         .feature-card h4:first-child,
         .info-box h4:first-child,
@@ -460,9 +478,11 @@
             <button class="main-tab" onclick="showMainTab('chests')">📦 Cofres PVE</button>
             <button class="main-tab" onclick="showMainTab('respawn')">🔄 Anti-Lock Respawn</button>
             <button class="main-tab" onclick="showMainTab('vehicle_limits')">🚙 Límites Vehículos</button>
+            <button class="main-tab" onclick="showMainTab('warzone')">🎯 Warzone Event <span class="beta-badge">BETA</span></button>
             <!-- <button class="main-tab" onclick="showMainTab('theft_alerts')">🚨 Alertas de Robo</button> -->
             <button class="main-tab" onclick="showMainTab('vip_system')">👑 Sistema VIP</button>
             <button class="main-tab" onclick="showMainTab('webhooks')">📡 Webhooks</button>
+            <button class="main-tab" onclick="showMainTab('timezones')">🌍 Timezones & DST</button>
         </div>
 
         <div class="content">
@@ -5713,6 +5733,1568 @@ Si buscas el Steam ID "76561198123456789" (PlayerX):<br>
                         </ul>
                     </div>
                 </div>
+            </div>
+
+            <!-- TIMEZONES TAB -->
+            <div id="timezones" class="tab-panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" onclick="showSubTab('timezones', 'guide')">📖 Guía</button>
+                    <button class="sub-tab" onclick="showSubTab('timezones', 'config')">⚙️ Configuración</button>
+                    <button class="sub-tab" onclick="showSubTab('timezones', 'dst')">🕐 Horario de Verano (DST)</button>
+                </div>
+
+                <!-- GUIDE SUBTAB -->
+                <div id="timezones-guide" class="sub-panel active">
+                    <h2>🌍 Timezones y Horarios</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Por qué son importantes las Timezones?</h3>
+                        <p>El bot procesa comandos del chat y debe saber en qué timezone están los timestamps del servidor SCUM para filtrar mensajes viejos correctamente.</p>
+                    </div>
+
+                    <h3>⏰ Dos Tipos de Horarios en el Bot</h3>
+
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <h4>📝 Chat & Comandos</h4>
+                            <p><strong>Usa:</strong> Timezone del SERVIDOR SCUM</p>
+                            <p><strong>Config:</strong> <code>server_timezone</code></p>
+                            <p><strong>Ejemplo:</strong> Si el servidor está en Nueva York, configura <code>"America/New_York"</code></p>
+                        </div>
+
+                        <div class="feature-item">
+                            <h4>🔄 Restart Schedules</h4>
+                            <p><strong>Usa:</strong> Hora LOCAL de tu máquina</p>
+                            <p><strong>Config:</strong> <code>restart_times</code></p>
+                            <p><strong>Ejemplo:</strong> Si reinicias a las 06:00 de tu hora local, pon <code>"06:00"</code></p>
+                        </div>
+                    </div>
+
+                    <h3>🎯 Regla de Oro</h3>
+
+                    <div class="success-box">
+                        <strong>✅ Para server_timezone:</strong><br>
+                        Lo ÚNICO que importa es la timezone del SERVIDOR SCUM, NO la timezone de la PC donde corre el bot.
+                    </div>
+
+                    <div class="info-box">
+                        <strong>✅ Para restart_times:</strong><br>
+                        Usa TU hora local (de la máquina donde corre el bot). No necesitas hacer conversiones.
+                    </div>
+
+                    <h3>🔍 Cómo Identificar la Timezone del Servidor</h3>
+
+                    <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <h4 style="color: white;">Método Infalible:</h4>
+                        <ol style="color: white;">
+                            <li>Conéctate al servidor SCUM</li>
+                            <li>Envía un mensaje de chat (ej: "test")</li>
+                            <li>Anota la hora EXACTA cuando lo enviaste</li>
+                            <li>Abre <code>data/sync_data/chat_logs.json</code></li>
+                            <li>Busca tu mensaje y compara el timestamp</li>
+                        </ol>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de Comparación:</strong>
+                        <ul>
+                            <li>Hora que era: 14:30 (Nueva York)</li>
+                            <li>Timestamp en JSON: <code>"2025-11-04 14:30:15"</code></li>
+                            <li><strong>Conclusión:</strong> Servidor = <code>America/New_York</code> ✅</li>
+                        </ul>
+                        <ul>
+                            <li>Hora que era: 14:30 (Nueva York)</li>
+                            <li>Timestamp en JSON: <code>"2025-11-04 19:30:15"</code></li>
+                            <li><strong>Conclusión:</strong> Servidor = <code>UTC</code> (5 horas adelante) ✅</li>
+                        </ul>
+                    </div>
+
+                    <h3>🌎 Ejemplos Reales</h3>
+
+                    <div class="code-block">
+                        <strong>Caso 1: Servidor en Nueva York, Bot en Alemania</strong><br>
+                        <code>
+general:<br>
+&nbsp;&nbsp;server_timezone: "America/New_York"  # ← Timezone del SERVIDOR<br>
+<br>
+# La timezone de la PC (Alemania) NO importa para chat
+                        </code>
+                    </div>
+
+                    <div class="code-block">
+                        <strong>Caso 2: Servidor en UTC, Bot en Uruguay</strong><br>
+                        <code>
+general:<br>
+&nbsp;&nbsp;server_timezone: "UTC"  # ← Timestamps están en UTC<br>
+<br>
+# Aunque tu PC esté en Uruguay (UTC-3), el bot lo maneja automáticamente
+                        </code>
+                    </div>
+
+                    <div class="code-block">
+                        <strong>Caso 3: Servidor en España, Bot en Argentina</strong><br>
+                        <code>
+general:<br>
+&nbsp;&nbsp;server_timezone: "Europe/Madrid"  # ← Timezone del servidor
+                        </code>
+                    </div>
+                </div>
+
+                <!-- CONFIG SUBTAB -->
+                <div id="timezones-config" class="sub-panel">
+                    <h2>⚙️ Configuración de Timezones</h2>
+
+                    <h3>📋 Timezones Comunes</h3>
+
+                    <table class="data-table">
+                        <tr>
+                            <th>Región</th>
+                            <th>Timezone</th>
+                            <th>Código para Config</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Estados Unidos</strong></td>
+                            <td>Nueva York (Este)</td>
+                            <td><code>America/New_York</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Los Ángeles (Oeste)</td>
+                            <td><code>America/Los_Angeles</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Chicago (Centro)</td>
+                            <td><code>America/Chicago</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Denver (Montaña)</td>
+                            <td><code>America/Denver</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Europa</strong></td>
+                            <td>España</td>
+                            <td><code>Europe/Madrid</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Alemania</td>
+                            <td><code>Europe/Berlin</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Francia</td>
+                            <td><code>Europe/Paris</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Reino Unido</td>
+                            <td><code>Europe/London</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>América Latina</strong></td>
+                            <td>Uruguay</td>
+                            <td><code>America/Montevideo</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Argentina</td>
+                            <td><code>America/Buenos_Aires</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Brasil (São Paulo)</td>
+                            <td><code>America/Sao_Paulo</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>México</td>
+                            <td><code>America/Mexico_City</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Chile</td>
+                            <td><code>America/Santiago</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Otros</strong></td>
+                            <td>UTC (sin offset)</td>
+                            <td><code>UTC</code></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Australia (Sydney)</td>
+                            <td><code>Australia/Sydney</code></td>
+                        </tr>
+                    </table>
+
+                    <h3>⚙️ Configuración en config.yaml</h3>
+
+                    <div class="code-block">
+                        <strong>Configuración de Chat (server_timezone):</strong><br>
+                        <code>
+general:<br>
+&nbsp;&nbsp;log_level: "INFO"<br>
+&nbsp;&nbsp;zones_path: "./config/Zones.yaml"<br>
+&nbsp;&nbsp;server_timezone: "UTC"  # ← CAMBIAR según tu servidor
+                        </code>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ IMPORTANTE:</strong>
+                        <ul>
+                            <li>Este valor debe coincidir con la timezone del SERVIDOR SCUM</li>
+                            <li>NO uses la timezone de tu PC si el servidor está en otro lugar</li>
+                            <li>Si te equivocas, los comandos pueden no procesarse correctamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="code-block">
+                        <strong>Configuración de Restart Times (hora local):</strong><br>
+                        <code>
+server_restart_schedules:<br>
+&nbsp;&nbsp;enabled: true<br>
+&nbsp;&nbsp;# IMPORTANTE: Estos horarios están en HORA LOCAL de tu máquina<br>
+&nbsp;&nbsp;# NO son la hora del servidor SCUM<br>
+&nbsp;&nbsp;restart_times:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- "06:00"  # 06:00 AM hora LOCAL de tu máquina<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- "12:00"  # 12:00 PM hora LOCAL de tu máquina<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- "18:00"  # 06:00 PM hora LOCAL de tu máquina<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- "00:00"  # 12:00 AM hora LOCAL de tu máquina
+                        </code>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>✅ Ventaja:</strong><br>
+                        No necesitas hacer conversiones de timezone para restart_times. Usa tu hora local directamente.
+                    </div>
+
+                    <h3>🧪 Cómo Verificar que Funciona</h3>
+
+                    <div class="info-box">
+                        <strong>Después de configurar server_timezone:</strong>
+                        <ol>
+                            <li>Reinicia el bot</li>
+                            <li>Mira los logs al iniciar</li>
+                            <li>Ejecuta <code>@status</code> en el juego</li>
+                            <li>El bot debería responder sin errores</li>
+                        </ol>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Logs esperados:</strong>
+                        <ul>
+                            <li><code>✅ Got 3 online players from PlayerStorage</code></li>
+                            <li><code>✅ Next lottery in 25 minutes</code></li>
+                            <li><code>🔍 CHANNEL VERIFY - Looking for bot messages...</code></li>
+                            <li><code>✅ Bot confirmed in GLOBAL</code></li>
+                        </ul>
+                        <p><strong>Si ves estos mensajes sin errores de TypeError → está funcionando correctamente ✅</strong></p>
+                    </div>
+                </div>
+
+                <!-- DST SUBTAB -->
+                <div id="timezones-dst" class="sub-panel">
+                    <h2>🕐 Horario de Verano (DST - Daylight Saving Time)</h2>
+
+                    <div class="feature-card">
+                        <h3 style="color: white;">¿Qué es el Horario de Verano?</h3>
+                        <p>Algunos países adelantan el reloj 1 hora en verano y lo atrasan en invierno. Esto se llama DST (Daylight Saving Time).</p>
+                    </div>
+
+                    <h3>🌍 ¿Qué Países Tienen DST?</h3>
+
+                    <table class="data-table">
+                        <tr>
+                            <th>Región</th>
+                            <th>Tiene DST?</th>
+                            <th>Cambio</th>
+                        </tr>
+                        <tr>
+                            <td>Estados Unidos</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>Marzo → Noviembre</td>
+                        </tr>
+                        <tr>
+                            <td>Europa (España, Alemania, Francia)</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>Marzo → Octubre</td>
+                        </tr>
+                        <tr>
+                            <td>Reino Unido</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>Marzo → Octubre</td>
+                        </tr>
+                        <tr>
+                            <td>Uruguay</td>
+                            <td><span class="badge" style="background: #e74c3c;">NO</span></td>
+                            <td>(desde 2015)</td>
+                        </tr>
+                        <tr>
+                            <td>Argentina</td>
+                            <td><span class="badge" style="background: #e74c3c;">NO</span></td>
+                            <td>(desde 2009)</td>
+                        </tr>
+                        <tr>
+                            <td>Brasil</td>
+                            <td><span class="badge" style="background: #e74c3c;">NO</span></td>
+                            <td>(desde 2019)</td>
+                        </tr>
+                        <tr>
+                            <td>Chile</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>Septiembre → Abril</td>
+                        </tr>
+                        <tr>
+                            <td>México</td>
+                            <td><span class="badge" style="background: #f39c12;">PARCIAL</span></td>
+                            <td>(solo algunas zonas)</td>
+                        </tr>
+                    </table>
+
+                    <h3>✅ ¿El Bot Maneja DST Automáticamente?</h3>
+
+                    <div class="success-box">
+                        <strong>SÍ - Completamente Automático</strong>
+                        <ul>
+                            <li>El bot usa <code>pytz</code> (biblioteca de Python)</li>
+                            <li><code>pytz</code> conoce TODOS los cambios de DST de TODOS los países</li>
+                            <li>Cuando configuras <code>server_timezone: "America/New_York"</code>, el bot automáticamente sabe:
+                                <ul>
+                                    <li>En invierno: UTC-5</li>
+                                    <li>En verano: UTC-4</li>
+                                </ul>
+                            </li>
+                            <li><strong>NO necesitas hacer NADA cuando cambia la hora</strong></li>
+                        </ul>
+                    </div>
+
+                    <h3>🎯 Ejemplos de DST</h3>
+
+                    <div class="example-box">
+                        <strong>Ejemplo 1: Nueva York</strong>
+                        <ul>
+                            <li>Config: <code>server_timezone: "America/New_York"</code></li>
+                            <li>15 de Enero (invierno): Bot interpreta como UTC-5</li>
+                            <li>15 de Julio (verano): Bot interpreta como UTC-4</li>
+                            <li><strong>Resultado:</strong> ✅ Funciona automáticamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo 2: España</strong>
+                        <ul>
+                            <li>Config: <code>server_timezone: "Europe/Madrid"</code></li>
+                            <li>15 de Enero (invierno): Bot interpreta como UTC+1</li>
+                            <li>15 de Julio (verano): Bot interpreta como UTC+2</li>
+                            <li><strong>Resultado:</strong> ✅ Funciona automáticamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo 3: Uruguay (sin DST)</strong>
+                        <ul>
+                            <li>Config: <code>server_timezone: "America/Montevideo"</code></li>
+                            <li>Todo el año: Bot interpreta como UTC-3</li>
+                            <li><strong>Resultado:</strong> ✅ Funciona (sin cambios)</li>
+                        </ul>
+                    </div>
+
+                    <h3>📅 ¿Qué Pasa el Día del Cambio de Hora?</h3>
+
+                    <div class="feature-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <h4 style="color: white;">Escenario: Uruguay (hipotético si tuviera DST)</h4>
+                        <ul style="color: white;">
+                            <li><strong>Antes del cambio:</strong> 03:00 AM UTC-2 (verano)</li>
+                            <li><strong>Día del cambio:</strong> 02:00 AM → se vuelve 03:00 AM (vuelve a UTC-3)</li>
+                            <li><strong>pytz detecta el cambio automáticamente</strong></li>
+                            <li><strong>Después del cambio:</strong> 03:00 AM UTC-3 (invierno)</li>
+                            <li><strong>Resultado:</strong> ✅ El bot sigue funcionando sin problemas</li>
+                        </ul>
+                    </div>
+
+                    <h3>🔧 ¿DST en Restart Times?</h3>
+
+                    <div class="info-box">
+                        <strong>✅ También Automático (manejado por el Sistema Operativo)</strong>
+                        <ul>
+                            <li>Los <code>restart_times</code> usan hora LOCAL de tu máquina</li>
+                            <li>Cuando cambia la hora en tu país, Windows/Linux actualizan automáticamente</li>
+                            <li>El bot sigue usando tu hora local correctamente</li>
+                            <li><strong>NO necesitas cambiar nada en la config</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo: Restart a las 06:00 en España (con DST)</strong>
+                        <ul>
+                            <li>Config: <code>restart_times: ["06:00"]</code></li>
+                            <li>Invierno (UTC+1): Bot detecta restart a las 06:00 hora local</li>
+                            <li>Verano (UTC+2): Bot detecta restart a las 06:00 hora local (nueva)</li>
+                            <li><strong>Resultado:</strong> ✅ Siempre son las 06:00 de tu reloj</li>
+                        </ul>
+                    </div>
+
+                    <h3>❓ ¿Es Difícil Detectar el Cambio de Hora?</h3>
+
+                    <div class="success-box">
+                        <strong>Con el sistema actual: NO (es automático)</strong>
+                        <ul>
+                            <li><code>pytz</code> tiene una base de datos completa de DST para 590+ timezones</li>
+                            <li>Incluye cambios históricos y futuros</li>
+                            <li>Se actualiza con cada versión de Python</li>
+                            <li>NO necesitas hacer cálculos manuales</li>
+                            <li>NO necesitas detectar nada</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Sin pytz sería muy difícil:</strong>
+                        <ul>
+                            <li>Tendrías que programar cada regla de DST manualmente</li>
+                            <li>Cada país tiene reglas diferentes</li>
+                            <li>Las reglas cambian (ej: USA cambió DST en 2007)</li>
+                            <li>Podrían haber errores si el OS no se actualiza</li>
+                        </ul>
+                        <p><strong>Por suerte, pytz hace TODO esto por ti ✅</strong></p>
+                    </div>
+
+                    <h3>✅ Resumen DST</h3>
+
+                    <table class="data-table">
+                        <tr>
+                            <th>Componente</th>
+                            <th>Maneja DST?</th>
+                            <th>Cómo?</th>
+                        </tr>
+                        <tr>
+                            <td>Chat Processing</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>pytz automáticamente</td>
+                        </tr>
+                        <tr>
+                            <td>Channel Detection</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>pytz automáticamente</td>
+                        </tr>
+                        <tr>
+                            <td>Restart Times</td>
+                            <td><span class="badge" style="background: #27ae60;">SÍ</span></td>
+                            <td>Sistema Operativo automáticamente</td>
+                        </tr>
+                        <tr>
+                            <td>Acción Requerida</td>
+                            <td colspan="2"><span class="badge" style="background: #27ae60;">NINGUNA - Todo automático</span></td>
+                        </tr>
+                    </table>
+
+                    <div class="data-location">
+                        <h4>📚 Más Información:</h4>
+                        <p>Si quieres ver todas las timezones disponibles, visita:</p>
+                        <div class="file-path">https://en.wikipedia.org/wiki/List_of_tz_database_time_zones</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WARZONE EVENT TAB -->
+            <div id="warzone" class="tab-panel">
+                <h2>🎯 Warzone Event System v1.3.0 <span class="beta-badge">BETA</span></h2>
+                <p class="subtitle">Sistema de eventos PvP dinámicos con rotación de zonas, recompensas, guardians y enemigos</p>
+
+                <div class="warning-box">
+                    <h4>⚠️ Estado BETA</h4>
+                    <p>Este sistema está en fase de pruebas. Pueden existir bugs o comportamientos inesperados. Reporte cualquier problema al administrador del bot.</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>🆕 Novedades v1.3.0 (2025-11-11)</h4>
+                    <ul>
+                        <li>🆕 <strong>Squad-Aware Timing</strong>: Mismo squad cuenta como 1 jugador (evita farming)</li>
+                        <li>🆕 <strong>Bonus Enemy Spawns (Guardians)</strong>: Enemigos extra protegiendo rewards</li>
+                        <li>🆕 <strong>Múltiples Ubicaciones para Guardians</strong>: Spawn aleatorio de guardianes</li>
+                        <li>🆕 <strong>Zombie Cleanup</strong>: Limpieza automática antes de spawn de NPCs</li>
+                        <li>🆕 <strong>Cleanup Methods</strong>: Elige entre limpieza individual o masiva</li>
+                        <li>🆕 <strong>Announcement Configuration</strong>: Elige entre #Announce o chat normal</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>📋 ¿Qué es Warzone Event?</h4>
+                    <p><strong>Warzone Event</strong> es un sistema de eventos PvP automático que activa zonas de combate competitivas cuando hay suficientes jugadores online. Los jugadores compiten por recompensas mientras enfrentan enemigos NPCs o zombis.</p>
+                    <h5>Características Principales:</h5>
+                    <ul>
+                        <li>✅ <strong>Activación Automática</strong>: Se activa cuando hay ≥5 jugadores online (configurable)</li>
+                        <li>✅ <strong>Múltiples Zonas</strong>: Rotación aleatoria entre diferentes ubicaciones del mapa</li>
+                        <li>✅ <strong>Sistema de Tiers</strong>: 5 niveles de rareza que escalan con jugadores</li>
+                        <li>✅ <strong>Recompensas Dinámicas</strong>: Spawn de items según cantidad de jugadores en zona</li>
+                        <li>✅ <strong>Guardians (Bonus Enemies)</strong>: Enemigos extra fijos protegiendo rewards 🆕</li>
+                        <li>✅ <strong>Enemigos Escalables</strong>: NPCs o zombis que aumentan con la cantidad de jugadores</li>
+                        <li>✅ <strong>Limpieza Automática</strong>: Rewards y zombies se limpian automáticamente 🆕</li>
+                        <li>✅ <strong>Discord Integration</strong>: Notificaciones con imágenes de las zonas</li>
+                        <li>✅ <strong>Sistema Inteligente</strong>: Detección de altitud, rotación de spawns, proximidad</li>
+                    </ul>
+                </div>
+
+                <!-- Overview Section -->
+                <div class="section">
+                    <h3>📖 Cómo Funciona</h3>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🎬 1. Activación</h4>
+                            <p>Cuando el servidor tiene <strong>5 o más jugadores</strong> conectados, el sistema selecciona aleatoriamente una zona y activa el evento.</p>
+                            <p><strong>Notificación:</strong> Discord webhook + anuncio in-game</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4>👥 2. Detección de Jugadores</h4>
+                            <p>El sistema detecta jugadores que entran en la zona del evento usando coordenadas X, Y.</p>
+                            <p><strong>Filtro inteligente:</strong> Ignora jugadores en aviones (por altitud Z)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4>💎 3. Spawn de Recompensas</h4>
+                            <p>Cada <strong>30 minutos</strong> (o menos con más jugadores), se spawnean items de alto valor en puntos aleatorios de la zona.</p>
+                            <p><strong>Rotación:</strong> No repite el mismo punto de spawn consecutivamente</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4>⚔️ 4. Spawn de Enemigos</h4>
+                            <p>NPCs o zombis spawean cerca de los puntos de recompensa para crear desafío.</p>
+                            <p><strong>Escalado:</strong> 2 enemigos por jugador (máximo 20)</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4>🔄 5. Rotación de Zona</h4>
+                            <p>Cada <strong>6 horas</strong>, el evento cambia a una nueva zona aleatoria del sistema.</p>
+                            <p><strong>Variedad:</strong> Mantiene el evento fresco y dinámico</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h4>⏸️ 6. Desactivación (Graceful Shutdown)</h4>
+                            <p>Si la cantidad de jugadores cae por debajo del mínimo, el evento <strong>NO se corta inmediatamente</strong>.</p>
+                            <p><strong>Sistema Inteligente:</strong> El evento continúa hasta entregar <strong>al menos 1 premio</strong> a los jugadores activos.</p>
+                            <div class="info-box">
+                                <p><strong>¿Por qué?</strong> Los jugadores que están participando merecen completar el ciclo y obtener su recompensa, aunque otros jugadores se hayan desconectado.</p>
+                            </div>
+                            <p><strong>Reactivación:</strong> Se reactiva cuando vuelvan suficientes jugadores</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="section">
+                    <h3>✨ Características Avanzadas</h3>
+
+                    <div class="feature-card">
+                        <h4>🎯 Filtro de Altitud por Zona</h4>
+                        <p>Cada zona tiene su propio límite de altitud máxima (<code>max_z_altitude</code>) para detectar jugadores:</p>
+                        <ul>
+                            <li><strong>Duga Radar</strong>: 65,000m (zona montañosa alta)</li>
+                            <li><strong>Train Yard</strong>: 15,000m (zona baja)</li>
+                        </ul>
+                        <p><strong>Fórmula:</strong> <code>max_z_altitude = Z_más_alto_en_zona + 1000</code></p>
+                        <div class="info-box">
+                            <p><strong>¿Por qué?</strong> Las zonas tienen altitudes muy diferentes. Un jugador en avión a 20,000m sobre Train Yard no debería activar el evento, pero un jugador a 60,000m en Duga Radar está en el suelo.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚡ Timing Dinámico de Recompensas</h4>
+                        <p>El intervalo entre spawns de recompensas se <strong>reduce</strong> según la cantidad de jugadores en la zona:</p>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Jugadores en Zona</th>
+                                    <th>Intervalo Base</th>
+                                    <th>Reducción</th>
+                                    <th>Intervalo Final</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 jugador</td>
+                                    <td>30 min</td>
+                                    <td>-5 min</td>
+                                    <td><strong>25 min</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>2 jugadores</td>
+                                    <td>30 min</td>
+                                    <td>-10 min</td>
+                                    <td><strong>20 min</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>3+ jugadores</td>
+                                    <td>30 min</td>
+                                    <td>-15+ min</td>
+                                    <td><strong>15 min (mínimo)</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="success-box">
+                            <p><strong>Beneficio:</strong> Más jugadores = más acción y recompensas más frecuentes</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📍 Rotación de Spawn Points</h4>
+                        <p>El sistema <strong>nunca repite</strong> el mismo punto de spawn dos veces seguidas:</p>
+                        <ol>
+                            <li>Primer spawn: "Motor Aire Acondicionado"</li>
+                            <li>Segundo spawn: "Centro" (diferente al anterior)</li>
+                            <li>Tercer spawn: "Camión" (diferente al anterior)</li>
+                        </ol>
+                        <div class="info-box">
+                            <p><strong>Ventaja:</strong> Los jugadores no pueden campear un solo punto esperando el siguiente spawn</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🛡️ Detección de Proximidad</h4>
+                        <p>Los enemigos NO spawean a menos de <strong>30 metros</strong> de cualquier jugador:</p>
+                        <ul>
+                            <li>✅ Sistema busca ubicaciones seguras para spawn</li>
+                            <li>✅ Evita spawns "en la cara" de los jugadores</li>
+                            <li>✅ Máximo 10 intentos para encontrar ubicación segura</li>
+                        </ul>
+                        <div class="warning-box">
+                            <p><strong>Nota:</strong> Si no encuentra ubicación segura, spawea con radio extendido (~80m)</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎭 Rotación de Clases de Enemigos</h4>
+                        <p>El sistema alterna entre múltiples clases de NPCs/Zombies en cada spawn:</p>
+                        <h5>📋 NPCs (si configurado como "npc"):</h5>
+                        <ul>
+                            <li>BP_Drifter_Lvl_1 (Fácil)</li>
+                            <li>BP_Drifter_Lvl_2 (Medio)</li>
+                            <li>BP_Drifter_Lvl_3 (Difícil)</li>
+                        </ul>
+                        <h5>🧟 Zombies (si configurado como "zombie"):</h5>
+                        <ul>
+                            <li>BP_Zombie_Civilian_Normal_Male</li>
+                            <li>BP_Zombie_Civilian_Normal_Female</li>
+                            <li>BP_Zombie_Military (más resistente)</li>
+                        </ul>
+                        <p><strong>Rotación:</strong> Primera oleada = Lvl_1, Segunda = Lvl_2, Tercera = Lvl_3, Cuarta = Lvl_1...</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🖼️ Imágenes de Zona en Discord</h4>
+                        <p>Los webhooks de activación y cambio de zona muestran una <strong>imagen</strong> de la zona activa:</p>
+                        <ul>
+                            <li>📸 Subir imágenes a imgur.com</li>
+                            <li>🎨 Tamaño recomendado: 1000x600px, 300-500KB</li>
+                            <li>⚡ Discord cachea las imágenes = carga instantánea</li>
+                        </ul>
+                        <div class="code-block">
+zone_images:
+  radar: "https://i.imgur.com/abc123.jpg"
+  train_yard: "https://i.imgur.com/def456.jpg"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Section -->
+                <div class="section">
+                    <h3>⚙️ Configuración</h3>
+
+                    <div class="feature-card">
+                        <h4>📝 Habilitar el Sistema</h4>
+                        <p>Edita <code>config/config.yaml</code> y establece:</p>
+                        <div class="code-block">
+warzone_event:
+  enabled: true  # ← Cambiar a true para activar
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎯 Configurar Zonas</h4>
+                        <p>Las zonas se definen en <code>config/warzone_zones.yaml</code>:</p>
+                        <div class="code-block">
+zones:
+  - id: "radar"
+    name: "Duga Radar"
+    description: "Instalación de radar soviético"
+    enabled: true
+    max_z_altitude: 65000  # Altitud máxima para detectar jugadores
+    bounds:
+      top_left: { x: -825393, y: 359789, z: 0 }
+      bottom_right: { x: -900322, y: 306434, z: 0 }
+    reward_spawn_points:
+      - { x: -848215, y: 335736, z: 59265, label: "Motor Aire" }
+      - { x: -854218, y: 336453, z: 59170, label: "Centro" }
+    enemy_spawn_areas:
+      - { x: -846510, y: 334906, z: 58881, radius: 50 }
+                        </div>
+                        <div class="info-box">
+                            <h5>🗺️ Cómo obtener coordenadas:</h5>
+                            <ol>
+                                <li>Entra al juego SCUM</li>
+                                <li>Ve a la ubicación deseada</li>
+                                <li>Abre consola (F1) y escribe: <code>#Location</code></li>
+                                <li>Resultado: <code>X=123456 Y=123456 Z=123</code></li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>💎 Configurar Recompensas</h4>
+                        <p>Define qué items spawear en <code>config.yaml</code>:</p>
+                        <div class="code-block">
+reward_spawn:
+  enabled: true
+  interval_minutes: 30
+
+  # Timing dinámico (NUEVO)
+  dynamic_timing:
+    enabled: true
+    minutes_reduction_per_player: 5
+    minimum_interval_minutes: 15
+
+  # Rotación de spawn points (NUEVO)
+  rotate_spawn_points: true
+
+  commands:
+    - "#SpawnItem BP_Weapon_AK47 1 Location \"{location}\""
+    - "#SpawnItem Cal_7_62x39mm 5 AmmoCount 30 Location \"{location}\""
+    - "#SpawnItem BP_Vest_Military 1 Location \"{location}\""
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚔️ Configurar Enemigos</h4>
+                        <p>Configura el tipo y cantidad de enemigos:</p>
+                        <div class="code-block">
+enemy_spawn:
+  enabled: true
+  type: "npc"  # "npc" o "zombie"
+  min_enemies_per_player: 2
+  max_enemies_total: 20
+  min_distance_from_players: 30  # Metros (NUEVO)
+
+  npc:
+    classes:  # Múltiples clases (NUEVO)
+      - "BP_Drifter_Lvl_1"
+      - "BP_Drifter_Lvl_2"
+      - "BP_Drifter_Lvl_3"
+    rotate_classes: true
+    count_per_spawn: 2
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting Section -->
+                <div class="section">
+                    <h3>🔧 Solución de Problemas</h3>
+
+                    <div class="warning-box">
+                        <h4>❌ Evento no se activa</h4>
+                        <p><strong>Posibles causas:</strong></p>
+                        <ul>
+                            <li>❌ <code>enabled: false</code> en config.yaml</li>
+                            <li>❌ Menos de 5 jugadores online</li>
+                            <li>❌ No hay zonas habilitadas en warzone_zones.yaml</li>
+                            <li>❌ SCUM_Data_Sync no está corriendo</li>
+                            <li>❌ players_online.json no tiene datos de ubicación</li>
+                        </ul>
+                        <p><strong>Solución:</strong></p>
+                        <ol>
+                            <li>Verifica <code>enabled: true</code> en config.yaml</li>
+                            <li>Verifica que SCUM_Data_Sync esté corriendo</li>
+                            <li>Revisa los logs del bot buscando errores de configuración</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>❌ No detecta jugadores en zona</h4>
+                        <p><strong>Posibles causas:</strong></p>
+                        <ul>
+                            <li>❌ Jugadores en avión (Z muy alta)</li>
+                            <li>❌ Coordenadas de zona incorrectas</li>
+                            <li>❌ max_z_altitude muy bajo</li>
+                        </ul>
+                        <p><strong>Solución:</strong></p>
+                        <ol>
+                            <li>Verifica que <code>max_z_altitude</code> sea mayor que el Z más alto de reward_spawn_points</li>
+                            <li>Usa <code>#Location</code> in-game para verificar que estás dentro de los bounds de la zona</li>
+                            <li>Revisa que top_left.x &lt; bottom_right.x y top_left.y &gt; bottom_right.y</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>❌ No spawean recompensas</h4>
+                        <p><strong>Posibles causas:</strong></p>
+                        <ul>
+                            <li>❌ <code>reward_spawn.enabled: false</code></li>
+                            <li>❌ Menos de 1 jugador en zona</li>
+                            <li>❌ Comandos de spawn incorrectos</li>
+                        </ul>
+                        <p><strong>Solución:</strong></p>
+                        <ol>
+                            <li>Verifica <code>enabled: true</code> en reward_spawn</li>
+                            <li>Espera el intervalo configurado (default: 30 min)</li>
+                            <li>Verifica que los comandos tengan <code>{location}</code> placeholder</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="section">
+                    <h3>❓ Preguntas Frecuentes</h3>
+
+                    <div class="feature-card">
+                        <h4>¿Puedo tener múltiples eventos activos simultáneamente?</h4>
+                        <p><strong>No.</strong> Solo puede haber un evento activo a la vez. El sistema selecciona una zona aleatoria al activarse.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿Cómo agrego más zonas?</h4>
+                        <p>Copia una zona existente en <code>warzone_zones.yaml</code>, cambia el <code>id</code> y <code>name</code>, obtén coordenadas con <code>#Location</code>, y define los bounds y spawn points.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿Puedo usar tanto NPCs como Zombies?</h4>
+                        <p><strong>No simultáneamente.</strong> Debes elegir uno con <code>enemy_spawn.type</code>. Puedes cambiar entre "npc" y "zombie" reiniciando el bot.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿Los jugadores reciben notificaciones del evento?</h4>
+                        <p><strong>Sí.</strong> Reciben anuncios in-game via <code>#Announce</code> y notificaciones de Discord (si tienen acceso al canal del webhook).</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿El evento funciona sin webhooks?</h4>
+                        <p><strong>Sí.</strong> Los webhooks son opcionales. Los anuncios in-game siempre funcionan independientemente de la configuración de webhooks.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿Qué pasa si el servidor se reinicia durante un evento?</h4>
+                        <p>El evento se desactiva automáticamente. Se reactivará cuando haya suficientes jugadores después del reinicio.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>¿Cómo ajusto la dificultad de los enemigos?</h4>
+                        <p>Cambia las clases de NPCs a niveles más altos (<code>BP_Drifter_Lvl_3</code>) o aumenta <code>min_enemies_per_player</code> para más enemigos por jugador.</p>
+                    </div>
+                </div>
+
+                <!-- Technical Info -->
+                <div class="section">
+                    <h3>⚙️ Información Técnica</h3>
+
+                    <div class="feature-card">
+                        <h4>📊 Archivos del Sistema</h4>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Archivo</th>
+                                    <th>Propósito</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>src/events/warzone_event_manager.py</code></td>
+                                    <td>Orquestador principal del evento</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/events/zone_monitor.py</code></td>
+                                    <td>Detección de jugadores en zonas</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/events/reward_spawner.py</code></td>
+                                    <td>Spawn de items/recompensas</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/events/enemy_spawner.py</code></td>
+                                    <td>Spawn de NPCs/Zombies</td>
+                                </tr>
+                                <tr>
+                                    <td><code>src/events/event_webhook_handler.py</code></td>
+                                    <td>Notificaciones Discord</td>
+                                </tr>
+                                <tr>
+                                    <td><code>config/warzone_zones.yaml</code></td>
+                                    <td>Definición de zonas</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔗 Dependencias</h4>
+                        <ul>
+                            <li><strong>SCUM_Data_Sync</strong>: Requiere que esté corriendo para obtener ubicaciones de jugadores</li>
+                            <li><strong>players_online.json</strong>: Debe actualizarse cada ~20 segundos</li>
+                            <li><strong>WebhookManager</strong>: Opcional para notificaciones Discord</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📝 Registro de Cambios</h4>
+                        <p><strong>v1.3.0-BETA (2025-11-11)</strong></p>
+                        <ul>
+                            <li>🆕 <strong>Squad-Aware Timing:</strong> Mismo squad cuenta como 1 jugador (evita farming)</li>
+                            <li>🆕 <strong>Bonus Enemy Spawns (Guardians):</strong> Enemigos extra protegiendo rewards</li>
+                            <li>🆕 <strong>Múltiples Ubicaciones para Guardians:</strong> Spawn aleatorio de guardianes</li>
+                            <li>🆕 <strong>Zombie Cleanup:</strong> Limpieza automática antes de spawn de NPCs</li>
+                            <li>🆕 <strong>Cleanup Methods:</strong> Elige entre limpieza individual o masiva</li>
+                            <li>🆕 <strong>Announcement Configuration:</strong> Elige entre #Announce o chat normal</li>
+                            <li>🔧 Optimización del tracking de jugadores</li>
+                            <li>🔧 Optimización de cambios de canal</li>
+                        </ul>
+                        <p><strong>v1.2.0-BETA (2025-11-06)</strong></p>
+                        <ul>
+                            <li>✨ Sistema de Tiers con grupos opcionales y requeridos</li>
+                            <li>✨ Limpieza automática de rewards previos</li>
+                            <li>✨ Webhooks mejorados con actualización al inicio</li>
+                            <li>✨ Imagen genérica para rewards inactivos</li>
+                            <li>✨ Sistema expandible de tiers ilimitados</li>
+                        </ul>
+                        <p><strong>v1.1.0-BETA (2025-11-06)</strong></p>
+                        <ul>
+                            <li>✨ Filtro de altitud per-zona (max_z_altitude)</li>
+                            <li>✨ Timing dinámico de recompensas</li>
+                            <li>✨ Rotación de spawn points</li>
+                            <li>✨ Detección de proximidad para enemigos</li>
+                            <li>✨ Múltiples clases de NPCs/Zombies con rotación</li>
+                            <li>✨ Soporte de imágenes de zona en webhooks</li>
+                        </ul>
+                        <p><strong>v1.0.0 (2025-11-06)</strong></p>
+                        <ul>
+                            <li>🎉 Lanzamiento inicial del sistema</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Recent Improvements Section -->
+                <div class="section">
+                    <h3>🆕 Mejoras Recientes</h3>
+
+                    <div class="success-box">
+                        <h4>✨ Webhooks Mejorados (Última actualización)</h4>
+                        <p>Se implementaron importantes mejoras en el sistema de webhooks de Discord:</p>
+                        <ul>
+                            <li>📱 <strong>Actualización al Inicio:</strong> Los webhooks ahora se actualizan automáticamente cuando el bot se inicia, mostrando el estado actual del evento (activo/inactivo)</li>
+                            <li>🖼️ <strong>Imagen Genérica Única:</strong> Cuando no hay recompensas activas, se muestra una imagen genérica especial (diferente a las imágenes de spawn points)</li>
+                            <li>📊 <strong>Dos Mensajes de Discord:</strong>
+                                <ul>
+                                    <li><strong>Mensaje Principal:</strong> Estado del evento, zona actual, jugadores, duración</li>
+                                    <li><strong>Mensaje de Recompensas:</strong> Imagen del spawn point, items spawneados, tier, ubicación</li>
+                                </ul>
+                            </li>
+                            <li>🔄 <strong>Actualización Automática:</strong> Ambos mensajes se actualizan cuando:
+                                <ul>
+                                    <li>El bot se inicia o reinicia</li>
+                                    <li>El evento se activa (suficientes jugadores)</li>
+                                    <li>El evento se desactiva (jugadores insuficientes)</li>
+                                    <li>La zona rota a una nueva ubicación</li>
+                                    <li>Se spawnea una nueva recompensa</li>
+                                </ul>
+                            </li>
+                            <li>🎨 <strong>Colores Dinámicos:</strong> El mensaje de recompensas cambia de color según el tier:
+                                <ul>
+                                    <li>🟢 Tier 1 (COMÚN): Verde</li>
+                                    <li>🟡 Tier 2 (NO COMÚN): Amarillo</li>
+                                    <li>🔴 Tier 3 (RARO): Rojo</li>
+                                    <li>💎 Tier 4 y superiores (si están configurados): Colores personalizables</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="info-box">
+                            <p><strong>Beneficio:</strong> Los jugadores siempre ven información actualizada en Discord, incluso si el bot se reinicia. La imagen genérica evita confusión cuando no hay recompensas activas.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🎯 Sistema de Tiers Expandible y Configurable</h4>
+                        <p>El sistema de recompensas por tiers ahora soporta configuración ilimitada y avanzada:</p>
+                        <div class="code-block">
+tier_system:
+  enabled: true
+  tiers:
+    tier_1:  # COMÚN (más frecuente)
+      weight: 50
+      enabled: true  # ✅ IMPLEMENTADO
+      scaling_type: "decrease"  # ✅ NUEVO
+      scaling_per_player: 0.2
+      items: [...]
+
+    tier_2:  # NO COMÚN
+      weight: 30
+      enabled: true
+      scaling_type: "increase"
+      scaling_per_player: 0.15
+      items: [...]
+
+    tier_3:  # RARO
+      weight: 10
+      enabled: false  # ✅ Deshabilitar tier
+      scaling_type: "increase"
+      scaling_per_player: 0.3
+      items: []
+
+    tier_4:  # ÉPICO
+      weight: 5
+      enabled: true
+      scaling_type: "increase"
+      scaling_per_player: 0.4
+      items: [...]
+
+    tier_5:  # LEGENDARIO
+      weight: 2
+      enabled: true
+      scaling_type: "increase"
+      scaling_per_player: 0.5
+      items: [...]
+
+    # Puedes agregar tier_6, tier_7, etc. sin límite
+                        </div>
+                        <ul>
+                            <li>✅ Puedes agregar tier_4, tier_5, tier_6, tier_100... sin límite</li>
+                            <li>✅ Cada tier puede habilitarse/deshabilitarse con <code>enabled: true/false</code></li>
+                            <li>✅ Configuración de scaling por tier:
+                                <ul>
+                                    <li><code>decrease</code>: Probabilidad baja con más jugadores (items comunes)</li>
+                                    <li><code>increase</code>: Probabilidad sube con más jugadores (items raros)</li>
+                                    <li><code>static</code>: Probabilidad constante (sin cambio)</li>
+                                </ul>
+                            </li>
+                            <li>✅ Colores y emojis personalizables por tier en webhooks</li>
+                            <li>✅ Backward compatible: tiers sin configuración usan valores legacy</li>
+                        </ul>
+                        <div class="info-box">
+                            <p><strong>Beneficio:</strong> Puedes tener múltiples tiers del mismo nivel de rareza pero con diferentes items, y habilitar/deshabilitar según eventos temporales sin eliminar la configuración.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📦 Grupos de Items - Opcionales y Requeridos</h4>
+                        <p>Sistema de agrupación de items con soporte para grupos <strong>OPCIONALES</strong> y <strong>REQUERIDOS</strong>:</p>
+
+                        <div class="code-block">
+tier_1:
+  items:
+    # Items regulares (opcionales)
+    - "#SpawnItem Phoenix_Tears_Small 2 Location \"{location}\""
+    - "#SpawnItem MRE_Cheeseburger 2 Location \"{location}\""
+
+    # Grupo OPCIONAL (puede o no ser seleccionado)
+    - group:
+        - "#SpawnItem Weapon_MP5 1 Location \"{location}\""
+        - "#SpawnItem Weapon_MP5_K 1 Location \"{location}\""
+
+    # Grupo REQUERIDO (SIEMPRE selecciona 1 del grupo)
+    - required: true
+      items:
+        - "#SpawnItem Christmas_Present__MP5 1 Location \"{location}\""
+        - "#SpawnItem Christmas_Present_MAC10 1 Location \"{location}\""
+        - "#SpawnItem Christmas_Present_UMP 1 Location \"{location}\""
+
+reward_selection:
+  mode: "tier_based"
+  count: 3  # Seleccionar 3 items
+                        </div>
+
+                        <p><strong>Comportamiento con count: 3:</strong></p>
+                        <ol>
+                            <li>✅ <strong>Paso 1:</strong> Selecciona 1 item del grupo REQUERIDO (garantizado)</li>
+                            <li>🎲 <strong>Paso 2:</strong> Completa con 2 items/grupos opcionales aleatorios</li>
+                        </ol>
+
+                        <p><strong>Ejemplo de Resultado:</strong></p>
+                        <ul>
+                            <li>✅ <code>Christmas_Present_MAC10</code> (del grupo requerido - GARANTIZADO)</li>
+                            <li>🎲 <code>Phoenix_Tears_Small</code> (item opcional)</li>
+                            <li>🎲 <code>Weapon_MP5_K</code> (del grupo opcional)</li>
+                        </ul>
+
+                        <p><strong>Diferencias:</strong></p>
+                        <table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+                            <tr style="background-color: #2d2d2d;">
+                                <th style="border: 1px solid #444; padding: 8px;">Tipo</th>
+                                <th style="border: 1px solid #444; padding: 8px;">Sintaxis</th>
+                                <th style="border: 1px solid #444; padding: 8px;">Comportamiento</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #444; padding: 8px;">Grupo Opcional</td>
+                                <td style="border: 1px solid #444; padding: 8px;"><code>- group: [...]</code></td>
+                                <td style="border: 1px solid #444; padding: 8px;">Puede o no ser seleccionado</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #444; padding: 8px;">Grupo Requerido</td>
+                                <td style="border: 1px solid #444; padding: 8px;"><code>- required: true<br>&nbsp;&nbsp;items: [...]</code></td>
+                                <td style="border: 1px solid #444; padding: 8px;">✅ SIEMPRE selecciona 1 item</td>
+                            </tr>
+                        </table>
+
+                        <p><strong>Casos de Uso:</strong></p>
+                        <ul>
+                            <li>✅ <strong>Requeridos:</strong> Items de temporada que SIEMPRE deben aparecer (Christmas Presents)</li>
+                            <li>🎲 <strong>Opcionales:</strong> Variantes de armas que pueden aparecer aleatoriamente</li>
+                            <li>🔫 Evita saturación de variantes (MP5, MP5_01, MP5_02)</li>
+                            <li>🎁 Garantiza que eventos especiales siempre tengan su item característico</li>
+                        </ul>
+
+                        <div class="success-box">
+                            <p><strong>✅ Ventaja Principal:</strong> Los grupos REQUERIDOS garantizan que ciertos items SIEMPRE estén presentes, mientras que items y grupos opcionales agregan variedad aleatoria. Perfecto para eventos de temporada.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🧹 Limpieza Automática de Rewards</h4>
+                        <p>Sistema automático que elimina items del reward anterior JUSTO ANTES de spawnear nuevos:</p>
+                        <div class="code-block">
+reward_cleanup:
+  enabled: true      # Habilitar limpieza automática
+  radius: 10         # Radio de destrucción (unidades SCUM)
+  persistence_file: "data/warzone_spawned_items.json"
+                        </div>
+                        <p><strong>Funcionamiento:</strong></p>
+                        <ul>
+                            <li>📝 Registra cada spawn en JSON (items, location, timestamp)</li>
+                            <li>💾 Solo guarda el spawn MÁS RECIENTE (no acumula)</li>
+                            <li>🧹 Al spawnear nuevos items, PRIMERO limpia los anteriores</li>
+                            <li>🗑️ Usa <code>#DestroyAllItemsWithinRadius</code> para eliminar items</li>
+                            <li>🔄 Simple y predecible: cleanup → spawn → guarda</li>
+                        </ul>
+                        <p><strong>Ejemplo de Flujo:</strong></p>
+                        <div class="code-block">
+Spawn #1 (00:00):
+  1. (No hay items previos, no limpia)
+  2. Spawna: Phoenix_Tears + MP5 en Location A
+  3. Guarda en JSON
+
+Spawn #2 (00:04):
+  1. 🧹 Limpia: Phoenix_Tears + MP5 de Location A
+  2. Spawna: MRE + Christmas_Present en Location B
+  3. Guarda en JSON (reemplaza Spawn #1)
+
+Spawn #3 (00:08):
+  1. 🧹 Limpia: MRE + Christmas_Present de Location B
+  2. Spawna: Nuevos items en Location C
+  3. Guarda en JSON (reemplaza Spawn #2)
+                        </div>
+                        <p><strong>Ventajas:</strong></p>
+                        <ul>
+                            <li>✅ Extremadamente simple - no timers complicados</li>
+                            <li>🎮 Mantiene el mundo limpio de items viejos</li>
+                            <li>⚡ Evita acumulación de loot antiguo</li>
+                            <li>🎯 Jugadores encuentran solo el reward actual</li>
+                            <li>📊 Radio configurable (10m recomendado)</li>
+                            <li>💾 Si el bot se reinicia, limpia al próximo spawn</li>
+                        </ul>
+                        <div class="success-box">
+                            <p><strong>✅ Simplicidad:</strong> No necesitas configurar tiempos. La limpieza siempre ocurre justo antes de cada nuevo spawn, garantizando que el mapa esté limpio para el nuevo reward.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📝 Logging Mejorado</h4>
+                        <p>Se agregaron logs de debug detallados para facilitar el troubleshooting:</p>
+                        <ul>
+                            <li>📊 Logs de recolección de datos de webhooks</li>
+                            <li>🔍 Estado activo/inactivo del evento en tiempo real</li>
+                            <li>🖼️ URL de imagen genérica utilizada</li>
+                            <li>🎲 Probabilidades de tier según jugadores en zona</li>
+                            <li>🧹 Logs de limpieza automática de rewards (NUEVO)</li>
+                        </ul>
+                        <div class="code-block">
+# Ejemplo de logs mejorados:
+📊 Collecting warzone event data...
+   Event is_active: False
+   Returning inactive state data
+   Using default reward image: https://iili.io/KDyTlYg.jpg
+
+# Logs de limpieza (NUEVO):
+🧹 Starting cleanup of 1 previous spawn(s)
+   🗑️ Cleaning spawn from 2025-01-15T14:30:00...
+      ✓ Destroyed Phoenix_Tears_Small within 10m radius
+      ✓ Destroyed Christmas_Present__MP5 within 10m radius
+✅ Cleanup completed: 2 item type(s) destroyed
+💎 Spawning rewards in 'Yard de Trenes' at Loot Militar
+✅ Spawned 3 reward items: Christmas_Present_AS_Val, MRE_TunaSalad, Phoenix_Tears
+📝 Recorded spawn with 3 item(s) for next cleanup
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🤝 Squad-Aware Reward Timing (v1.3.0)</h4>
+                        <p>Sistema anti-farming que evita que squads grandes abusen del timing dinámico:</p>
+
+                        <div class="code-block">
+dynamic_timing:
+  enabled: true
+  minutes_reduction_per_player: 2
+  minimum_interval_minutes: 3
+  same_squad_counts_as_one: false  # true = squad cuenta como 1 jugador
+                        </div>
+
+                        <p><strong>Comportamiento:</strong></p>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Escenario</th>
+                                    <th>Sin Squad-Aware (disabled)</th>
+                                    <th>Con Squad-Aware (enabled)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5 jugadores del mismo squad</td>
+                                    <td>5 jugadores × 2min = <strong>20min intervalo</strong></td>
+                                    <td>1 squad × 2min = <strong>28min intervalo</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>3 del Squad A + 2 solos</td>
+                                    <td>5 jugadores × 2min = <strong>20min intervalo</strong></td>
+                                    <td>2 grupos × 2min = <strong>26min intervalo</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>5 jugadores solos (sin squad)</td>
+                                    <td>5 jugadores × 2min = <strong>20min intervalo</strong></td>
+                                    <td>5 jugadores × 2min = <strong>20min intervalo</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Squad A (3) + Squad B (2)</td>
+                                    <td>5 jugadores × 2min = <strong>20min intervalo</strong></td>
+                                    <td>2 squads × 2min = <strong>26min intervalo</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Ventajas:</strong></p>
+                        <ul>
+                            <li>✅ <strong>Anti-Farming:</strong> Squads grandes no pueden acelerar rewards trayendo más miembros</li>
+                            <li>⚔️ <strong>Fomenta PvP:</strong> Múltiples squads compitiendo → rewards más rápidos que un solo squad</li>
+                            <li>⚖️ <strong>Riesgo vs Recompensa:</strong> Jugadores solos = intervalos largos, squads = intervalos moderados</li>
+                            <li>🔍 <strong>Detecta Automáticamente:</strong> Usa PlayerStorage y SquadStorage para identificar squads</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <p><strong>Recomendación:</strong> Activa esta opción (<code>true</code>) si tienes problemas con squads grandes dominando el evento. Desactívala (<code>false</code>) si quieres incentivar que los jugadores traigan amigos sin importar si están en squad.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🛡️ Bonus Enemy Spawns - Guardians (v1.3.0)</h4>
+                        <p>Sistema de enemigos <strong>extra</strong> que protegen los rewards. A diferencia de los enemigos regulares que escalan por jugador, los guardians:</p>
+
+                        <ul>
+                            <li>✅ Spawean <strong>ANTES</strong> de los rewards (no después)</li>
+                            <li>✅ <strong>NO escalan</strong> con cantidad de jugadores (cantidad fija)</li>
+                            <li>✅ Tienen ubicaciones <strong>fijas</strong> o <strong>aleatorias</strong></li>
+                            <li>✅ Puedes configurar <strong>clase de NPC específica</strong> por guardian</li>
+                            <li>✅ Se limpian zombies antes de spawnear (si está habilitado)</li>
+                        </ul>
+
+                        <p><strong>Configuración en <code>warzone_zones.yaml</code>:</strong></p>
+                        <div class="code-block">
+zones:
+  - id: "radar"
+    name: "Duga Radar"
+
+    # Enemigos regulares (escalan por jugador)
+    enemy_spawn_areas:
+      - { x: -427331.719, y: -538682.063, z: 420.950, radius: 100 }
+
+    # 🆕 GUARDIANS (bonus enemies)
+    bonus_enemy_spawns:
+      # Guardian #1: Múltiples ubicaciones posibles (aleatorio)
+      - locations:
+          - "X=-850123.000 Y=327247.875 Z=61448.738"  # Antena arriba
+          - "X=-851108.563 Y=327062.781 Z=59502.297"  # Antena medio
+          - "X=-846142.438 Y=327092.875 Z=60230.777"  # Antena lado
+        class: "BP_Guard_Lvl_5"    # NPC específico
+        count: 3                     # 3 guards por spawn
+
+      # Guardian #2: Ubicación fija (siempre la misma)
+      - location: "X=-847275.250 Y=335641.469 Z=59489.137"
+        class: "BP_Drifter_Lvl_5"
+        count: 2                     # 2 drifters por spawn
+                        </div>
+
+                        <p><strong>Ejemplo de Flujo:</strong></p>
+                        <div class="code-block">
+Evento: 2 jugadores en zona, reward spawning...
+
+SIN Bonus Enemies:
+  1. Spawna 4 enemigos regulares (2 por jugador, random locations)
+  2. Spawna rewards
+  Total: 4 NPCs
+
+CON Bonus Enemies (config de arriba):
+  1. 🛡️ Spawna 3 Guards Lvl_5 en antena (ubicación aleatoria)
+  2. 🛡️ Spawna 2 Drifters Lvl_5 en ubicación fija
+  3. Spawna 4 enemigos regulares (2 por jugador)
+  4. Spawna rewards
+  Total: 9 NPCs (5 guardians + 4 regulares)
+                        </div>
+
+                        <p><strong>Ventajas:</strong></p>
+                        <ul>
+                            <li>🎯 <strong>Puntos Estratégicos:</strong> Protege locations clave con enemigos fijos</li>
+                            <li>🎲 <strong>Variedad:</strong> Spawn aleatorio entre múltiples ubicaciones evita camping</li>
+                            <li>⚔️ <strong>Dificultad Extra:</strong> Guardians de alto nivel protegen rewards</li>
+                            <li>🔧 <strong>Flexible:</strong> Configura clase y cantidad por guardian</li>
+                            <li>🏆 <strong>Desafío Consistente:</strong> No importa cuántos jugadores, guardians siempre están</li>
+                        </ul>
+
+                        <div class="warning-box">
+                            <p><strong>Nota:</strong> Si configuras <code>locations:</code> (array), el sistema selecciona ALEATORIAMENTE UNA ubicación por spawn. Si configuras <code>location:</code> (singular), siempre spawea en esa ubicación fija.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🧟 Zombie Cleanup Before NPC Spawn (v1.3.0)</h4>
+                        <p>Evita que los NPCs mueran instantáneamente al spawnear rodeados de zombies:</p>
+
+                        <div class="code-block">
+enemy_spawn:
+  zombie_cleanup_before_npc:
+    enabled: true      # Activar limpieza automática
+    radius: 30         # Radio de limpieza en metros
+                        </div>
+
+                        <p><strong>Funcionamiento:</strong></p>
+                        <ol>
+                            <li>📍 Sistema detecta que va a spawnear NPCs</li>
+                            <li>🧹 Ejecuta <code>#DestroyZombiesWithinRadius 30 Location "X=... Y=... Z=..."</code></li>
+                            <li>✨ Área queda limpia de zombies</li>
+                            <li>🎯 NPCs spawean en área segura</li>
+                        </ol>
+
+                        <p><strong>Comportamiento por Modo:</strong></p>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Modo de Spawn</th>
+                                    <th>Cuándo Se Limpia</th>
+                                    <th>Comandos Ejecutados</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>predefined</strong> (ubicaciones fijas)</td>
+                                    <td>ANTES de cada NPC individual</td>
+                                    <td>1 comando por NPC spawneado</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>player_offset</strong> (cerca de jugadores)</td>
+                                    <td>ANTES del batch completo</td>
+                                    <td>1 comando por batch</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>bonus_enemy_spawns</strong> (guardians)</td>
+                                    <td>ANTES de cada grupo de guardians</td>
+                                    <td>1 comando por guardian spawn</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Ventajas:</strong></p>
+                        <ul>
+                            <li>✅ NPCs sobreviven más tiempo → más desafío para jugadores</li>
+                            <li>⚔️ PvP más limpio (players vs NPCs, no vs zombies)</li>
+                            <li>🎯 Guardians de alto nivel no mueren inmediatamente</li>
+                            <li>🔧 Radio configurable según densidad de zombies de tu servidor</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <p><strong>Recomendación de Radio:</strong> Usa <code>30m</code> para servidores normales, <code>50m</code> para servidores con alta densidad de zombies.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🧹 Cleanup Methods - Individual vs All (v1.3.0)</h4>
+                        <p>Elige cómo se destruyen los rewards anteriores antes de spawnear nuevos:</p>
+
+                        <div class="code-block">
+reward_cleanup:
+  enabled: true
+  method: "all"        # "individual" o "all"
+  radius: 10           # Radio de destrucción
+  persistence_file: "data/warzone/warzone_spawned_items.json"
+                        </div>
+
+                        <p><strong>Comparación de Métodos:</strong></p>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Aspecto</th>
+                                    <th>individual</th>
+                                    <th>all</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Comandos Ejecutados</strong></td>
+                                    <td>1 por item type (3 items = 3 comandos)</td>
+                                    <td>1 comando total</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sintaxis</strong></td>
+                                    <td><code>#DestroyAllItemsWithinRadius BP_Weapon_AK47 10...</code><br>
+                                        <code>#DestroyAllItemsWithinRadius Cal_7_62x39mm 10...</code><br>
+                                        <code>#DestroyAllItemsWithinRadius BP_Vest_Military 10...</code></td>
+                                    <td><code>#DestroyAllItemsWithinRadius all 10...</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Velocidad</strong></td>
+                                    <td>⚡ Moderada (múltiples comandos)</td>
+                                    <td>⚡⚡⚡ Muy rápida (1 comando)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Selectividad</strong></td>
+                                    <td>✅ Solo destruye items spawneados por el bot</td>
+                                    <td>⚠️ Destruye TODOS los items en el radio</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Items de Jugadores</strong></td>
+                                    <td>✅ Preserva items dropeados por jugadores</td>
+                                    <td>❌ Destruye también items de jugadores</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Uso Recomendado</strong></td>
+                                    <td>Zonas con tráfico de jugadores alto</td>
+                                    <td>Zonas remotas, máxima eficiencia</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Ejemplo Visual con 3 items spawneados:</strong></p>
+                        <div class="code-block">
+Método INDIVIDUAL (method: "individual"):
+  🧹 #DestroyAllItemsWithinRadius BP_Weapon_AK47 10 Location "X=... Y=... Z=..."
+  🧹 #DestroyAllItemsWithinRadius Cal_7_62x39mm 10 Location "X=... Y=... Z=..."
+  🧹 #DestroyAllItemsWithinRadius BP_Vest_Military 10 Location "X=... Y=... Z=..."
+  ✅ Resultado: 3 comandos ejecutados
+
+Método ALL (method: "all"):
+  🧹 #DestroyAllItemsWithinRadius all 10 Location "X=... Y=... Z=..."
+  ✅ Resultado: 1 comando ejecutado
+                        </div>
+
+                        <p><strong>Ventajas por Método:</strong></p>
+
+                        <p><strong>🎯 Individual:</strong></p>
+                        <ul>
+                            <li>✅ Más selectivo - solo destruye lo que el bot spawneó</li>
+                            <li>✅ Preserva items que jugadores dropearon en la zona</li>
+                            <li>✅ Mejor para zonas con alto tráfico de jugadores</li>
+                            <li>⚠️ Más comandos = ligeramente más lento</li>
+                        </ul>
+
+                        <p><strong>⚡ All:</strong></p>
+                        <ul>
+                            <li>✅ Máxima eficiencia - 1 comando sin importar cuántos items</li>
+                            <li>✅ Limpieza completa del área</li>
+                            <li>✅ Ideal para zonas remotas sin tráfico</li>
+                            <li>⚠️ Destruye también items de jugadores en el radio</li>
+                        </ul>
+
+                        <div class="success-box">
+                            <p><strong>💡 Recomendación:</strong> Usa <code>"all"</code> para máxima eficiencia si tu warzone está en zona remota. Usa <code>"individual"</code> si la zona tiene tráfico de jugadores que puedan dropear items que no quieres destruir.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📢 Announcement Method Configuration (v1.3.0)</h4>
+                        <p>Configura si los anuncios usan <code>#Announce</code> (broadcast rojo server-wide) o chat normal por tipo de anuncio:</p>
+
+                        <div class="code-block">
+announcements:
+  enabled: true
+
+  activation:
+    enabled: true
+    method: "announce"    # "announce" = #Announce (rojo), "chat" = chat normal
+    message: "🔥 WARZONE ACTIVADO en {zone_name}!"
+
+  deactivation:
+    enabled: true
+    method: "announce"
+    message: "⏸️ WARZONE DESACTIVADO"
+
+  zone_change:
+    enabled: true
+    method: "chat"        # Usa chat normal para rotaciones
+    message: "📍 WARZONE se movió a {zone_name}!"
+
+  reward_spawn:
+    enabled: true
+    method: "announce"
+    message: "💎 Salieron PREMIOS en {zone_name}!"
+
+  status_update:
+    enabled: true
+    method: "chat"        # Usa chat para updates periódicos
+    interval_minutes: 5
+    message: "⚔️ WARZONE: {players_in_zone} jugadores en {zone_name}"
+                        </div>
+
+                        <p><strong>Métodos Disponibles:</strong></p>
+                        <table class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Método</th>
+                                    <th>Comando</th>
+                                    <th>Visibilidad</th>
+                                    <th>Color</th>
+                                    <th>Uso Recomendado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>announce</code></td>
+                                    <td><code>#Announce "mensaje"</code></td>
+                                    <td>🌍 Server-wide broadcast</td>
+                                    <td>🔴 Texto rojo grande</td>
+                                    <td>Eventos importantes</td>
+                                </tr>
+                                <tr>
+                                    <td><code>chat</code></td>
+                                    <td>Mensaje de chat normal</td>
+                                    <td>💬 Chat normal</td>
+                                    <td>⚪ Texto blanco</td>
+                                    <td>Updates rutinarios</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Configuración Recomendada:</strong></p>
+                        <ul>
+                            <li>✅ <code>"announce"</code> para:
+                                <ul>
+                                    <li>🔥 Activación del evento</li>
+                                    <li>⏸️ Desactivación del evento</li>
+                                    <li>💎 Spawn de rewards</li>
+                                </ul>
+                            </li>
+                            <li>✅ <code>"chat"</code> para:
+                                <ul>
+                                    <li>📍 Rotación de zonas</li>
+                                    <li>📊 Status updates periódicos</li>
+                                    <li>ℹ️ Información no crítica</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class="info-box">
+                            <p><strong>Ventaja:</strong> Evita spam de broadcasts rojos usando <code>"chat"</code> para anuncios frecuentes, mientras que eventos importantes siguen siendo visibles con <code>"announce"</code>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="success-box">
+                    <h4>📚 Documentación Completa</h4>
+                    <p>Para más detalles técnicos, consulta:</p>
+                    <div class="file-path">docs/WARZONE_EVENT_USER_GUIDE.md</div>
+                    <div class="file-path">docs/WARZONE_NEW_FEATURES_v1.3.md</div>
+                </div> -->
             </div>
         </div>
 
