@@ -362,6 +362,37 @@
             margin-right: 10px;
         }
 
+        .command-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .command-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: var(--secondary);
+        }
+
+        .command-card h4 {
+            color: var(--secondary);
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .command-syntax {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+
         .example-box {
             background: #f8f9fa;
             border: 2px solid var(--border);
@@ -504,6 +535,8 @@
             <button class="main-tab" onclick="showMainTab('respawn')">🔄 Anti-Lock Respawn</button>
             <button class="main-tab" onclick="showMainTab('vehicle_limits')">🚙 Límites Vehículos</button>
             <button class="main-tab" onclick="showMainTab('warzone')">🎯 Warzone Event <span class="beta-badge">BETA</span></button>
+            <button class="main-tab" onclick="showMainTab('shop')">🛒 Shop System</button>
+            <button class="main-tab" onclick="showMainTab('factions')">⚔️ Faction War <span class="beta-badge">BETA</span></button>
             <!-- <button class="main-tab" onclick="showMainTab('theft_alerts')">🚨 Alertas de Robo</button> -->
             <button class="main-tab" onclick="showMainTab('vip_system')">👑 Sistema VIP</button>
             <button class="main-tab" onclick="showMainTab('webhooks')">📡 Webhooks</button>
@@ -7321,9 +7354,1753 @@ announcements:
                     <div class="file-path">docs/WARZONE_NEW_FEATURES_v1.3.md</div>
                 </div> -->
             </div>
+            <!-- SHOP SYSTEM TAB -->
+        <div id="shop" class="tab-panel">
+            <div class="sub-tabs">
+                <button class="sub-tab active" onclick="showSubTab('shop', 'guide')">📖 Guía</button>
+                <button class="sub-tab" onclick="showSubTab('shop', 'commands')">💬 Comandos</button>
+                <button class="sub-tab" onclick="showSubTab('shop', 'items')">📦 Tipos de Items</button>
+                <button class="sub-tab" onclick="showSubTab('shop', 'troubleshoot')">🔧 Troubleshooting</button>
+                <button class="sub-tab" onclick="showSubTab('shop', 'config')">⚙️ Configuración</button>
+            </div>
+
+            <!-- Shop Guide -->
+            <div id="shop-guide" class="sub-panel active">
+                <h2>🛒 Shop System - Sistema de Tienda</h2>
+
+                <div class="info-box">
+                    <h3>📌 ¿Qué es el Shop System?</h3>
+                    <p>El <strong>Shop System</strong> es una tienda completa dentro del juego donde los jugadores pueden comprar items, vehículos, servicios y NPCs usando su dinero del juego (#SetCurrency).</p>
+                    <p><strong>Características principales:</strong></p>
+                    <ul>
+                        <li>✅ Soporte Multi-Idioma (Español, Inglés, Portugués)</li>
+                        <li>✅ 4 categorías de productos: Packs, Armas/Items, Vehículos, Servicios</li>
+                        <li>✅ Sistema de cooldowns y límites de stock</li>
+                        <li>✅ Descuentos VIP automáticos</li>
+                        <li>✅ Spawneo direccional (Norte, Sur, Este, Oeste)</li>
+                        <li>✅ Sistema de transacciones con validación completa</li>
+                        <li>✅ Logs detallados y webhooks para Discord</li>
+                    </ul>
+                </div>
+
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3>🌍 Multi-Idioma</h3>
+                        <p>El sistema detecta automáticamente el idioma según el comando usado:</p>
+                        <ul>
+                            <li><code>@comprar</code> → Español</li>
+                            <li><code>@buy</code> → Inglés</li>
+                            <li><code>@loja</code> → Portugués</li>
+                        </ul>
+                        <p>Todos los mensajes, errores y confirmaciones se muestran en el idioma del jugador.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>👑 Descuentos VIP</h3>
+                        <p>Los jugadores VIP obtienen descuentos automáticos configurables por producto:</p>
+                        <ul>
+                            <li>Descuento configurable por item (0% a 100%)</li>
+                            <li>Detección automática de status VIP</li>
+                            <li>Precio mostrado ya con descuento aplicado</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>⏱️ Cooldowns y Límites</h3>
+                        <p>Control completo sobre uso de la tienda:</p>
+                        <ul>
+                            <li><strong>Cooldown por jugador:</strong> Tiempo de espera entre compras del mismo item</li>
+                            <li><strong>Stock diario:</strong> Límite de compras totales por día</li>
+                            <li><strong>Stock máximo:</strong> Límite de compras por jugador por día</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>🎯 Spawneo Direccional</h3>
+                        <p>Items y vehículos pueden spawnearse en direcciones específicas:</p>
+                        <ul>
+                            <li><code>@buy_P1_N</code> → Norte</li>
+                            <li><code>@buy_P1_S</code> → Sur</li>
+                            <li><code>@buy_P1_E</code> → Este</li>
+                            <li><code>@buy_P1_W</code> → Oeste</li>
+                        </ul>
+                        <p>Con offset configurable en metros (útil para vehículos grandes).</p>
+                    </div>
+                </div>
+
+                <h3>🔄 Cómo Funciona el Shop System</h3>
+
+                <div class="step-box">
+                    <h4>Paso 1: Ver Catálogo</h4>
+                    <p>El jugador consulta el catálogo disponible:</p>
+                    <div class="code-block">
+@shop           (Español)
+@catalog        (Inglés)
+@catalogo       (Portugués)
+                    </div>
+                    <p>El sistema responde con lista de productos, precios, stock disponible y cooldowns activos.</p>
+                </div>
+
+                <div class="step-box">
+                    <h4>Paso 2: Comprar Producto</h4>
+                    <p>El jugador ejecuta el comando de compra:</p>
+                    <div class="code-block">
+@comprar_P1        (Español - spawn en posición actual)
+@buy_P1_N          (Inglés - spawn al Norte)
+@loja_V1_S         (Portugués - vehículo al Sur)
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h4>Paso 3: Validaciones</h4>
+                    <p>El sistema valida automáticamente:</p>
+                    <ul>
+                        <li>✅ Jugador está online</li>
+                        <li>✅ Producto existe y está habilitado</li>
+                        <li>✅ Dinero suficiente (#GetCurrency)</li>
+                        <li>✅ No está en cooldown</li>
+                        <li>✅ Stock disponible (si aplica)</li>
+                        <li>✅ No está en warzone (para items físicos)</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h4>Paso 4: Procesamiento</h4>
+                    <p>Si todas las validaciones pasan:</p>
+                    <ol>
+                        <li>Obtiene coordenadas actuales del jugador (#Location)</li>
+                        <li>Aplica offset direccional si se especificó</li>
+                        <li>Espera delay de seguridad (15-60s configurable)</li>
+                        <li>Valida que jugador sigue online</li>
+                        <li>Ejecuta spawn del producto</li>
+                        <li>Cobra el dinero (#SetCurrency)</li>
+                        <li>Registra cooldown y actualiza stock</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h4>Paso 5: Confirmación</h4>
+                    <p>El jugador recibe confirmación en chat:</p>
+                    <div class="code-block">
+✅ Purchase successful! [Pack Inicial] spawned for $5,000
+⏱️ Next purchase available in 30 minutes
+                    </div>
+                    <p>Y se envía webhook a Discord con detalles de la transacción.</p>
+                </div>
+
+                <h3>📊 Tipos de Productos</h3>
+
+                <div class="info-box">
+                    <h4>🎁 Packs (service_pack)</h4>
+                    <p>Ejecutan múltiples comandos SCUM en secuencia:</p>
+                    <ul>
+                        <li>Items individuales (#SpawnItem)</li>
+                        <li>Kits de items (#GiveItem)</li>
+                        <li>Dinero (#SetCurrency)</li>
+                        <li>Fame Points (#SetFamePoints)</li>
+                        <li>Spawns de cualquier cosa</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong> Pack inicial con comida, agua, arma básica y $10,000</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>🔫 Items y Armas (item)</h4>
+                    <p>Spawnean items individuales cerca del jugador:</p>
+                    <ul>
+                        <li>Armas (#SpawnItem BP_Weapon_AK47)</li>
+                        <li>Munición (#SpawnItem BP_Ammo_762x39)</li>
+                        <li>Items raros (BP_Advanced_Helmet)</li>
+                        <li>Cualquier BP_ del juego</li>
+                    </ul>
+                    <p><strong>Cantidad:</strong> Configurable por item (1-999)</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>🚗 Vehículos (vehicle)</h4>
+                    <p>Spawnean vehículos con offset direccional:</p>
+                    <ul>
+                        <li>Vehículos normales (#SpawnVehicle)</li>
+                        <li>Offset recomendado: 5-15 metros</li>
+                        <li>Validación de coordenadas reales</li>
+                    </ul>
+                    <p><strong>Ejemplo:</strong> @buy_V1_N (vehículo al Norte con offset de 10m)</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>🤖 Servicios de NPCs (service_npc)</h4>
+                    <p>Spawnean NPCs armados que siguen al jugador:</p>
+                    <ul>
+                        <li><strong>Modo Simple:</strong> Un tipo de NPC con cantidad específica</li>
+                        <li><strong>Modo Avanzado:</strong> Múltiples tipos con cantidades individuales</li>
+                    </ul>
+
+                    <h5>Ejemplo Modo Simple (Un solo tipo):</h5>
+                    <div class="code-block">
+service_config:
+  npc_type: "BP_Guard_Lvl_5"
+  spawn_count: 5           # 5 NPCs del mismo tipo
+  duration_minutes: 30
+  offset_meters: 10
+                    </div>
+
+                    <h5>Ejemplo Modo Avanzado (Escuadrón Mixto):</h5>
+                    <div class="code-block">
+service_config:
+  npc_types:
+    - type: "BP_Guard_Lvl_5"    # 2 Elite
+      count: 2
+    - type: "BP_Guard_Lvl_4"    # 3 Veteranos
+      count: 3
+    - type: "BP_Guard_Lvl_3"    # 2 Regulares
+      count: 2
+  duration_minutes: 30
+  offset_meters: 10
+                    </div>
+                    <p><strong>Resultado:</strong> Spawneará 7 NPCs en total (2+3+2) con diferentes niveles</p>
+
+                    <h5>Tipos de NPCs Disponibles:</h5>
+                    <ul>
+                        <li>BP_Guard_Lvl_1 a BP_Guard_Lvl_5 (guardianes por nivel)</li>
+                        <li>BP_Drifter_Lvl_1 a BP_Drifter_Lvl_5 (vagabundos)</li>
+                        <li>BP_Soldier, BP_Soldier_Sniper, BP_Soldier_Heavy</li>
+                    </ul>
+                </div>
+
+                <h3>💾 Almacenamiento de Datos</h3>
+
+                <div class="file-locations">
+                    <h4>Archivos del Sistema:</h4>
+
+                    <div class="file-path">config/shop.yaml</div>
+                    <p>Configuración principal del shop: productos, precios, cooldowns, stock, etc.</p>
+
+                    <div class="file-path">config/translations/es.yaml</div>
+                    <div class="file-path">config/translations/en.yaml</div>
+                    <div class="file-path">config/translations/pt.yaml</div>
+                    <p>Mensajes del shop en cada idioma (errores, confirmaciones, ayuda).</p>
+
+                    <div class="file-path">data/sync_data/players.json</div>
+                    <p>Datos de jugadores: balance, status online, VIP, coordenadas, etc.</p>
+
+                    <div class="file-path">data/shop_data/cooldowns.json</div>
+                    <p>Cooldowns activos por jugador y producto (timestamp de última compra).</p>
+
+                    <div class="file-path">data/shop_data/stock.json</div>
+                    <p>Stock consumido: daily_total (global) y player_purchases (por jugador).</p>
+
+                    <div class="file-path">data/shop_data/transactions.json</div>
+                    <p>Historial completo de transacciones (fecha, jugador, producto, precio, etc.).</p>
+
+                    <div class="file-path">logs/shop_YYYYMMDD.log</div>
+                    <p>Logs detallados de compras, errores, validaciones y deliveries.</p>
+                </div>
+
+                <h3>🔐 Seguridad y Validaciones</h3>
+
+                <div class="success-box">
+                    <h4>Protecciones Implementadas:</h4>
+                    <ul>
+                        <li><strong>Doble validación de online:</strong> Inicial y pre-delivery (15-60s después)</li>
+                        <li><strong>Coordenadas en tiempo real:</strong> Siempre usa #Location antes del spawn</li>
+                        <li><strong>Transacciones atómicas:</strong> Si falla delivery, no se cobra dinero</li>
+                        <li><strong>Validación de warzone:</strong> No se spawnean items en zona PVP (excepto servicios)</li>
+                        <li><strong>Cooldowns persistentes:</strong> Guardados en archivo, sobreviven reinicios</li>
+                        <li><strong>Stock diario:</strong> Se resetea automáticamente a las 00:00</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Shop Commands -->
+            <div id="shop-commands" class="sub-panel">
+                <h2>💬 Comandos del Shop</h2>
+
+                <div class="command-section">
+                    <h3>📋 Ver Catálogo</h3>
+                    <div class="command-box">
+                        <strong>Español:</strong>
+                        <div class="code-block">@shop
+@tienda
+@catalogo</div>
+                    </div>
+                    <div class="command-box">
+                        <strong>Inglés:</strong>
+                        <div class="code-block">@catalog
+@store</div>
+                    </div>
+                    <div class="command-box">
+                        <strong>Portugués:</strong>
+                        <div class="code-block">@loja
+@catalogo</div>
+                    </div>
+                    <p><strong>Respuesta:</strong> Lista completa de productos con códigos, precios, stock disponible y cooldowns activos.</p>
+                </div>
+
+                <div class="command-section">
+                    <h3>🛒 Comprar Producto (Sin Dirección)</h3>
+                    <p>Spawneará en la posición actual del jugador:</p>
+
+                    <div class="command-box">
+                        <strong>Español:</strong>
+                        <div class="code-block">@comprar_&lt;CODIGO&gt;
+@buy_&lt;CODIGO&gt;
+
+Ejemplos:
+@comprar_P1      (Pack código P1)
+@buy_W1          (Arma código W1)
+@comprar_V1      (Vehículo código V1)</div>
+                    </div>
+
+                    <div class="command-box">
+                        <strong>Inglés:</strong>
+                        <div class="code-block">@buy_&lt;CODIGO&gt;
+@purchase_&lt;CODIGO&gt;
+
+Ejemplos:
+@buy_P1          (Pack P1)
+@purchase_W1     (Weapon W1)</div>
+                    </div>
+
+                    <div class="command-box">
+                        <strong>Portugués:</strong>
+                        <div class="code-block">@loja_&lt;CODIGO&gt;
+@comprar_&lt;CODIGO&gt;
+
+Exemplos:
+@loja_P1         (Pacote P1)
+@comprar_V1      (Veículo V1)</div>
+                    </div>
+                </div>
+
+                <div class="command-section">
+                    <h3>🧭 Comprar con Dirección (Spawn Direccional)</h3>
+                    <p>Spawneará a X metros en la dirección especificada:</p>
+
+                    <div class="command-box">
+                        <strong>Formato:</strong>
+                        <div class="code-block">@comando_&lt;CODIGO&gt;_&lt;DIRECCION&gt;
+
+Direcciones disponibles:
+_N    →  Norte
+_S    →  Sur
+_E    →  Este
+_W    →  Oeste</div>
+                    </div>
+
+                    <div class="command-box">
+                        <strong>Ejemplos:</strong>
+                        <div class="code-block">@buy_V1_N        (Vehículo V1 al Norte)
+@comprar_P1_S    (Pack P1 al Sur)
+@loja_W1_E       (Arma W1 al Este)
+@buy_S2_W        (Servicio S2 al Oeste)</div>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>📏 Offset Metros:</strong> La distancia se configura en <code>shop.yaml</code> por producto.</p>
+                        <p><strong>Recomendaciones:</strong></p>
+                        <ul>
+                            <li>Items pequeños: 0-2 metros</li>
+                            <li>Vehículos: 5-15 metros</li>
+                            <li>NPCs: 10-20 metros</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="command-section">
+                    <h3>ℹ️ Información de Producto</h3>
+                    <p>Ver detalles específicos de un producto:</p>
+                    <div class="command-box">
+                        <div class="code-block">@shop_info_&lt;CODIGO&gt;
+@info_&lt;CODIGO&gt;
+
+Ejemplos:
+@shop_info_P1    (Detalles del Pack P1)
+@info_V1         (Detalles del Vehículo V1)</div>
+                    </div>
+                    <p><strong>Respuesta:</strong> Nombre, descripción, precio, cooldown, stock máximo, requisitos especiales.</p>
+                </div>
+
+                <div class="command-section">
+                    <h3>⏱️ Ver Mis Cooldowns</h3>
+                    <p>Consultar cuándo puedes volver a comprar:</p>
+                    <div class="command-box">
+                        <div class="code-block">@shop_cooldowns
+@my_cooldowns
+@mis_cooldowns</div>
+                    </div>
+                    <p><strong>Respuesta:</strong> Lista de productos en cooldown con tiempo restante.</p>
+                </div>
+            </div>
+
+            <!-- Shop Items -->
+            <div id="shop-items" class="sub-panel">
+                <h2>📦 Tipos de Items en el Shop</h2>
+
+                <div class="feature-card">
+                    <h3>🎁 PACKS (service_pack)</h3>
+                    <p>Conjuntos de múltiples items y comandos ejecutados en secuencia.</p>
+
+                    <h4>Estructura en shop.yaml:</h4>
+                    <div class="code-block">
+P1:
+  code: "P1"
+  name: "Pack Inicial"
+  type: "service_pack"
+  description: "Pack de inicio con equipo básico"
+  price: 5000
+  vip_discount: 0.20
+  cooldown_minutes: 1440  # 24 horas
+
+  service_config:
+    commands:
+      - "#SpawnItem BP_Weapon_M16 1 Location \"{location}\""
+      - "#SpawnItem BP_Ammo_556x45 300 Location \"{location}\""
+      - "#GiveItem {player_name} BP_Drink_WaterBottle 5"
+      - "#GiveItem {player_name} BP_Food_BeefSteak 5"
+      - "#SetCurrency {player_name} 10000"
+                    </div>
+
+                    <h4>Variables disponibles:</h4>
+                    <ul>
+                        <li><code>{player_name}</code> - Nombre del jugador</li>
+                        <li><code>{location}</code> - Coordenadas actuales (con offset si aplica)</li>
+                    </ul>
+
+                    <h4>Comandos SCUM compatibles:</h4>
+                    <ul>
+                        <li><code>#SpawnItem</code> - Spawnea item en coordenadas</li>
+                        <li><code>#GiveItem</code> - Da item directo al inventario</li>
+                        <li><code>#SetCurrency</code> - Añade dinero</li>
+                        <li><code>#SetFamePoints</code> - Añade fame points</li>
+                        <li>Cualquier comando admin de SCUM</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🔫 ITEMS Y ARMAS (item)</h3>
+                    <p>Items individuales spawneados cerca del jugador.</p>
+
+                    <h4>Estructura en shop.yaml:</h4>
+                    <div class="code-block">
+W1:
+  code: "W1"
+  name: "AK-47"
+  type: "item"
+  description: "Rifle de asalto AK-47"
+  price: 15000
+  vip_discount: 0.10
+  cooldown_minutes: 60
+
+  item_config:
+    item_id: "BP_Weapon_AK47"
+    quantity: 1
+    offset_meters: 2
+                    </div>
+
+                    <h4>Parámetros importantes:</h4>
+                    <ul>
+                        <li><code>item_id</code> - Blueprint del item en SCUM (BP_*)</li>
+                        <li><code>quantity</code> - Cantidad a spawnear (1-999)</li>
+                        <li><code>offset_meters</code> - Distancia de spawn (0-50)</li>
+                    </ul>
+
+                    <h4>Blueprints comunes:</h4>
+                    <div class="code-block">
+Armas:
+BP_Weapon_AK47
+BP_Weapon_M16
+BP_Weapon_SVD
+BP_Weapon_AWP
+
+Munición:
+BP_Ammo_762x39
+BP_Ammo_556x45
+BP_Ammo_9mm
+
+Items:
+BP_Advanced_Helmet
+BP_Military_Vest
+BP_MedKit
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🚗 VEHÍCULOS (vehicle)</h3>
+                    <p>Vehículos spawneados con offset direccional.</p>
+
+                    <h4>Estructura en shop.yaml:</h4>
+                    <div class="code-block">
+V1:
+  code: "V1"
+  name: "SUV"
+  type: "vehicle"
+  description: "Vehículo todoterreno"
+  price: 50000
+  vip_discount: 0.15
+  cooldown_minutes: 180  # 3 horas
+  daily_stock: 10        # Stock global diario
+
+  vehicle_config:
+    vehicle_id: "BP_SUV"
+    offset_meters: 10
+                    </div>
+
+                    <h4>Vehículos disponibles:</h4>
+                    <div class="code-block">
+BP_SUV                    (SUV todoterreno)
+BP_Pickup                 (Camioneta pickup)
+BP_Sedan                  (Sedán normal)
+BP_Hatchback             (Auto pequeño)
+BP_Van                    (Furgoneta)
+BP_Truck_Cargo           (Camión de carga)
+                    </div>
+
+                    <div class="warning-box">
+                        <p><strong>⚠️ Importante:</strong> Usa offset_meters de 10-15 para vehículos grandes, o pueden spawnear dentro del jugador.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🤖 SERVICIOS NPC (service_npc)</h3>
+                    <p>NPCs armados que protegen al jugador.</p>
+
+                    <h4>Modo Simple - Un solo tipo:</h4>
+                    <div class="code-block">
+S1:
+  code: "S1"
+  name: "Guardaespaldas Elite"
+  type: "service_npc"
+  description: "5 guardianes de nivel 5"
+  price: 25000
+
+  service_config:
+    npc_type: "BP_Guard_Lvl_5"
+    spawn_count: 5
+    duration_minutes: 30
+    offset_meters: 10
+                    </div>
+
+                    <h4>Modo Avanzado - Múltiples tipos:</h4>
+                    <div class="code-block">
+S2:
+  code: "S2"
+  name: "Escuadrón Mixto"
+  type: "service_npc"
+  description: "Escuadrón balanceado (2+3+2)"
+  price: 20000
+
+  service_config:
+    npc_types:
+      - type: "BP_Guard_Lvl_5"    # Elite
+        count: 2
+      - type: "BP_Guard_Lvl_4"    # Veteranos
+        count: 3
+      - type: "BP_Guard_Lvl_3"    # Regulares
+        count: 2
+    duration_minutes: 30
+    offset_meters: 10
+                    </div>
+
+                    <h4>Niveles de NPCs:</h4>
+                    <ul>
+                        <li><strong>Lvl_5:</strong> Elite (más fuerte, mejor equipamiento)</li>
+                        <li><strong>Lvl_4:</strong> Veterano (fuerte, buen equipamiento)</li>
+                        <li><strong>Lvl_3:</strong> Regular (equilibrado)</li>
+                        <li><strong>Lvl_2:</strong> Novato (débil)</li>
+                        <li><strong>Lvl_1:</strong> Recluta (muy débil)</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p><strong>💡 Tip:</strong> Puedes mezclar diferentes niveles para crear escuadrones balanceados (1 líder élite + 4 soldados regulares + 5 soporte).</p>
+                    </div>
+                </div>
+
+                <h3>📊 Comparación de Tipos</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr style="background-color: #2c3e50; color: white;">
+                            <th style="padding: 10px; border: 1px solid #34495e;">Tipo</th>
+                            <th style="padding: 10px; border: 1px solid #34495e;">Spawneo</th>
+                            <th style="padding: 10px; border: 1px solid #34495e;">Offset</th>
+                            <th style="padding: 10px; border: 1px solid #34495e;">Stock</th>
+                            <th style="padding: 10px; border: 1px solid #34495e;">Uso Típico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #34495e;"><strong>Pack</strong></td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Múltiples items</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Variable</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Opcional</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Starter packs, bundles</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #34495e;"><strong>Item</strong></td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Item individual</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">0-5m</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Opcional</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Armas, munición, equipo</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #34495e;"><strong>Vehicle</strong></td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Vehículo</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">10-15m</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Recomendado</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Transporte, vehículos de carga</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #34495e;"><strong>Service NPC</strong></td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">NPCs armados</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">10-20m</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Recomendado</td>
+                            <td style="padding: 10px; border: 1px solid #34495e;">Guardaespaldas, escuadrones</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Shop Troubleshooting -->
+            <div id="shop-troubleshoot" class="sub-panel">
+                <h2>🔧 Solución de Problemas</h2>
+
+                <div class="warning-box">
+                    <h3>❌ Error: "You must be online to purchase"</h3>
+                    <p><strong>Causa:</strong> El sistema detecta que el jugador no está online en el servidor.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Verifica que estás conectado al servidor</li>
+                        <li>Espera unos segundos para que el sistema detecte tu conexión</li>
+                        <li>Si el problema persiste, desconecta y reconecta</li>
+                    </ul>
+                    <p><strong>Verificación admin:</strong></p>
+                    <div class="code-block">
+# Verificar status del jugador en storage
+data/sync_data/players.json
+→ Buscar: "status": "online"
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>❌ Error: "Insufficient funds"</h3>
+                    <p><strong>Causa:</strong> No tienes suficiente dinero para la compra.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Verifica tu balance con <code>#GetCurrency</code></li>
+                        <li>Consulta el precio exacto con <code>@shop</code></li>
+                        <li>Si eres VIP, el precio con descuento se muestra en catálogo</li>
+                    </ul>
+                    <p><strong>Nota:</strong> El precio mostrado en catálogo ya incluye descuento VIP si aplica.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h3>⏱️ Error: "Item on cooldown"</h3>
+                    <p><strong>Causa:</strong> Ya compraste este item recientemente y está en tiempo de espera.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Usa <code>@shop_cooldowns</code> para ver tiempo restante</li>
+                        <li>El tiempo de cooldown varía por producto (configurable en shop.yaml)</li>
+                        <li>Espera el tiempo indicado o compra otro producto</li>
+                    </ul>
+                    <p><strong>Reset de cooldowns:</strong></p>
+                    <div class="code-block">
+# Admin puede limpiar cooldowns manualmente
+data/shop_data/cooldowns.json
+→ Eliminar entrada del jugador para ese producto
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>📦 Error: "Out of stock"</h3>
+                    <p><strong>Causa:</strong> Se alcanzó el límite de stock diario (global o personal).</p>
+                    <p><strong>Tipos de stock:</strong></p>
+                    <ul>
+                        <li><strong>daily_stock:</strong> Stock global del servidor (ejemplo: 10 SUVs por día)</li>
+                        <li><strong>max_purchases_per_player:</strong> Límite por jugador (ejemplo: 2 SUVs por día)</li>
+                    </ul>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Espera a que se resetee el stock (00:00 hora del servidor)</li>
+                        <li>Admin puede incrementar limits en shop.yaml</li>
+                        <li>Admin puede resetear stock manualmente</li>
+                    </ul>
+                    <p><strong>Reset manual de stock:</strong></p>
+                    <div class="code-block">
+# Eliminar archivo para resetear todo el stock
+data/shop_data/stock.json
+→ Se regenerará automáticamente
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>⚠️ Error: "Cannot purchase in warzone"</h3>
+                    <p><strong>Causa:</strong> Estás dentro de una zona PVP (warzone) y el producto no permite compra ahí.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Sal de la zona warzone</li>
+                        <li>Espera a que termine el evento warzone</li>
+                        <li>Compra servicios que permiten compra en warzone (algunos NPCs)</li>
+                    </ul>
+                    <p><strong>Configuración:</strong></p>
+                    <div class="code-block">
+# En shop.yaml puedes permitir compra en warzone
+allow_purchase_in_warzone: true  # Default: false
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🚫 Error: "Product not found"</h3>
+                    <p><strong>Causa:</strong> El código del producto no existe o está mal escrito.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Verifica el código exacto con <code>@shop</code></li>
+                        <li>Los códigos distinguen mayúsculas (P1 ≠ p1)</li>
+                        <li>Ejemplo correcto: <code>@buy_P1</code> no <code>@buy_p1</code></li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h3>📍 Error: "Invalid coordinates"</h3>
+                    <p><strong>Causa:</strong> No se pudieron obtener coordenadas válidas del jugador.</p>
+                    <p><strong>Soluciones:</strong></p>
+                    <ul>
+                        <li>Asegúrate de estar spawneado en el mundo (no en menú)</li>
+                        <li>Intenta moverte un poco</li>
+                        <li>Si persiste, reconecta al servidor</li>
+                    </ul>
+                    <p><strong>Verificación admin:</strong></p>
+                    <div class="code-block">
+# Ejecutar comando para ver si funciona
+#Location "NombreJugador" true
+→ Debe retornar coordenadas válidas (no 0,0,0)
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🔄 Item no spawneó pero se cobró dinero</h3>
+                    <p><strong>Causa:</strong> Posible fallo en delivery pero transacción completada.</p>
+                    <p><strong>Pasos para admins:</strong></p>
+                    <ol>
+                        <li>Revisar logs:
+                            <div class="code-block">logs/shop_YYYYMMDD.log
+→ Buscar nombre del jugador y timestamp</div>
+                        </li>
+                        <li>Verificar si el comando spawn se ejecutó</li>
+                        <li>Revisar transactions.json para detalles</li>
+                        <li>Reembolsar si es necesario:
+                            <div class="code-block">#SetCurrency "NombreJugador" 50000</div>
+                        </li>
+                    </ol>
+                    <p><strong>Nota:</strong> El sistema tiene validación pre-delivery, esto es muy raro.</p>
+                </div>
+
+                <h3>🛠️ Debugging para Admins</h3>
+
+                <div class="info-box">
+                    <h4>Logs Detallados:</h4>
+                    <div class="code-block">
+# Log principal del shop
+logs/shop_YYYYMMDD.log
+
+# Buscar por jugador
+grep "El Firu" logs/shop_20250113.log
+
+# Buscar errores
+grep "ERROR" logs/shop_*.log
+
+# Buscar compras exitosas
+grep "Purchase successful" logs/shop_*.log
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Verificar Configuración:</h4>
+                    <div class="code-block">
+# Validar sintaxis YAML
+python -c "import yaml; yaml.safe_load(open('config/shop.yaml'))"
+
+# Ver producto específico
+grep -A 20 "^P1:" config/shop.yaml
+
+# Ver todos los códigos
+grep "^  code:" config/shop.yaml
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>Limpiar Data:</h4>
+                    <div class="code-block">
+# Resetear cooldowns de un jugador
+# Editar data/shop_data/cooldowns.json
+# Eliminar entrada del jugador
+
+# Resetear stock diario (hacer backup primero)
+mv data/shop_data/stock.json data/shop_data/stock.json.bak
+
+# Ver transacciones recientes
+tail -20 data/shop_data/transactions.json
+                    </div>
+                </div>
+
+                <h3>📊 Monitoring</h3>
+
+                <div class="success-box">
+                    <h4>Webhooks de Discord:</h4>
+                    <p>Cada compra envía notificación a Discord con:</p>
+                    <ul>
+                        <li>Nombre del jugador</li>
+                        <li>Producto comprado</li>
+                        <li>Precio pagado (con descuento VIP si aplica)</li>
+                        <li>Timestamp</li>
+                        <li>Dirección de spawn (si aplica)</li>
+                    </ul>
+                    <p>Configurar en: <code>config/config.yaml</code> → webhooks → shop</p>
+                </div>
+            </div>
+
+            <!-- Shop Configuration -->
+            <div id="shop-config" class="sub-panel">
+                <h2>⚙️ Configuración del Shop</h2>
+
+                <div class="info-box">
+                    <h3>📁 Archivo Principal: config/shop.yaml</h3>
+                    <p>Este archivo contiene toda la configuración del shop: productos, precios, cooldowns, etc.</p>
+                </div>
+
+                <h3>🔧 Configuración Global</h3>
+
+                <div class="code-block">
+# Configuración global del shop
+shop:
+  enabled: true                      # Habilitar/deshabilitar shop
+  min_transaction_delay: 15          # Delay mínimo en segundos (15-60)
+  max_transaction_delay: 60          # Delay máximo en segundos
+
+  # Comandos del shop (multi-idioma)
+  commands:
+    catalog:
+      - "@shop"        # Español
+      - "@catalog"     # Inglés
+      - "@loja"        # Portugués
+      - "@tienda"
+      - "@store"
+
+    purchase:
+      - "@comprar"     # Español
+      - "@buy"         # Inglés
+      - "@loja"        # Portugués
+      - "@purchase"
+                </div>
+
+                <h3>📦 Estructura de Producto</h3>
+
+                <div class="code-block">
+CODIGO_PRODUCTO:
+  # Identificación
+  code: "CODIGO_PRODUCTO"        # Código único (usado en comandos)
+  name: "Nombre del Producto"     # Nombre mostrado
+  category: "categoria"           # packs, weapons, vehicles, specials
+  type: "tipo"                    # item, vehicle, service_pack, service_npc
+  description: "Descripción"      # Texto descriptivo
+
+  # Pricing
+  price: 10000                    # Precio base
+  vip_discount: 0.15              # Descuento VIP (0.0 a 1.0 = 0% a 100%)
+
+  # Limits
+  cooldown_minutes: 60            # Tiempo entre compras (minutos)
+  daily_stock: 10                 # Stock global diario (opcional)
+  max_purchases_per_player: 2     # Límite por jugador/día (opcional)
+
+  # Control
+  enabled: true                   # Habilitar/deshabilitar producto
+  allow_purchase_in_warzone: false # Permitir compra en zona PVP
+
+  # Configuración específica por tipo
+  item_config: {...}              # Para type: item
+  vehicle_config: {...}           # Para type: vehicle
+  service_config: {...}           # Para type: service_pack/service_npc
+                </div>
+
+                <h3>🔫 Configuración de Item</h3>
+
+                <div class="code-block">
+W1:
+  code: "W1"
+  type: "item"
+  # ... (precio, cooldown, etc)
+
+  item_config:
+    item_id: "BP_Weapon_AK47"     # Blueprint del item
+    quantity: 1                    # Cantidad (1-999)
+    offset_meters: 2               # Distancia de spawn (0-50)
+                </div>
+
+                <h3>🚗 Configuración de Vehículo</h3>
+
+                <div class="code-block">
+V1:
+  code: "V1"
+  type: "vehicle"
+  # ... (precio, cooldown, etc)
+
+  vehicle_config:
+    vehicle_id: "BP_SUV"           # Blueprint del vehículo
+    offset_meters: 10              # Distancia de spawn (5-20)
+                </div>
+
+                <h3>🎁 Configuración de Pack</h3>
+
+                <div class="code-block">
+P1:
+  code: "P1"
+  type: "service_pack"
+  # ... (precio, cooldown, etc)
+
+  service_config:
+    commands:
+      - "#SpawnItem BP_Weapon_M16 1 Location \"{location}\""
+      - "#SpawnItem BP_Ammo_556x45 300 Location \"{location}\""
+      - "#GiveItem {player_name} BP_MedKit 3"
+      - "#SetCurrency {player_name} 5000"
+      - "#SetFamePoints {player_name} 100"
+
+    # Variables disponibles:
+    # {player_name} = Nombre del jugador
+    # {location} = Coordenadas con offset aplicado
+                </div>
+
+                <h3>🤖 Configuración de NPC (Modo Simple)</h3>
+
+                <div class="code-block">
+S1:
+  code: "S1"
+  type: "service_npc"
+  # ... (precio, cooldown, etc)
+
+  service_config:
+    npc_type: "BP_Guard_Lvl_5"     # Tipo de NPC
+    spawn_count: 5                  # Cantidad (1-20)
+    duration_minutes: 30            # Duración (no implementado auto-cleanup)
+    offset_meters: 10               # Distancia de spawn
+                </div>
+
+                <h3>🤖 Configuración de NPC (Modo Avanzado - Múltiples Tipos)</h3>
+
+                <div class="code-block">
+S2:
+  code: "S2"
+  type: "service_npc"
+  # ... (precio, cooldown, etc)
+
+  service_config:
+    npc_types:                      # Lista de tipos de NPCs
+      - type: "BP_Guard_Lvl_5"      # Tipo 1
+        count: 2                     # Cantidad tipo 1
+      - type: "BP_Guard_Lvl_4"      # Tipo 2
+        count: 3                     # Cantidad tipo 2
+      - type: "BP_Guard_Lvl_3"      # Tipo 3
+        count: 2                     # Cantidad tipo 3
+    duration_minutes: 30
+    offset_meters: 10
+
+  # Resultado: Spawneará 7 NPCs en total (2+3+2)
+                </div>
+
+                <h3>📊 Categorías de Productos</h3>
+
+                <div class="info-box">
+                    <p>Las categorías organizan el catálogo visualmente:</p>
+                    <ul>
+                        <li><strong>packs:</strong> Paquetes de inicio, bundles</li>
+                        <li><strong>weapons:</strong> Armas, munición, equipo táctico</li>
+                        <li><strong>vehicles:</strong> Vehículos de transporte</li>
+                        <li><strong>specials:</strong> Servicios especiales, NPCs</li>
+                    </ul>
+                    <p>Puedes crear tus propias categorías personalizadas.</p>
+                </div>
+
+                <h3>💰 Sistema de Precios VIP</h3>
+
+                <div class="success-box">
+                    <h4>Cálculo de Descuento:</h4>
+                    <div class="code-block">
+# Ejemplo con vip_discount: 0.20 (20%)
+Precio base: $10,000
+Descuento VIP: 20%
+Precio final VIP: $8,000
+
+# Fórmula
+precio_final = precio_base * (1 - vip_discount)
+$8,000 = $10,000 * (1 - 0.20)
+$8,000 = $10,000 * 0.80
+                    </div>
+
+                    <h4>Configurar Descuentos:</h4>
+                    <ul>
+                        <li><code>vip_discount: 0.10</code> → 10% descuento</li>
+                        <li><code>vip_discount: 0.20</code> → 20% descuento</li>
+                        <li><code>vip_discount: 0.50</code> → 50% descuento</li>
+                        <li><code>vip_discount: 1.0</code> → 100% descuento (gratis)</li>
+                    </ul>
+
+                    <p><strong>Nota:</strong> El sistema detecta automáticamente si el jugador es VIP consultando <code>data/sync_data/players.json</code></p>
+                </div>
+
+                <h3>⏱️ Sistema de Cooldowns</h3>
+
+                <div class="info-box">
+                    <h4>Configurar Cooldowns:</h4>
+                    <div class="code-block">
+# Ejemplos de cooldown_minutes
+cooldown_minutes: 0       # Sin cooldown (compras ilimitadas)
+cooldown_minutes: 30      # 30 minutos
+cooldown_minutes: 60      # 1 hora
+cooldown_minutes: 180     # 3 horas
+cooldown_minutes: 1440    # 24 horas (1 día)
+cooldown_minutes: 10080   # 7 días (1 semana)
+                    </div>
+
+                    <h4>Almacenamiento:</h4>
+                    <p>Los cooldowns se guardan en: <code>data/shop_data/cooldowns.json</code></p>
+                    <div class="code-block">
+{
+  "El Firu": {
+    "P1": "2025-01-13T15:30:00",    # Última compra del pack P1
+    "V1": "2025-01-13T14:00:00"     # Última compra del vehículo V1
+  }
+}
+                    </div>
+                </div>
+
+                <h3>📦 Sistema de Stock</h3>
+
+                <div class="info-box">
+                    <h4>Tipos de Límites:</h4>
+
+                    <h5>1. Stock Global Diario (daily_stock):</h5>
+                    <div class="code-block">
+daily_stock: 10    # Solo 10 unidades disponibles por día (todos los jugadores)
+                    </div>
+                    <p><strong>Uso:</strong> Limitar items raros o vehículos a nivel servidor.</p>
+
+                    <h5>2. Stock Personal Diario (max_purchases_per_player):</h5>
+                    <div class="code-block">
+max_purchases_per_player: 2    # Cada jugador puede comprar máximo 2 por día
+                    </div>
+                    <p><strong>Uso:</strong> Evitar que un jugador acapare items.</p>
+
+                    <h4>Reset Automático:</h4>
+                    <p>El stock se resetea automáticamente a las <strong>00:00</strong> según timezone del servidor.</p>
+
+                    <h4>Almacenamiento:</h4>
+                    <p>El stock se guarda en: <code>data/shop_data/stock.json</code></p>
+                    <div class="code-block">
+{
+  "last_reset": "2025-01-13",
+  "daily_total": {
+    "V1": 7       # 7 SUVs vendidos hoy (de 10 disponibles)
+  },
+  "player_purchases": {
+    "El Firu": {
+      "V1": 2     # El Firu compró 2 SUVs hoy
+    }
+  }
+}
+                    </div>
+                </div>
+
+                <h3>🌍 Configuración Multi-Idioma</h3>
+
+                <div class="info-box">
+                    <h4>Archivos de Traducción:</h4>
+                    <ul>
+                        <li><code>config/translations/es.yaml</code> - Español</li>
+                        <li><code>config/translations/en.yaml</code> - Inglés</li>
+                        <li><code>config/translations/pt.yaml</code> - Portugués</li>
+                    </ul>
+
+                    <h4>Agregar Nuevo Idioma:</h4>
+                    <ol>
+                        <li>Copiar <code>es.yaml</code> a <code>nuevo_idioma.yaml</code></li>
+                        <li>Traducir todos los mensajes</li>
+                        <li>Agregar comandos del nuevo idioma en shop.yaml</li>
+                        <li>Reiniciar bot</li>
+                    </ol>
+
+                    <h4>Personalizar Mensajes:</h4>
+                    <p>Edita cualquier mensaje en los archivos YAML:</p>
+                    <div class="code-block">
+# config/translations/es.yaml
+shop:
+  purchase_success: "✅ Compra exitosa! [{product_name}] por ${price}"
+  insufficient_funds: "❌ Dinero insuficiente (necesitas ${required})"
+  item_on_cooldown: "⏱️ Debes esperar {time_remaining} para comprar"
+                    </div>
+                </div>
+
+                <h3>📡 Configuración de Webhooks</h3>
+
+                <div class="info-box">
+                    <h4>Habilitar Webhooks de Shop:</h4>
+                    <p>En <code>config/config.yaml</code>:</p>
+                    <div class="code-block">
+webhooks:
+  shop_purchases:
+    enabled: true
+    url: "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"
+    events:
+      - shop_purchase_success
+      - shop_purchase_failed
+                    </div>
+
+                    <h4>Información Enviada:</h4>
+                    <ul>
+                        <li>Timestamp de la compra</li>
+                        <li>Nombre del jugador</li>
+                        <li>Producto comprado</li>
+                        <li>Precio pagado (con descuento VIP si aplica)</li>
+                        <li>Dirección de spawn (N/S/E/W)</li>
+                        <li>Balance restante del jugador</li>
+                    </ul>
+                </div>
+
+                <h3>🔄 Recargar Configuración</h3>
+
+                <div class="success-box">
+                    <h4>Sin Reiniciar el Bot:</h4>
+                    <p>Puedes recargar la configuración del shop en caliente:</p>
+                    <div class="code-block">
+@reload_shop_config
+@reload_shop
+                    </div>
+
+                    <p><strong>Qué se recarga:</strong></p>
+                    <ul>
+                        <li>✅ Productos nuevos en shop.yaml</li>
+                        <li>✅ Cambios de precios</li>
+                        <li>✅ Cambios de cooldowns</li>
+                        <li>✅ Cambios de stock</li>
+                        <li>✅ Traducciones actualizadas</li>
+                    </ul>
+
+                    <p><strong>Qué NO se recarga (requiere reinicio):</strong></p>
+                    <ul>
+                        <li>❌ Cambios en comandos principales (@shop, @buy)</li>
+                        <li>❌ Cambios en min/max_transaction_delay</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- FACTION WAR TAB -->
+        <div id="factions" class="tab-panel">
+            <div class="sub-tabs">
+                <button class="sub-tab active" onclick="showSubTab('factions', 'guide')">📖 Guía</button>
+                <button class="sub-tab" onclick="showSubTab('factions', 'commands')">💬 Comandos</button>
+                <button class="sub-tab" onclick="showSubTab('factions', 'zones')">🗺️ Zonas</button>
+                <button class="sub-tab" onclick="showSubTab('factions', 'troubleshooting')">🔧 Troubleshooting</button>
+            </div>
+
+            <div id="factions-guide" class="sub-panel active">
+                <h2>⚔️ Sistema Faction War</h2>
+
+                <div class="feature-card">
+                    <h3 style="color: white;">¿Qué es Faction War?</h3>
+                    <p>Sistema de control territorial donde los squads compiten por capturar y mantener zonas estratégicas del mapa. Cada zona capturada genera pagos diarios automáticos para tu squad.</p>
+                </div>
+
+                <h3>🎯 Cómo Funciona</h3>
+
+                <h4>1. Capturar una Zona</h4>
+                <div class="info-box">
+                    <strong>Requisitos:</strong>
+                    <ul>
+                        <li>Estar dentro del rango de captura de la zona (varía según la zona, consulta el mapa)</li>
+                        <li>Pertenecer a un squad registrado</li>
+                        <li>Tener jugadores de tu squad presentes en la zona</li>
+                    </ul>
+
+                    <p><strong>Proceso de Captura:</strong></p>
+                    <ol>
+                        <li>Dirígete al centro de una zona disponible</li>
+                        <li>Ejecuta el comando <code>#CaptureZone</code></li>
+                        <li>Mantén jugadores en la zona durante el tiempo de captura (15-20 minutos)</li>
+                        <li>La captura se completa automáticamente al llegar a 100%</li>
+                    </ol>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Beneficios por Capturar:</strong>
+                    <ul>
+                        <li>💰 <strong>Pagos Diarios:</strong> Cada zona genera dinero diario para tu squad</li>
+                        <li>🏆 <strong>Control Territorial:</strong> Dominio de áreas estratégicas</li>
+                        <li>⚔️ <strong>Competencia PvP:</strong> Batallas por zonas contestadas</li>
+                        <li>📊 <strong>Rankings:</strong> Prestigio para tu squad</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h4>2. Multiplicador de Jugadores</h4>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>👤 1 Jugador</h4>
+                            <p>Velocidad base (1x)</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👥 2-3 Jugadores</h4>
+                            <p>2x-3x más rápido</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👨‍👨‍👦‍👦 4-5 Jugadores</h4>
+                            <p>4x-5x más rápido</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>Ejemplo:</strong> Si una zona requiere 20 minutos con 1 jugador, con 5 jugadores se captura en solo 4 minutos.
+                </div>
+
+                <h4>3. Periodo de Gracia</h4>
+                <div class="warning-box">
+                    <strong>⚠️ Si tu squad abandona la zona:</strong>
+                    <ul>
+                        <li>Se activa un <strong>periodo de gracia de 5 minutos</strong></li>
+                        <li>El progreso de captura se <strong>PAUSA</strong> (no avanza ni retrocede)</li>
+                        <li>Recibes una notificación: <em>"⚠️ Sin jugadores en [Zona]! Vuelve en 5 min o la captura fallará"</em></li>
+                        <li>Si regresas antes de que expire: La captura continúa desde donde estaba</li>
+                        <li>Si no regresas: La captura <strong>se cancela</strong></li>
+                    </ul>
+                </div>
+
+                <h3>⚔️ Zonas PVP vs PVE</h3>
+
+                <div class="feature-card">
+                    <h3>🔴 ZONAS PVP (Competitivas)</h3>
+
+                    <h4>Sistema "Contested" (En Disputa)</h4>
+                    <div class="danger-box">
+                        <strong>⚔️ Si otro squad entra en una zona PVP que estás capturando:</strong>
+                        <ol>
+                            <li><strong>Zona se marca como CONTESTED (En Disputa)</strong></li>
+                            <li><strong>El progreso se PAUSA</strong> inmediatamente</li>
+                            <li>Ambos squads reciben notificación:
+                                <ul>
+                                    <li>Tu squad: <em>"⚔️ [Squad Enemigo] está disputando tu captura!"</em></li>
+                                    <li>Squad enemigo: <em>"⚔️ Zona EN DISPUTA! Elimina enemigos para tomar control"</em></li>
+                                </ul>
+                            </li>
+                            <li><strong>Mientras ambos squads estén presentes:</strong> Progreso permanece pausado</li>
+                        </ol>
+
+                        <strong>¿Cómo se resuelve?</strong>
+                        <ul>
+                            <li><strong>Si tu squad elimina al enemigo:</strong> Zona deja de estar en disputa, continúas desde tu progreso actual</li>
+                            <li><strong>Si el enemigo te elimina:</strong> El enemigo toma control y comienza desde 0%</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Zonas PVP actuales:</strong>
+                        <ul>
+                            <li>⚔️ Base Militar C5</li>
+                            <li>⚔️ Police B4</li>
+                            <li>⚔️ Hospital B4</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>🟢 ZONAS PVE (Tranquilas)</h3>
+
+                    <h4>Bloqueo Protegido</h4>
+                    <div class="success-box">
+                        <strong>✅ Protección contra interrupciones:</strong>
+                        <ul>
+                            <li><strong>Captura en progreso:</strong> Otros squads NO pueden interrumpir</li>
+                            <li>Si otro squad intenta <code>#CaptureZone</code>: Reciben mensaje de bloqueo</li>
+                            <li><em>"⚠️ [Zona] ya está siendo capturada por [Tu Squad]"</em></li>
+                        </ul>
+
+                        <strong>Excepción - Periodo de Gracia:</strong>
+                        <ul>
+                            <li>Si abandonas la zona (grace period activo)</li>
+                            <li>Otros squads <strong>SÍ pueden interrumpir</strong></li>
+                            <li>Tu captura se cancela, el nuevo squad empieza desde 0%</li>
+                            <li>Mensaje: <em>"✅ [Tu Squad] abandonó [Zona]! Iniciando captura..."</em></li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Zonas PVE actuales:</strong>
+                        <ul>
+                            <li>🟢 Zona Neutral B3</li>
+                            <li>🟢 Traders B4</li>
+                            <li>🟢 Airfield D4</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>💰 Pagos Diarios</h3>
+
+                <h4>¿Cómo Funcionan?</h4>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Ciclo Diario:</strong> Cada día a las 00:00 UTC (medianoche)</li>
+                        <li><strong>Snapshot:</strong> El sistema toma foto de todas las zonas controladas</li>
+                        <li><strong>Cálculo:</strong> Suma el valor diario de cada zona controlada por tu squad</li>
+                        <li><strong>Acumulación:</strong> Se guarda en el balance del squad (máximo 7 días)</li>
+                    </ul>
+                </div>
+
+                <h4>Reclamar Pago</h4>
+                <div class="code-block">
+#ClaimFactionPay
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Al reclamar:</strong>
+                    <ul>
+                        <li>Solo el <strong>líder del squad</strong> puede reclamar (configurable)</li>
+                        <li>El dinero se transfiere al balance personal del líder</li>
+                        <li>Se resetea el contador de días acumulados</li>
+                        <li>Cooldown: 24 horas</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Límite de Acumulación:</strong>
+                    <ul>
+                        <li>Máximo 7 días sin reclamar</li>
+                        <li>Al día 6: Recibes advertencia automática</li>
+                        <li>Al día 7: No se acumulan más pagos hasta que reclames</li>
+                    </ul>
+                </div>
+
+                <h4>Ejemplo de Pago</h4>
+                <div class="example-box">
+                    <strong>Tu squad controla:</strong><br>
+                    - Hospital B4: $1,500/día<br>
+                    - Base Militar C5: $2,000/día<br>
+                    - Traders B4: $800/día<br>
+                    <br>
+                    <strong>Total diario: $4,300</strong><br>
+                    <br>
+                    Si reclamas después de 5 días: <strong>$21,500</strong> 💰
+                </div>
+
+                <div class="section">
+                    <h3>🏷️ Sistema de Descuentos por Control Territorial</h3>
+
+                    <div class="info-box">
+                        <h4>¿Qué son los Descuentos de Facción?</h4>
+                        <p>Además de los pagos diarios, controlar zonas otorga <strong>descuentos acumulativos</strong> en servicios del servidor para todos los miembros de tu squad.</p>
+                    </div>
+
+                    <h4>Servicios con Descuento</h4>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🚕 Taxi</h4>
+                            <p>Teleports y viajes con conductor</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🛒 Shop</h4>
+                            <p>Compras en la tienda</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🚗 Seguros</h4>
+                            <p>Seguro de vehículos</p>
+                        </div>
+                    </div>
+
+                    <h4>¿Cómo se Calcula el Descuento?</h4>
+                    <div class="info-box">
+                        <p>El descuento depende de la <strong>dificultad de la zona</strong> que controlas:</p>
+                        <ul>
+                            <li><strong>🟢 Zona Segura (Safe):</strong> +1% de descuento</li>
+                            <li><strong>🟡 Zona Moderada (Moderate):</strong> +2% de descuento</li>
+                            <li><strong>🔴 Zona Peligrosa (Dangerous):</strong> +4% de descuento</li>
+                        </ul>
+                        <p><strong>Los descuentos se acumulan</strong> por cada zona que tu squad controle.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Descuento Máximo:</strong> 25% (no importa cuántas zonas controles)
+                    </div>
+
+                    <h4>Ejemplo de Descuento Acumulado</h4>
+                    <div class="example-box">
+                        <strong>Tu squad controla:</strong><br>
+                        - Hospital B0 (Dangerous): +4%<br>
+                        - Gas Station B1 (Moderate): +2%<br>
+                        - Traders B4 (Safe): +1%<br>
+                        - Airfield D4 (Moderate): +2%<br>
+                        <br>
+                        <strong>Total descuento: 9%</strong><br>
+                        <br>
+                        <em>Ejemplo práctico:</em><br>
+                        - Taxi que cuesta $1,000 → Pagas <strong>$910</strong> (ahorro $90)<br>
+                        - Item de $5,000 en shop → Pagas <strong>$4,550</strong> (ahorro $450)
+                    </div>
+
+                    <h4>Descuentos Apilables con VIP</h4>
+                    <div class="success-box">
+                        <strong>✅ Si eres VIP + tienes zonas:</strong>
+                        <ul>
+                            <li>Primero se aplica el descuento VIP</li>
+                            <li>Luego se aplica el descuento de Facción sobre el precio ya reducido</li>
+                        </ul>
+                        <em>Ejemplo: Item $1,000 → VIP 10% = $900 → Facción 9% = <strong>$819</strong> (ahorro total: $181)</em>
+                    </div>
+
+                    <h4>Ver tu Descuento en el Mapa</h4>
+                    <div class="info-box">
+                        <p>En el <strong>mapa de Faction War</strong> puedes ver:</p>
+                        <ul>
+                            <li><strong>Por zona:</strong> Debajo del nombre aparece el % de descuento y valor (ej: "4% | $500")</li>
+                            <li><strong>En el leaderboard:</strong> Cada squad muestra su descuento total acumulado</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Verificar Estado</h3>
+
+                    <h4>Ver tus Zonas</h4>
+                    <div class="code-block">
+#MyZones
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Muestra:</strong>
+                        <ul>
+                            <li>Zonas controladas por tu squad</li>
+                            <li>Valor diario de cada zona</li>
+                            <li>Total de ingresos diarios</li>
+                            <li>Balance acumulado disponible</li>
+                            <li>Días acumulados</li>
+                        </ul>
+                    </div>
+
+                    <h4>Verificar Zona Específica</h4>
+                    <div class="code-block">
+#ZoneStatus
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Información mostrada:</strong>
+                        <ul>
+                            <li>Estado actual (LIBRE, CAPTURANDO, CONTROLADA)</li>
+                            <li>Squad controlador (si aplica)</li>
+                            <li>Progreso de captura (si está en progreso)</li>
+                            <li>Tiempo estimado restante</li>
+                            <li>Jugadores en rango</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="factions-troubleshooting" class="sub-panel">
+                <h2>🔧 Troubleshooting</h2>
+
+                <div class="section">
+                    <h3>Problemas con Descuentos</h3>
+
+                    <div class="warning-box">
+                        <h4>El descuento no se aplica</h4>
+                        <ul>
+                            <li>Verifica que perteneces a un squad registrado</li>
+                            <li>Tu squad debe controlar al menos una zona</li>
+                            <li>Los descuentos aplican automáticamente en Taxi, Shop y Seguros</li>
+                            <li>El sistema debe estar habilitado por el administrador</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>El descuento parece incorrecto</h4>
+                        <ul>
+                            <li>El descuento depende de la <strong>dificultad</strong> de cada zona (Safe: 1%, Moderate: 2%, Dangerous: 4%)</li>
+                            <li>El descuento máximo es <strong>25%</strong>, no importa cuántas zonas controles</li>
+                            <li>Usa el mapa de Faction War para ver el % de cada zona</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Problemas con Captura</h3>
+
+                    <div class="warning-box">
+                        <h4>No puedo capturar una zona</h4>
+                        <ul>
+                            <li>Debes estar <strong>dentro del rango de captura</strong> (varía por zona, consulta el mapa)</li>
+                            <li>Si recibes mensaje de distancia, acércate más al centro de la zona</li>
+                            <li>Verifica que la zona no esté siendo capturada por otro squad</li>
+                            <li>En zonas PVP, puede estar <strong>en disputa</strong> si hay enemigos</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Mi captura se canceló</h4>
+                        <ul>
+                            <li>Si abandonas la zona, tienes <strong>5 minutos de gracia</strong> para volver</li>
+                            <li>Si no regresas a tiempo, la captura se cancela</li>
+                            <li>En zonas PVP, otro squad puede tomar el control si te eliminan</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Problemas con Pagos</h3>
+
+                    <div class="info-box">
+                        <h4>No recibí el pago diario</h4>
+                        <ul>
+                            <li>Los pagos se generan a las <strong>00:00 UTC</strong> (medianoche)</li>
+                            <li>Debes controlar la zona <strong>al momento del snapshot</strong></li>
+                            <li>Usa <code>#ClaimFactionPay</code> para reclamar manualmente</li>
+                            <li>Si acumulaste 7 días sin reclamar, no se generan más pagos hasta que reclames</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>El pago es menor al esperado</h4>
+                        <ul>
+                            <li>Verifica que controlabas la zona a las <strong>00:00 UTC</strong></li>
+                            <li>Si perdiste una zona antes del snapshot, no genera pago ese día</li>
+                            <li>El pago se divide entre miembros si está configurado así</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="factions-commands" class="sub-panel">
+                <h2>💬 Comandos Disponibles</h2>
+
+                <div class="section">
+                    <h3>Comandos de Captura</h3>
+
+                    <div class="command-card">
+                    <h4>#CaptureZone</h4>
+                    <div class="command-syntax">
+                        Uso: <code>#CaptureZone</code>
+                    </div>
+                    <p><strong>Descripción:</strong> Inicia la captura de la zona en tu posición actual.</p>
+
+                    <div class="info-box">
+                        <strong>Requisitos:</strong>
+                        <ul>
+                            <li>Estar dentro del rango de captura (varía por zona)</li>
+                            <li>Pertenecer a un squad registrado</li>
+                            <li>Zona disponible (no controlada por tu squad)</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de uso:</strong><br>
+                        <code>#CaptureZone</code><br>
+                        <br>
+                        <em>Respuesta: "🎯 Los Charruas ha comenzado a capturar Hospital B4! Tiempo estimado: 20 min"</em>
+                    </div>
+                </div>
+
+                <div class="command-card">
+                    <h4>#ZoneStatus</h4>
+                    <div class="command-syntax">
+                        Uso: <code>#ZoneStatus</code>
+                    </div>
+                    <p><strong>Descripción:</strong> Muestra el estado de la zona en tu posición actual.</p>
+
+                    <div class="example-box">
+                        <strong>Respuestas posibles:</strong><br>
+                        - <em>"🟢 Hospital B4 está LIBRE y disponible para captura"</em><br>
+                        - <em>"🟡 Hospital B4 está siendo capturada por Los Charruas (45%)"</em><br>
+                        - <em>"🔵 Hospital B4 controlada por Los Charruas ($1,500/día)"</em><br>
+                        - <em>"⚔️ Hospital B4 EN DISPUTA entre Los Charruas y Los Rivales"</em>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Comandos de Gestión</h3>
+
+                    <div class="command-card">
+                        <h4>#MyZones</h4>
+                    <div class="command-syntax">
+                        Uso: <code>#MyZones</code>
+                    </div>
+                    <p><strong>Descripción:</strong> Lista todas las zonas controladas por tu squad.</p>
+
+                    <div class="example-box">
+                        <strong>Ejemplo de respuesta:</strong><br>
+                        <em>
+                        📍 Zonas de Los Charruas:<br>
+                        <br>
+                        1. Hospital B4 ($1,500/día)<br>
+                        2. Traders B4 ($800/día)<br>
+                        <br>
+                        💰 Total diario: $2,300<br>
+                        📊 Balance acumulado: $11,500 (5 días)
+                        </em>
+                    </div>
+                </div>
+
+                <div class="command-card">
+                    <h4>#ClaimFactionPay</h4>
+                    <div class="command-syntax">
+                        Uso: <code>#ClaimFactionPay</code>
+                    </div>
+                    <p><strong>Descripción:</strong> Reclama el pago acumulado por las zonas controladas.</p>
+
+                    <div class="warning-box">
+                        <strong>Restricciones:</strong>
+                        <ul>
+                            <li>Solo el líder del squad puede reclamar (por defecto)</li>
+                            <li>Cooldown: 24 horas</li>
+                            <li>Debe haber balance acumulado</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-box">
+                        <strong>Al reclamar:</strong><br>
+                        El dinero se transfiere a tu balance personal y puedes usarlo inmediatamente.
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="factions-zones" class="sub-panel">
+                <h2>🗺️ Zonas Disponibles</h2>
+
+                <div class="section">
+                    <h3>⚔️ Zonas PVP (Competitivas)</h3>
+                    <p class="info-box">En estas zonas, múltiples squads pueden competir simultáneamente. El sistema "Contested" se activa si hay jugadores de diferentes squads presentes.</p>
+
+                    <div class="zone-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div class="zone-card" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 20px; border-radius: 10px; color: white;">
+                        <h4>⚔️ Base Militar C5</h4>
+                        <div style="margin: 10px 0;">
+                            <strong>Tipo:</strong> PVP<br>
+                            <strong>Rango:</strong> 50 metros<br>
+                            <strong>Tiempo:</strong> 20 minutos<br>
+                            <strong>Pago Diario:</strong> $2,000
+                        </div>
+                        <div class="warning-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                            <strong>Alto riesgo:</strong> Zona militar altamente contestada
+                        </div>
+                    </div>
+
+                    <div class="zone-card" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 20px; border-radius: 10px; color: white;">
+                        <h4>⚔️ Police B4</h4>
+                        <div style="margin: 10px 0;">
+                            <strong>Tipo:</strong> PVP<br>
+                            <strong>Rango:</strong> 50 metros<br>
+                            <strong>Tiempo:</strong> 15 minutos<br>
+                            <strong>Pago Diario:</strong> $1,200
+                        </div>
+                        <div class="warning-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                            <strong>Riesgo medio:</strong> Estación de policía urbana
+                        </div>
+                    </div>
+
+                    <div class="zone-card" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 20px; border-radius: 10px; color: white;">
+                        <h4>⚔️ Hospital B4</h4>
+                        <div style="margin: 10px 0;">
+                            <strong>Tipo:</strong> PVP<br>
+                            <strong>Rango:</strong> 50 metros<br>
+                            <strong>Tiempo:</strong> 18 minutos<br>
+                            <strong>Pago Diario:</strong> $1,500
+                        </div>
+                        <div class="warning-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                            <strong>Riesgo alto:</strong> Hospital estratégico
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🟢 Zonas PVE (Protegidas)</h3>
+                    <p class="success-box">Estas zonas tienen protección contra interrupciones durante la captura activa. Ideales para squads pequeños o nuevos.</p>
+
+                    <div class="zone-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+                        <div class="zone-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); padding: 20px; border-radius: 10px; color: white;">
+                            <h4>🟢 Zona Neutral B3</h4>
+                            <div style="margin: 10px 0;">
+                                <strong>Tipo:</strong> PVE<br>
+                                <strong>Rango:</strong> 50 metros<br>
+                                <strong>Tiempo:</strong> 15 minutos<br>
+                                <strong>Pago Diario:</strong> $800
+                            </div>
+                            <div class="success-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                                <strong>Bajo riesgo:</strong> Zona neutral segura
+                            </div>
+                        </div>
+
+                        <div class="zone-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); padding: 20px; border-radius: 10px; color: white;">
+                            <h4>🟢 Traders B4</h4>
+                            <div style="margin: 10px 0;">
+                                <strong>Tipo:</strong> PVE<br>
+                                <strong>Rango:</strong> 50 metros<br>
+                                <strong>Tiempo:</strong> 12 minutos<br>
+                                <strong>Pago Diario:</strong> $600
+                            </div>
+                            <div class="success-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                                <strong>Muy seguro:</strong> Zona comercial
+                            </div>
+                        </div>
+
+                        <div class="zone-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); padding: 20px; border-radius: 10px; color: white;">
+                            <h4>🟢 Airfield D4</h4>
+                            <div style="margin: 10px 0;">
+                                <strong>Tipo:</strong> PVE<br>
+                                <strong>Rango:</strong> 50 metros<br>
+                                <strong>Tiempo:</strong> 18 minutos<br>
+                                <strong>Pago Diario:</strong> $1,000
+                            </div>
+                            <div class="success-box" style="background: rgba(255,255,255,0.2); margin-top: 10px;">
+                                <strong>Riesgo medio:</strong> Aeropuerto
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>💡 Consejos Estratégicos</h3>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🎯 Squads Pequeños</h4>
+                            <p>Enfócate en zonas PVE para ingresos seguros</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>⚔️ Squads Grandes</h4>
+                            <p>Domina zonas PVP para mayores recompensas</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>💰 Balance</h4>
+                            <p>Mezcla zonas PVE (seguras) y PVP (lucrativas)</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🕐 Horarios</h4>
+                            <p>Captura zonas PVP en horarios de baja población</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Recuerda:</strong>
+                        <ul>
+                            <li>El multiplicador de jugadores aplica a TODAS las zonas</li>
+                            <li>En zonas PVP, mantén guardia en todo momento</li>
+                            <li>El grace period de 5 min es tu última oportunidad</li>
+                            <li>Reclama pagos antes del límite de 7 días</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
 
 
+
+        
 
         <div class="footer">
             <p>© 2025 Charrua Bot - Sistema de Automatización para Servidores SCUM</p>
